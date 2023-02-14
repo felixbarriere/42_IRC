@@ -16,11 +16,7 @@ server::server(char* portNumberMain)
 	// Initialiser le socket du serveur (a mettre dans la class server)
 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server_socket < 0)
-	{
-    	std::cerr << "Error during socket creation." << std::endl;
-    	// return 1; error function
-	}
-
+		SERVER_ERR("Error during socket creation.");
 
  	// Configurer l'adresse et le port du serveur	(a mettre dans la class server)
 	memset(&server_address, 0, sizeof(server_address));
@@ -34,26 +30,19 @@ server::server(char* portNumberMain)
 
 	// Lier l'adresse au socket du serveur
 	if (bind(server_socket, (struct sockaddr *) &server_address, sizeof(server_address)) < 0)
-	{
-        std::cerr << "Error during bind." << std::endl;
-        // return 1; error function
-    }
+        SERVER_ERR("Error during bind.");   // try above 1024: the first 1024 ports are 'special' and usually need super user privileges to use them
+	else
+		std::cout << "BIND OK" << std::endl;
 
 	// Écouter les connexions entrantes
 	if (listen(server_socket, 5) < 0)
-	{
-        std::cerr << "Error while listening." << std::endl;
-        // return 1; error function
-    }
+        SERVER_ERR("Error while listening.");
 
 	// Accepter la connexion entrante du client	
 	client_len = sizeof(client_address);
     client_socket = accept(server_socket, (struct sockaddr *) &client_address, &client_len);
     if (client_socket < 0)
-	{
-        std::cerr << "Error while accepting connexion." << std::endl;
-        // return 1; error function
-    }
+        SERVER_ERR("Error while accepting connexion.");
 
 
     // Configurer les sockets pour la surveillance avec poll
