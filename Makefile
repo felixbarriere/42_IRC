@@ -1,3 +1,6 @@
+# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes	// Check complet de valgrind.
+# lsof -i -a -c ircserv  // Check les leaks de fds associes au reseau (sockets).
+
 NAME = IRC
 
 SRCS = 	main.cpp \
