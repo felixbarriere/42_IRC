@@ -40,6 +40,8 @@ server::server(char* portNumberMain)
 	else 
 		std::cout << "LISTEN OK" << std::endl;
 
+	// ------------- A FAIRE HORS DU CONSTRUCTOR -----------------
+
 	// Accepter la connexion entrante du client	
 	client_len = sizeof(client_address);	
 	// comment récupère-t-on l'addresse du client?
@@ -50,8 +52,11 @@ server::server(char* portNumberMain)
 		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr) 
 		<< " port " << ntohs(client_address.sin_port) << std::endl;
 
+	// apres accept(), envoyer client_socket pour l'instanciation de la classe Client.
 
-    // Configurer les sockets pour la surveillance avec poll
+	// instancier la classe Client;
+
+    // Configurer les sockets pour la surveillance avec poll (doit etre avant la fonction accept(), determine si on accepte ou pas)
     memset(fds, 0, sizeof(fds));
     fds[0].fd = server_socket;
     fds[0].events = POLLIN;
