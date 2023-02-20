@@ -3,11 +3,11 @@
 
 NAME = IRC
 
-INCS = server.hpp \
+INCS = class/server.hpp \
 		utils.hpp \
 
 SRCS = 	main.cpp \
-		server.cpp \
+		class/server.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
 
@@ -26,6 +26,8 @@ all:		$(NAME)
 
 ${OBJS_PATH}%.o: ${SRCS_PATH}%.cpp
 		@mkdir -p $(OBJS_PATH)
+		@mkdir -p $(OBJS_PATH)/class
+		#@mkdir -p $(OBJS_PATH)/commands
 		${CXX} ${CXXFLAGS} -c $< -o $@ -I${INCS_PATH}
 
 $(NAME):	$(OBJS)

@@ -38,7 +38,7 @@ INADDR_ANY binds the socket to all available interfaces.
 */
 
 #include "../inc/utils.hpp"
-#include "../inc/server.hpp"
+#include "../inc/class/server.hpp"
 
 int	main (int ac, char **av)
 {

@@ -1,7 +1,9 @@
-#include "server.hpp"
 #include "utils.hpp"
 
-server::server() {}
+server::server() 
+{
+	std::cout << "Uninitialised server" << std::endl;
+}
 
 server::server(char* portNumberMain)
 {
