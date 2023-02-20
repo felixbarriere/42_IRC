@@ -13,7 +13,7 @@
 #include <vector>
 
 
-#include "server.hpp"
+#include "class/server.hpp"
 
 
 void	next_steps(Server	server);

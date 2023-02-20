@@ -3,12 +3,12 @@
 
 NAME = IRC
 
-INCS = class/server.hpp \
+INCS = 	class/server.hpp \
 		utils.hpp \
 
 SRCS = 	main.cpp \
-		srcs/server.cpp \
-		srcs/other.cpp \
+		class/server.cpp \
+		other.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
 
