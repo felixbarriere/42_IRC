@@ -20,13 +20,20 @@ class Server
 		Server(char* portNumber);
 		~Server();
 
-		void	setPortNumber(char * portNumber);
+		char*						getPortNumber(void);
+		int							getServerSocket(void);
+		struct sockaddr_in			getServerAddress(void);
+		std::vector<struct pollfd>	getFds(void);
 
-		int					s_socket;		// private?
-		struct sockaddr_in 	s_address;		// private?
+		void						setPortNumber(char * portNumber);
+
+
 
 	private:
 		char*				portNumber;
+		int							s_socket;		// private?
+		struct sockaddr_in 			s_address;		// private?
+		std::vector<struct pollfd> 	fds;
 };
 
 #endif

@@ -52,7 +52,7 @@ int	main (int ac, char **av)
 		return (1);
 	}
 
-	std::cout << "Test host Main:" << av[1] << std::endl;
+	std::cout << "DEBUG ===> Test host Main:" << av[1] << std::endl << std::endl;
 
 	Server	server(av[1]);
 	

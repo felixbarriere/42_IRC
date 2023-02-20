@@ -33,8 +33,23 @@ Server::Server(char* portNumberMain) : portNumber(portNumberMain)
 	else 
 		std::cout << "LISTEN OK" << std::endl;
 
+
+	// Préparer le vector de fd pour poll()
+	this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
+	this->fds.back().fd = this->s_socket;
+    this->fds.back().events = POLLIN;		// données en attente de lecture.
+    this->fds.back().revents = 0;
+
 }
 
 Server::~Server() {}
+
+char*						Server::getPortNumber(void) {	return (this->portNumber);	}
+int							Server::getServerSocket(void) {	return (this->s_socket);	}
+struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}
+std::vector<struct pollfd>	Server::getFds(void) {	return (this->fds);	}
+
+
+
 
 void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}

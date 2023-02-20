@@ -1,7 +1,6 @@
 #ifndef	UTILS_HPP
 #define UTILS_HPP
 
-
 #include <iostream>
 #include <sys/socket.h>
 #include <poll.h>
@@ -10,6 +9,7 @@
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <vector>
 
 
 #include "server.hpp"
