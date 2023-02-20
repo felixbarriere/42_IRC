@@ -3,7 +3,7 @@
 
 Server::Server() {}
 
-Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), password(password) , timeout(-1)
+Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), password(password), timeout(5000)
 {
 	// int timeout = -1;
 
@@ -34,6 +34,8 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 
 
 	// Préparer le vector de fd pour poll()
+
+	this->fds.clear();
 	this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
 	this->fds.back().fd = this->s_socket;
     this->fds.back().events = POLLIN;		// données en attente de lecture.
@@ -50,6 +52,7 @@ Server::~Server()
 
 char*						Server::getPortNumber(void) {	return (this->portNumber);	}
 char*						Server::getPassword(void) {	return (this->password);	}
+int							Server::getTimeout(void) {	return (this->timeout); }
 int							Server::getServerSocket(void) {	return (this->s_socket);	}
 struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}
 std::vector<struct pollfd>	Server::getFds(void) {	return (this->fds);	}

@@ -22,6 +22,7 @@ class Server
 
 		char*						getPortNumber(void);
 		char*						getPassword(void);
+		int							getTimeout(void);
 		int							getServerSocket(void);
 		struct sockaddr_in			getServerAddress(void);
 		std::vector<struct pollfd>	getFds(void);
@@ -29,13 +30,16 @@ class Server
 		void						setPortNumber(char * portNumber);
 
 
+
+
+
 	private:
 
-		char*						portNumber;
-		char*						password;
-		int							timeout;
-		int							s_socket;		// private?
-		struct sockaddr_in 			s_address;		// private?
+		char*						portNumber;		// a mettre dans une classe config?
+		char*						password;		// a mettre dans une classe config?
+		int							timeout;	
+		int							s_socket;
+		struct sockaddr_in 			s_address;
 		std::vector<struct pollfd> 	fds;
 };
 
