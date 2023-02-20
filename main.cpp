@@ -24,6 +24,7 @@ later function calls that operate on sockets.
 			
 int socket(int domain, int type, int protocol);
 
+INADDR_ANY binds the socket to all available interfaces.
 --------------------------------------------------------------
 
 struct sockaddr_in, struct in_addr:
@@ -37,7 +38,6 @@ from host byte order to network byte order.
 
 --------------------------------------------------------------
 
-INADDR_ANY binds the socket to all available interfaces.
 
 */
 
@@ -54,7 +54,7 @@ int	main (int ac, char **av)
 
 	std::cout << "DEBUG ===> Test host Main:" << av[1] << std::endl << std::endl;
 
-	Server	server(av[1]);
+	Server	server(av[1], av[2]);
 	
 
 	next_steps(server);

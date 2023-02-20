@@ -1,6 +1,14 @@
 // #include "server.hpp"
 #include "utils.hpp"
 
+// void	use_poll(fds, server)
+// {
+	
+// 	int poll(struct pollfd *fds, nfds_t nfds, int délai);
+
+// }
+
+
 void	next_steps(Server	server)
 {
 	int client_socket;

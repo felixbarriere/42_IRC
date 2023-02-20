@@ -3,9 +3,8 @@
 
 Server::Server() {}
 
-Server::Server(char* portNumberMain) : portNumber(portNumberMain)
+Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), password(password) , timeout(-1)
 {
-	// int nfds = 2;
 	// int timeout = -1;
 
 	// Initialiser le socket du serveur (a mettre dans la class server)
@@ -28,7 +27,7 @@ Server::Server(char* portNumberMain) : portNumber(portNumberMain)
 		std::cout << "BIND OK" << std::endl;
 
 	// Écouter les connexions entrantes
-	if (listen(this->s_socket, 5) < 0)
+	if (listen(this->s_socket, 5) < 0)				//  5: backlog définit une longueur maximale jusqu'à laquelle la file des connexions en attente pour sockfd peut croître.
         SERVER_ERR("Error while listening.");
 	else 
 		std::cout << "LISTEN OK" << std::endl;
@@ -42,9 +41,15 @@ Server::Server(char* portNumberMain) : portNumber(portNumberMain)
 
 }
 
-Server::~Server() {}
+Server::~Server() 
+{
+	std::cout << "DEBUG ===> Destructor, closing server socket" << std::endl << std::endl;
+
+	close(this->s_socket);	
+}
 
 char*						Server::getPortNumber(void) {	return (this->portNumber);	}
+char*						Server::getPassword(void) {	return (this->password);	}
 int							Server::getServerSocket(void) {	return (this->s_socket);	}
 struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}
 std::vector<struct pollfd>	Server::getFds(void) {	return (this->fds);	}

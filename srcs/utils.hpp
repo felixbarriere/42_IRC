@@ -2,6 +2,7 @@
 #define UTILS_HPP
 
 #include <iostream>
+#include <unistd.h>
 #include <sys/socket.h>
 #include <poll.h>
 #include <cstring>
