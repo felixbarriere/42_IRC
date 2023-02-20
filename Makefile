@@ -1,35 +1,44 @@
+# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes	// Check complet de valgrind.
+# lsof -i -a -c ircserv  // Check les leaks de fds associes au reseau (sockets).
+
 NAME = IRC
 
+INCS = 	class/server.hpp \
+		utils.hpp \
+
 SRCS = 	main.cpp \
-		srcs/server.cpp \
-		srcs/other.cpp \
+		class/server.cpp \
+		other.cpp \
 
-OBJS_PATH = objects/
+OBJS = ${SRCS:.cpp=.o}
 
-OBJS = ${addprefix ${OBJS_PATH}, ${SRCS:.cpp=.o}}
+OBJS_PATH = obj/
+INCS_PATH = inc/
+SRCS_PATH = src/
 
-CC = c++
+OBJS := ${addprefix ${OBJS_PATH}, ${OBJS}}
+INCS := ${addprefix ${INCS_PATH}, ${INCS}}
+SRCS := ${addprefix ${SRCS_PATH}, ${SRCS}}
 
-CFLAGS = -Wall -Werror -Wextra -std=c++98 -MMD -MP
+CXX = c++
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS)
-		${CC} $(OBJS) -o $(NAME)
-
-
--include $(OBJS_PATH)/*.d
-
 ${OBJS_PATH}%.o: ${SRCS_PATH}%.cpp
-		@mkdir -p $(@D)
-		${CC} ${CFLAGS} -c $< -o $@ ${INCLUDES}
+		@mkdir -p $(OBJS_PATH)
+		@mkdir -p $(OBJS_PATH)/class
+		#@mkdir -p $(OBJS_PATH)/commands
+		${CXX} ${CXXFLAGS} -c $< -o $@ -I${INCS_PATH}
+
+$(NAME):	$(OBJS)
+		${CXX} ${CXXFLAGS} $(OBJS) -o $(NAME)
 
 clean:
-		rm -f $(OBJS)
+		rm -rf $(OBJS_PATH)
 
 fclean: clean
-	rm -f $(NAME)
-	rm -f -r ${OBJS_PATH}
+	rm -rf $(NAME)
 
 re: fclean all
 

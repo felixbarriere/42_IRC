@@ -20,7 +20,8 @@ Utiliser les sockets pour créer une connexion réseau entre plusieurs ordinateu
 
 The socket() function shall create an unbound socket in a 
 communications domain, and return a file descriptor that can be used in 
-later function calls that operate on sockets.
+later function calls that operate on sockets. => On success, a file descriptor
+for the new socket is returned.  On error, -1 is returned, and errno is set to indicate the error.
 			
 int socket(int domain, int type, int protocol);
 
@@ -41,7 +42,7 @@ from host byte order to network byte order.
 
 */
 
-#include "srcs/utils.hpp"
+#include "../inc/utils.hpp"
 
 
 int	main (int ac, char **av)
@@ -59,9 +60,7 @@ int	main (int ac, char **av)
 
 	Server	server(av[1], av[2]);
 	
-
 	next_steps(server);
-
 
 	return (0);
 }
