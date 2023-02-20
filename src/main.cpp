@@ -15,7 +15,8 @@ Utiliser les sockets pour créer une connexion réseau entre plusieurs ordinateu
 
 The socket() function shall create an unbound socket in a 
 communications domain, and return a file descriptor that can be used in 
-later function calls that operate on sockets.
+later function calls that operate on sockets. => On success, a file descriptor
+for the new socket is returned.  On error, -1 is returned, and errno is set to indicate the error.
 			
 int socket(int domain, int type, int protocol);
 
@@ -36,8 +37,8 @@ INADDR_ANY binds the socket to all available interfaces.
 
 */
 
-#include "srcs/utils.hpp"
-#include "srcs/server.hpp"
+#include "../inc/utils.hpp"
+#include "../inc/server.hpp"
 
 int	main (int ac, char **av)
 {
@@ -49,6 +50,6 @@ int	main (int ac, char **av)
 
 	std::cout << "Test host Main:" << av[1] << std::endl;
 	server	server(av[1]);
-	
+	//close(socket);
 	return (0);
 }
