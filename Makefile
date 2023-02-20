@@ -2,6 +2,7 @@ NAME = IRC
 
 SRCS = 	main.cpp \
 		srcs/server.cpp \
+		srcs/other.cpp \
 
 OBJS_PATH = objects/
 

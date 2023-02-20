@@ -1,4 +1,9 @@
-#include <errno.h>
+#ifndef	SERVER_HPP
+#define SERVER_HPP
+
+
+// #include "utils.hpp"
+
 
 #define SERVER_ERR(err)                                                  	   \
 	do                                                                         \
@@ -7,15 +12,21 @@
 		exit(1);                                                               \
 	} while (0)
 
-class server
+class Server
 {
 	public:
 
-		server();
-		server(char* portNumber);
-		~server();
+		Server();
+		Server(char* portNumber);
+		~Server();
 
 		void	setPortNumber(char * portNumber);
+
+		int					s_socket;		// private?
+		struct sockaddr_in 	s_address;		// private?
+
 	private:
-		char *	portNumber;
+		char*				portNumber;
 };
+
+#endif

@@ -1,69 +1,40 @@
-#include "server.hpp"
+// #include "server.hpp"
 #include "utils.hpp"
 
-server::server() {}
+Server::Server() {}
 
-server::server(char* portNumberMain)
+Server::Server(char* portNumberMain) : portNumber(portNumberMain)
 {
-	int server_socket, client_socket;
-	struct sockaddr_in server_address, client_address;
-	struct pollfd fds[2];
-	socklen_t client_len;
-	this->portNumber = portNumberMain;
 	// int nfds = 2;
 	// int timeout = -1;
 
 	// Initialiser le socket du serveur (a mettre dans la class server)
-	server_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_socket < 0)
+	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (this->s_socket < 0)
 		SERVER_ERR("Error during socket creation.");
+	else
+		std::cout << "SOCKET CREATION OK" << std::endl;
 
  	// Configurer l'adresse et le port du serveur	(a mettre dans la class server)
-	memset(&server_address, 0, sizeof(server_address));
-    server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(atoi(this->portNumber));   // convert short integer value for port must be converted into network byte order
-    server_address.sin_addr.s_addr = INADDR_ANY;
-
-	std::cout << "Test host:" << this->portNumber << std::endl;
-	std::cout << "Test host (network byte order):" << server_address.sin_port << std::endl;
-
+	memset(&this->s_address, 0, sizeof(this->s_address));
+    this->s_address.sin_family = AF_INET;
+    this->s_address.sin_port = htons(atoi(this->portNumber));   // convert short integer value for port must be converted into network byte order
+    this->s_address.sin_addr.s_addr = INADDR_ANY;
 
 	// Lier l'adresse au socket du serveur
-	if (bind(server_socket, (struct sockaddr *) &server_address, sizeof(server_address)) < 0)
+	if (bind(this->s_socket, (struct sockaddr *) &this->s_address, sizeof(this->s_address)) < 0)
         SERVER_ERR("Error during bind.");   // try above 1024: the first 1024 ports are 'special' and usually need super user privileges to use them
 	else
 		std::cout << "BIND OK" << std::endl;
 
 	// Écouter les connexions entrantes
-	if (listen(server_socket, 5) < 0)
+	if (listen(this->s_socket, 5) < 0)
         SERVER_ERR("Error while listening.");
 	else 
 		std::cout << "LISTEN OK" << std::endl;
 
-	// ------------- A FAIRE HORS DU CONSTRUCTOR -----------------
-
-	// Accepter la connexion entrante du client	
-	client_len = sizeof(client_address);	
-	// comment récupère-t-on l'addresse du client?
-    client_socket = accept(server_socket, (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
-    if (client_socket < 0)
-        SERVER_ERR("Error while accepting connexion.");
-	else
-		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr) 
-		<< " port " << ntohs(client_address.sin_port) << std::endl;
-
-	// apres accept(), envoyer client_socket pour l'instanciation de la classe Client.
-
-	// instancier la classe Client;
-
-    // Configurer les sockets pour la surveillance avec poll (doit etre avant la fonction accept(), determine si on accepte ou pas)
-    memset(fds, 0, sizeof(fds));
-    fds[0].fd = server_socket;
-    fds[0].events = POLLIN;
-    fds[1].fd = client_socket;
-
 }
 
-server::~server() {}
+Server::~Server() {}
 
-void	server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}
+void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}

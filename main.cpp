@@ -8,6 +8,11 @@ lorsqu'un socket est prêt à lire ou à écrire.
 
 int poll(struct pollfd *fds, nfds_t nfds, int délai);
 
+struct pollfd {
+    int   fd;         => Descripteur de fichier 
+    short events;     => Événements attendus    
+    short revents;    => Événements détectés    
+};
 --------------------------------------------------------------
 
 socket() : 
@@ -37,7 +42,7 @@ INADDR_ANY binds the socket to all available interfaces.
 */
 
 #include "srcs/utils.hpp"
-#include "srcs/server.hpp"
+
 
 int	main (int ac, char **av)
 {
@@ -48,7 +53,12 @@ int	main (int ac, char **av)
 	}
 
 	std::cout << "Test host Main:" << av[1] << std::endl;
-	server	server(av[1]);
+
+	Server	server(av[1]);
 	
+
+	next_steps(server);
+
+
 	return (0);
 }
