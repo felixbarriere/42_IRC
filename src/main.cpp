@@ -42,11 +42,7 @@ from host byte order to network byte order.
 
 */
 
-<<<<<<< HEAD:main.cpp
-#include "srcs/utils.hpp"
-=======
 #include "../inc/utils.hpp"
->>>>>>> maryna:src/main.cpp
 
 
 int	main (int ac, char **av)
@@ -57,19 +53,11 @@ int	main (int ac, char **av)
 		return (1);
 	}
 
-<<<<<<< HEAD:main.cpp
 	std::cout << "DEBUG ===> Test host Main:" << av[1] << std::endl << std::endl;
 
 	Server	server(av[1], av[2]);
 	
-
 	next_steps(server);
 
-
-=======
-	std::cout << "Test host Main:" << av[1] << std::endl;
-	server	server(av[1]);
-	//close(socket);
->>>>>>> maryna:src/main.cpp
 	return (0);
 }
