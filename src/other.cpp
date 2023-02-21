@@ -30,32 +30,4 @@
 
 // 	// apres accept(), envoyer client_socket pour l'instanciation de la classe Client.
 
-// 	// instancier la classe Client;
-// }
 
-
-// void	use_poll(Server *server)
-// {
-// 	// int poll(struct pollfd *fds, nfds_t nfds, int délai);
-
-// 	// ------------ premiere solution: marche comme ca (hors de la classe) mais oblige a parametrer fds dans la fonction au lieu du constructeur
-
-// 	std::vector<struct pollfd> 	fds_test;
-
-// 	fds_test.clear();
-// 	fds_test.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
-// 	fds_test.back().fd = server->getServerSocket();
-//     fds_test.back().events = POLLIN;		// données en attente de lecture.
-//     fds_test.back().revents = 0;
-
-// 	std::cout << "DEBUG ===> BEFORE POLL() 1" << std::endl << std::endl;
-// 	std::cout << "DEBUG ===> fds_test.data():" << fds_test.data() << std::endl << std::endl;
-// 	std::cout << "DEBUG ===> &server.getFds()[0]:" << &server->getFds()[0] << std::endl << std::endl;
-
-// 	if (poll(fds_test.data(), fds_test.size(), server->getTimeout()) < 0)
-//         SERVER_ERR("Error Poll()");
-
-
-// 	std::cout << "DEBUG ===> server.getServerSocket():" << server->getServerSocket() << std::endl << std::endl;
-
-// }

@@ -11,12 +11,14 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <vector>
-
+#include <signal.h>
 
 #include "class/server.hpp"
 
+extern int serv_run;
 
 void	next_steps(Server	*server);
+void ft_handler(int smth);
 
 
 #endif

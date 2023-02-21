@@ -44,6 +44,17 @@ Server::~Server()
 	close(this->s_socket);	
 }
 
+// void Server::init_pollfd_struct(std::vector<struct pollfd> &fds)
+// {
+// 	this->fds.clear();
+// 	this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
+// 	this->fds.back().fd = this->s_socket;
+// 	this->fds.back().events = POLLIN;		// données en attente de lecture.
+// 	this->fds.back().revents = 0;
+
+// 	//la 2eme partie de la fct est censee d'initialiser le reste de clients
+// }
+
 void	Server::usePoll(void)
 {
 	// https://www.ibm.com/docs/en/i/7.3?topic=designs-using-poll-instead-select
@@ -54,19 +65,22 @@ void	Server::usePoll(void)
 	std::cout << "DEBUG ===> &this->getFds().front():" << &this->getFds().front() << std::endl;
 	std::cout << "DEBUG ===> &this->fds[0]:" << &this->fds[0] << std::endl << std::endl;
 
-	while(1)
+	while(!serv_run)
 	{ 
-		// Préparer le vector de fd pour poll() ==> mettre ca dans une autre methode ou fonction?
-		this->fds.clear();
+
+		// Préparer le vector de fd pour poll()
+		//init_pollfd_struct(fds);
+
+this->fds.clear();
 		this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
 		this->fds.back().fd = this->s_socket;
-	    this->fds.back().events = POLLIN;		// données en attente de lecture.
-	    this->fds.back().revents = 0;
-
+		this->fds.back().events = POLLIN;		// données en attente de lecture.
+		this->fds.back().revents = 0;
 		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
 
-		for (size_t i; i < this->fds.size(); i++)
+
+		for (size_t i = 0; i < this->fds.size(); i++)
 		{
 			if (this->fds[i].revents != 0) //revent == 1 : on a recu une connexion de irssi
 			{
