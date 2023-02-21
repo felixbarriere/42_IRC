@@ -24,6 +24,8 @@ class Server
 		/************ Méthodes ************/
 		//void						init_pollfd_struct(std::vector<struct pollfd> &fds);
 		void						usePoll(void);
+		void						acceptClient(void);
+
 
 		/************ Getters / Setters ************/
 		char*						getPortNumber(void);
