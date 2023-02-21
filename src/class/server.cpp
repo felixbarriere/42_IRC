@@ -3,7 +3,7 @@
 
 Server::Server() {}
 
-Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), password(password), timeout(5000)
+Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), password(password), timeout(20000)
 {
 	// int timeout = -1;
 
@@ -48,6 +48,34 @@ Server::~Server()
 	std::cout << "DEBUG ===> Destructor, closing server socket" << std::endl << std::endl;
 
 	close(this->s_socket);	
+}
+
+void	Server::usePoll(void)
+{
+	// https://www.ibm.com/docs/en/i/7.3?topic=designs-using-poll-instead-select
+	// int poll(struct pollfd *fds, nfds_t nfds, int délai);
+
+	std::cout << "DEBUG ===> BEFORE POLL()" << std::endl;
+	std::cout << "DEBUG ===> this->getFds().data():" << this->getFds().data() << std::endl;
+	std::cout << "DEBUG ===> &this->getFds().front():" << &this->getFds().front() << std::endl;
+	std::cout << "DEBUG ===> &this->fds[0]:" << &this->fds[0] << std::endl << std::endl;
+
+	if (poll(&this->fds[0], this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
+        SERVER_ERR("Error Poll()");
+
+	std::cout << "DEBUG ===> this->fds[0].revents: " << this->fds[0].revents << std::endl;
+
+	for (size_t i; i < this->fds.size(); i++)
+	{
+		if (this->fds[0].revents == POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
+		{
+			std::cout << "DEBUG ===> ACCEPT CONNEXION" << std::endl;
+			// creer une methode acceptClient avec accept()
+		}
+	}
+	
+	// If revents is not POLLIN, it's an unexpected result, log and end the server.          
+
 }
 
 char*						Server::getPortNumber(void) {	return (this->portNumber);	}
