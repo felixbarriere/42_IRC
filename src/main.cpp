@@ -13,6 +13,9 @@ struct pollfd {
     short events;     => Événements attendus    
     short revents;    => Événements détectés    
 };
+
+https://www.ibm.com/docs/en/i/7.3?topic=designs-using-poll-instead-select
+
 --------------------------------------------------------------
 
 socket() : 
@@ -53,14 +56,12 @@ int	main (int ac, char **av)
 		return (1);
 	}
 
-	std::cout << "DEBUG ===> Test host Main:" << av[1] << std::endl << std::endl;
-
-	std::cout << "DEBUG ===> test 3 branch felix:" << av[1] << std::endl << std::endl;
-
-
 	Server	server(av[1], av[2]);
 	
-	next_steps(server);
+	server.usePoll();
+
+
+	next_steps(&server);
 
 	return (0);
 }

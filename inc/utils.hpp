@@ -16,7 +16,7 @@
 #include "class/server.hpp"
 
 
-void	next_steps(Server	server);
+void	next_steps(Server	*server);
 
 
 #endif

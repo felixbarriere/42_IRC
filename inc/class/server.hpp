@@ -16,10 +16,15 @@ class Server
 {
 	public:
 
+		/************ Constructors / Destructor ************/
 		Server();
 		Server(char* portNumber, char* password);
 		~Server();
 
+		/************ Méthodes ************/
+		void						usePoll(void);
+
+		/************ Getters / Setters ************/
 		char*						getPortNumber(void);
 		char*						getPassword(void);
 		int							getTimeout(void);
@@ -32,7 +37,7 @@ class Server
 
 
 
-
+		/************ Attributs ************/
 	private:
 
 		char*						portNumber;		// a mettre dans une classe config?
