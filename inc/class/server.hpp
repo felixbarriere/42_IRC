@@ -23,6 +23,8 @@ class Server
 
 		/************ Méthodes ************/
 		void						usePoll(void);
+		void						acceptClient(void);
+
 
 		/************ Getters / Setters ************/
 		char*						getPortNumber(void);

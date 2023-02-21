@@ -56,9 +56,7 @@ void	Server::usePoll(void)
 
 	while(1)
 	{ 
-
-
-		// Préparer le vector de fd pour poll()
+		// Préparer le vector de fd pour poll() ==> mettre ca dans une autre methode ou fonction?
 		this->fds.clear();
 		this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
 		this->fds.back().fd = this->s_socket;
@@ -68,23 +66,18 @@ void	Server::usePoll(void)
 		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
 
-
-
-
-
-
-
 		for (size_t i; i < this->fds.size(); i++)
 		{
 			if (this->fds[i].revents != 0) //revent == 1 : on a recu une connexion de irssi
 			{
-
+				// mettre "this->fds[i].revents & POLLIN" car revents peut contenir plusieurs resultats en meme temps (en plus) que POLLIN
 				if (this->fds[i].revents == POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
 				{
 					if (i == 0)
 					{
 						std::cout << "DEBUG ===> ACCEPT New Client" << std::endl;
 						// creer une methode acceptClient avec accept()
+						this->acceptClient();
 					}
 					else
 					{
@@ -100,6 +93,30 @@ void	Server::usePoll(void)
 	}
 	
 	// If revents is not POLLIN, it's an unexpected result, log and end the server.          
+}
+
+void	Server::acceptClient(void)
+{
+	int client_socket;
+	struct sockaddr_in client_address;
+	socklen_t client_len;
+
+	// Accepter la connexion entrante du client	
+	client_len = sizeof(client_address);	
+	// comment récupère-t-on l'addresse du client?
+    client_socket = accept(this->getServerSocket(), (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
+    
+	std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
+
+	if (client_socket < 0)
+        SERVER_ERR("Error while accepting connexion");
+	else
+		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr) 
+		<< " port " << ntohs(client_address.sin_port) << std::endl;
+
+	// apres accept(), envoyer client_socket pour l'instanciation de la classe Client.
+
+	// instancier la classe Client;
 }
 
 char*						Server::getPortNumber(void) {	return (this->portNumber);	}

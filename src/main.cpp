@@ -61,7 +61,7 @@ int	main (int ac, char **av)
 	server.usePoll();
 
 
-	next_steps(&server);
+	// next_steps(&server);
 
 	return (0);
 }
