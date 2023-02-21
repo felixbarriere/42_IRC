@@ -33,13 +33,7 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 		std::cout << "LISTEN OK" << std::endl;
 
 
-	// Préparer le vector de fd pour poll()
-
-	this->fds.clear();
-	this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
-	this->fds.back().fd = this->s_socket;
-    this->fds.back().events = POLLIN;		// données en attente de lecture.
-    this->fds.back().revents = 0;
+	
 
 }
 
@@ -60,22 +54,52 @@ void	Server::usePoll(void)
 	std::cout << "DEBUG ===> &this->getFds().front():" << &this->getFds().front() << std::endl;
 	std::cout << "DEBUG ===> &this->fds[0]:" << &this->fds[0] << std::endl << std::endl;
 
-	if (poll(&this->fds[0], this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
-        SERVER_ERR("Error Poll()");
+	while(1)
+	{ 
 
-	std::cout << "DEBUG ===> this->fds[0].revents: " << this->fds[0].revents << std::endl;
 
-	for (size_t i; i < this->fds.size(); i++)
-	{
-		if (this->fds[0].revents == POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
+		// Préparer le vector de fd pour poll()
+		this->fds.clear();
+		this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
+		this->fds.back().fd = this->s_socket;
+	    this->fds.back().events = POLLIN;		// données en attente de lecture.
+	    this->fds.back().revents = 0;
+
+		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
+	        SERVER_ERR("Error Poll()");
+
+
+
+
+
+
+
+		for (size_t i; i < this->fds.size(); i++)
 		{
-			std::cout << "DEBUG ===> ACCEPT CONNEXION" << std::endl;
-			// creer une methode acceptClient avec accept()
+			if (this->fds[i].revents != 0) //revent == 1 : on a recu une connexion de irssi
+			{
+
+				if (this->fds[i].revents == POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
+				{
+					if (i == 0)
+					{
+						std::cout << "DEBUG ===> ACCEPT New Client" << std::endl;
+						// creer une methode acceptClient avec accept()
+					}
+					else
+					{
+						std::cout << "DEBUG ===> Receive request" << std::endl;
+						// creer une methode receiveRequest avec recv()
+					}
+				}
+			}
 		}
+
+		std::cout << "DEBUG ===> Server running (sleep: 3 seconds)" << std::endl;
+		sleep(3);
 	}
 	
 	// If revents is not POLLIN, it's an unexpected result, log and end the server.          
-
 }
 
 char*						Server::getPortNumber(void) {	return (this->portNumber);	}
