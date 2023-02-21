@@ -1,6 +1,10 @@
 // #include "server.hpp"
 #include "utils.hpp"
 
+
+/************ Constructors / Destructor ************/
+
+
 Server::Server() {}
 
 Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), password(password), timeout(20000)
@@ -32,9 +36,6 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 	else 
 		std::cout << "LISTEN OK" << std::endl;
 
-
-	
-
 }
 
 Server::~Server() 
@@ -43,6 +44,10 @@ Server::~Server()
 
 	close(this->s_socket);	
 }
+
+
+/************ Méthodes ************/
+
 
 // void Server::init_pollfd_struct(std::vector<struct pollfd> &fds)
 // {
@@ -67,11 +72,10 @@ void	Server::usePoll(void)
 
 	while(!serv_run)
 	{ 
-
 		// Préparer le vector de fd pour poll()
 		//init_pollfd_struct(fds);
 
-this->fds.clear();
+		this->fds.clear();
 		this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
 		this->fds.back().fd = this->s_socket;
 		this->fds.back().events = POLLIN;		// données en attente de lecture.
@@ -82,7 +86,7 @@ this->fds.clear();
 
 		for (size_t i = 0; i < this->fds.size(); i++)
 		{
-			if (this->fds[i].revents != 0) //revent == 1 : on a recu une connexion de irssi
+			if (this->fds[i].revents != 0) //revent == 1 : on a recu une requete de irssi
 			{
 				// mettre "this->fds[i].revents & POLLIN" car revents peut contenir plusieurs resultats en meme temps (en plus) que POLLIN
 				if (this->fds[i].revents == POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
@@ -102,7 +106,7 @@ this->fds.clear();
 			}
 		}
 
-		std::cout << "DEBUG ===> Server running (sleep: 3 seconds)" << std::endl;
+		std::cout << "DEBUG ===> Server running (sleep: 3)" << std::endl;
 		sleep(3);
 	}
 	
@@ -125,13 +129,25 @@ void	Server::acceptClient(void)
 	if (client_socket < 0)
         SERVER_ERR("Error while accepting connexion");
 	else
-		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr) 
+		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
 		<< " port " << ntohs(client_address.sin_port) << std::endl;
+
+	// utiliser new. Client *new_client est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==>comportement indéfini.
+
+	// Client *new_client = new Client();
+	// this->client = new_client;
+	// OU
+	// this->client = new Client();
 
 	// apres accept(), envoyer client_socket pour l'instanciation de la classe Client.
 
 	// instancier la classe Client;
 }
+
+
+
+
+/************ Getters / Setters ************/
 
 char*						Server::getPortNumber(void) {	return (this->portNumber);	}
 char*						Server::getPassword(void) {	return (this->password);	}
@@ -139,8 +155,7 @@ int							Server::getTimeout(void) {	return (this->timeout); }
 int							Server::getServerSocket(void) {	return (this->s_socket);	}
 struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}
 std::vector<struct pollfd>	Server::getFds(void) {	return (this->fds);	}
-
-
+Client*						Server::getClient(void) {	return (this->client);	}
 
 
 void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}
