@@ -68,12 +68,6 @@ void	Server::usePoll(void)
 		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
 
-
-
-
-
-
-
 		for (size_t i; i < this->fds.size(); i++)
 		{
 			if (this->fds[i].revents != 0) //revent == 1 : on a recu une connexion de irssi
