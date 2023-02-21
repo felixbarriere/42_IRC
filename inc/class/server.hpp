@@ -22,6 +22,7 @@ class Server
 		~Server();
 
 		/************ Méthodes ************/
+		//void						init_pollfd_struct(std::vector<struct pollfd> &fds);
 		void						usePoll(void);
 
 		/************ Getters / Setters ************/
