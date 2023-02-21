@@ -14,6 +14,7 @@
 #include <signal.h>
 
 #include "class/server.hpp"
+#include "class/client.hpp"
 
 extern int serv_run;
 
