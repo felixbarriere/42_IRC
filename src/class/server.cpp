@@ -50,9 +50,8 @@ Server::~Server()
 // void Server::init_pollfd_struct(std::vector<struct pollfd> &fds)
 // {
 // 	this->fds.clear();
-// 	this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
-// 	this->fds.back().fd = this->s_socket;
-// 	this->fds.back().events = POLLIN;		// données en attente de lecture.
+// 	this->fds.push_back(pollfd());			
+// 	this->fds.back().events = POLLIN;		
 // 	this->fds.back().revents = 0;
 
 // 	//la 2eme partie de la fct est censee d'initialiser le reste de clients
@@ -71,7 +70,13 @@ void	Server::usePoll(void)
 		//init_pollfd_struct(fds);
 
 		this->fds.clear();
-		this->fds.push_back(pollfd());			// pas trop compris, on instancie la structure pollfd pour avoir un premier élément dans le vecteur?
+		this->fds.push_back(pollfd());	// fds argument, which is an array of structures of the following form: 
+         //  struct pollfd {
+         //      int   fd;         /* file descriptor */
+         //      short events;     /* requested events */
+         //      short revents;    /* returned events */
+         //  };
+		// Cette structure définit un tableau de descripteurs de fichier ou de pointeurs de fichier.
 		this->fds.back().fd = this->s_socket;
 		this->fds.back().events = POLLIN;		// données en attente de lecture.
 		this->fds.back().revents = 0;
@@ -84,11 +89,12 @@ void	Server::usePoll(void)
 			if (this->fds[i].revents != 0) //revent == 1 : on a recu une requete de irssi
 			{
 				// mettre "this->fds[i].revents & POLLIN" car revents peut contenir plusieurs resultats en meme temps (en plus) que POLLIN
-				if (this->fds[i].revents == POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
+				if (this->fds[i].revents & POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
 				{
 					if (i == 0)
 					{
 						this->acceptClient();
+						//std::cout << "acceptClient fct" << std::endl;
 					}
 					else
 					{
