@@ -52,7 +52,7 @@ class Server
 		int							s_socket;
 		struct sockaddr_in 			s_address;
 		std::vector<struct pollfd> 	fds;
-		Client						*client;
+		Client						*client;		//créer un vector ou une map pour pouvoir recevoir plusieurs clients
 };
 
 #endif

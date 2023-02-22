@@ -65,10 +65,7 @@ void	Server::usePoll(void)
 	// https://www.ibm.com/docs/en/i/7.3?topic=designs-using-poll-instead-select
 	// int poll(struct pollfd *fds, nfds_t nfds, int délai);
 
-	std::cout << "DEBUG ===> BEFORE POLL()" << std::endl;
-	std::cout << "DEBUG ===> this->getFds().data():" << this->getFds().data() << std::endl;
-	std::cout << "DEBUG ===> &this->getFds().front():" << &this->getFds().front() << std::endl;
-	std::cout << "DEBUG ===> &this->fds[0]:" << &this->fds[0] << std::endl << std::endl;
+	std::cout << "DEBUG ===> BEFORE POLL()" << std::endl << std::endl;
 
 	while(!serv_run)
 	{ 
@@ -93,8 +90,6 @@ void	Server::usePoll(void)
 				{
 					if (i == 0)
 					{
-						std::cout << "DEBUG ===> ACCEPT New Client" << std::endl;
-						// creer une methode acceptClient avec accept()
 						this->acceptClient();
 					}
 					else
@@ -106,8 +101,8 @@ void	Server::usePoll(void)
 			}
 		}
 
-		std::cout << "DEBUG ===> Server running (sleep: 3)" << std::endl;
-		sleep(3);
+		std::cout << "DEBUG ===> Server running (sleep: 1)" << std::endl;
+		sleep(1);
 	}
 	
 	// If revents is not POLLIN, it's an unexpected result, log and end the server.          
@@ -121,7 +116,6 @@ void	Server::acceptClient(void)
 
 	// Accepter la connexion entrante du client	
 	client_len = sizeof(client_address);	
-	// comment récupère-t-on l'addresse du client?
     client_socket = accept(this->getServerSocket(), (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
     
 	std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
@@ -130,18 +124,14 @@ void	Server::acceptClient(void)
         SERVER_ERR("Error while accepting connexion");
 	else
 		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
-		<< " port " << ntohs(client_address.sin_port) << std::endl;
+		<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
 
-	// utiliser new. Client *new_client est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==>comportement indéfini.
+	// instancier la classe Client
 
-	// Client *new_client = new Client();
-	// this->client = new_client;
-	// OU
-	// this->client = new Client();
+	// utiliser new. Client *new_client est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==> comportement indéfini.
+	this->client = new Client(client_socket, client_address);
 
-	// apres accept(), envoyer client_socket pour l'instanciation de la classe Client.
 
-	// instancier la classe Client;
 }
 
 

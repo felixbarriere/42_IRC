@@ -8,6 +8,7 @@ class Client
 
 		/************ Constructors / Destructor ************/
 		Client();
+		Client(int client_socket, struct sockaddr_in client_address);
 		~Client();
 
 		/************ Méthodes ************/
@@ -22,6 +23,8 @@ class Client
 
 		/************ Attributs ************/
 	private:
+		int						c_socket;
+		struct sockaddr_in 		c_address;
 
 
 };
