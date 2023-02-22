@@ -96,8 +96,13 @@ void	Server::receiveRequest(int	client_socket)
 	else if (res == 0)
 		std::cout << "DEBUG ===> recv == 0 : disconnet client"  << std::endl;
 	else
-		std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl;
+		std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl << std::endl;
 
+	buffer[res] = '\0';
+
+	std::cout << "DEBUG ===> buffer:"  << std::endl;
+	for (int i; i < 10; i++)
+		std::cout << buffer[i];
 
 
 }
@@ -150,16 +155,16 @@ void	Server::usePoll(void)
 					{
 						this->acceptClient();
 					}
-					else
+					else if (i != 0)
 					{
 						this->receiveRequest(fds[i].fd);  //	on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
-						// OU this->clients[i.fd]: les clés dans la map Clients correspondent aux fd: on cherche le fd de l'index i (necessite que soit soit un iterator).
+						// OU this->clients[i.fd]: les clés dans la map Clients correspondent aux fd: on cherche le fd de l'index i (necessite que ce soit un iterator).
 					}
 				}
 			}
 		}
 
-		std::cout << "DEBUG ===> Server running (sleep: 1)" << std::endl;
+		std::cout << std::endl << " Server running (sleep: 1)" << std::endl;
 		sleep(1);
 	}
 	
