@@ -23,10 +23,12 @@ class Server
 		Server(char* portNumber, char* password);
 		~Server();
 
+
 		/************ Méthodes ************/
 		//void						init_pollfd_struct(std::vector<struct pollfd> &fds);
 		void						usePoll(void);
 		void						acceptClient(void);
+		void						receiveRequest(int	client_socket);
 
 
 		/************ Getters / Setters ************/
@@ -36,11 +38,10 @@ class Server
 		int							getServerSocket(void);
 		struct sockaddr_in			getServerAddress(void);
 		std::vector<struct pollfd>	getFds(void);
-		std::map<int, Client*>		getClient(void);
+		std::map<int, Client*>		getClients(void);
+		Client*						getUser(int fd);
 
 		void						setPortNumber(char * portNumber);
-
-
 
 
 		/************ Attributs ************/

@@ -1,6 +1,8 @@
 #ifndef	UTILS_HPP
 #define UTILS_HPP
 
+#define BUFFER_SIZE	512 // max size?
+
 #include <iostream>
 #include <unistd.h>
 #include <sys/socket.h>

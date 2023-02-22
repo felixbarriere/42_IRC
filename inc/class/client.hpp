@@ -22,8 +22,8 @@ class Client
 
 
 		/************ Attributs ************/
+		int						c_socket;	//a remettre private (getter a mettre)
 	private:
-		int						c_socket;
 		struct sockaddr_in 		c_address;
 
 
