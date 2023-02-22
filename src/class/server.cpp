@@ -1,9 +1,9 @@
 // #include "server.hpp"
 #include "utils.hpp"
 
-
-/************ Constructors / Destructor ************/
-
+/***************************************************************************************************************************/
+/*                                                Constructors / Destructor                                                */
+/***************************************************************************************************************************/
 
 Server::Server() {}
 
@@ -43,9 +43,69 @@ Server::~Server()
 	close(this->s_socket);	
 }
 
+/**********************************************************************************************************/
+/*                                                Méthodes                                                */
+/**********************************************************************************************************/
 
-/************ Méthodes ************/
+void	Server::acceptClient(void)
+{
+	int client_socket;
+	struct sockaddr_in client_address;
+	socklen_t client_len;
 
+	// Accepter la connexion entrante du client	
+	client_len = sizeof(client_address);	
+    client_socket = accept(this->getServerSocket(), (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
+    
+	std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
+
+	if (client_socket < 0)
+        SERVER_ERR("Error while accepting connexion");
+	else
+		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
+		<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
+
+	// instancier la classe Client
+	// utiliser new. Client *new_client est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==> comportement indéfini.
+	this->clients[client_socket] = new Client(client_socket, client_address);
+
+	// On ajoute le socket client à notre tableau de fds
+	this->fds.push_back(pollfd());	// fds argument, which is an array of structures of the following form: 
+	this->fds.back().fd = client_socket;
+	this->fds.back().events = POLLIN;		// données en attente de lecture.
+	this->fds.back().revents = POLLIN;
+}
+
+void	Server::receiveRequest(int	client_socket)
+{
+	char 	buffer[BUFFER_SIZE + 1];
+	int		res;
+	std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
+	// (void)client_socket;
+
+	std::cout << "DEBUG ===> client_socket before receive: " << client_socket << std::endl;
+	std::cout << "DEBUG ===> this->getUser(client_socket)->c_socket before receive: " << this->getUser(client_socket)->c_socket << std::endl;
+	
+	// creer une methode receiveRequest avec recv()
+
+	// int recv(int client_socket, void* buffer, size_t len, int flags);
+	res = recv(client_socket , buffer, BUFFER_SIZE, 0);   // Ou on definit le BUFFER_SIZE? len?
+
+	if (res < 0)
+        SERVER_ERR("Error during receipt");
+	else if (res == 0)
+		std::cout << "DEBUG ===> recv == 0 : disconnet client"  << std::endl;
+	else
+		std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl << std::endl;
+
+	buffer[res] = '\0';
+
+	std::cout << "DEBUG ===> buffer:"  << std::endl;
+	for (int i; i < 10; i++)
+		std::cout << buffer[i];
+
+
+}
 
 // void Server::init_pollfd_struct(std::vector<struct pollfd> &fds)
 // {
@@ -94,54 +154,27 @@ void	Server::usePoll(void)
 					if (i == 0)
 					{
 						this->acceptClient();
-						//std::cout << "acceptClient fct" << std::endl;
 					}
-					else
+					else if (i != 0)
 					{
-						std::cout << "DEBUG ===> Receive request" << std::endl;
-						// creer une methode receiveRequest avec recv()
+						this->receiveRequest(fds[i].fd);  //	on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
+						// OU this->clients[i.fd]: les clés dans la map Clients correspondent aux fd: on cherche le fd de l'index i (necessite que ce soit un iterator).
 					}
 				}
 			}
 		}
 
-		std::cout << "DEBUG ===> Server running (sleep: 1)" << std::endl;
+		std::cout << std::endl << " Server running (sleep: 1)" << std::endl;
 		sleep(1);
 	}
 	
 	// If revents is not POLLIN, it's an unexpected result, log and end the server.          
 }
 
-void	Server::acceptClient(void)
-{
-	int client_socket;
-	struct sockaddr_in client_address;
-	socklen_t client_len;
 
-	// Accepter la connexion entrante du client	
-	client_len = sizeof(client_address);	
-    client_socket = accept(this->getServerSocket(), (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
-    
-	std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
-
-	if (client_socket < 0)
-        SERVER_ERR("Error while accepting connexion");
-	else
-		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
-		<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
-
-	// instancier la classe Client
-
-	// utiliser new. Client *new_client est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==> comportement indéfini.
-	this->clients[client_socket] = new Client(client_socket, client_address);
-
-
-}
-
-
-
-
-/************ Getters / Setters ************/
+/*******************************************************************************************************************/
+/*                                                Getters / Setters                                                */
+/*******************************************************************************************************************/
 
 char*						Server::getPortNumber(void) {	return (this->portNumber);	}
 char*						Server::getPassword(void) {	return (this->password);	}
@@ -149,7 +182,20 @@ int							Server::getTimeout(void) {	return (this->timeout); }
 int							Server::getServerSocket(void) {	return (this->s_socket);	}
 struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}
 std::vector<struct pollfd>	Server::getFds(void) {	return (this->fds);	}
-std::map<int, Client*>		Server::getClient(void) {	return (this->clients);	}
+std::map<int, Client*>		Server::getClients(void) {	return (this->clients);	}
+
+Client*						Server::getUser(int fd)
+{
+	// return (this->clients[fd]->second); // marche pas
+
+	std::map<int, Client*>::const_iterator	ret;
+	ret = this->clients.find(fd);
+	if (ret == this->clients.end())
+		return NULL;
+	return ret->second;
+
+}
+
 
 
 void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}

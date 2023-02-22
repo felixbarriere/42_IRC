@@ -5,11 +5,13 @@ NAME = IRC
 
 INCS = 	class/server.hpp \
 		class/client.hpp \
+		class/message.hpp \
 		utils.hpp \
 
 SRCS = 	main.cpp \
 		class/server.cpp \
 		class/client.cpp \
+		class/message.cpp \
 		other.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
