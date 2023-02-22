@@ -36,7 +36,7 @@ class Server
 		int							getServerSocket(void);
 		struct sockaddr_in			getServerAddress(void);
 		std::vector<struct pollfd>	getFds(void);
-		Client*						getClient(void);
+		std::map<int, Client*>		getClient(void);
 
 		void						setPortNumber(char * portNumber);
 
@@ -52,7 +52,8 @@ class Server
 		int							s_socket;
 		struct sockaddr_in 			s_address;
 		std::vector<struct pollfd> 	fds;
-		Client						*client;		//créer un vector ou une map pour pouvoir recevoir plusieurs clients
+		// Client						*client;		//créer un vector ou une map pour pouvoir recevoir plusieurs clients
+		std::map<int, Client*>		clients;		//key: fd, value: client
 };
 
 #endif

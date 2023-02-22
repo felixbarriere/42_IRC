@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <vector>
+#include <map>
 #include <signal.h>
 
 #include "class/server.hpp"

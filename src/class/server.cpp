@@ -9,8 +9,6 @@ Server::Server() {}
 
 Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), password(password), timeout(20000)
 {
-	// int timeout = -1;
-
 	// Initialiser le socket du serveur (a mettre dans la class server)
 	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (this->s_socket < 0)
@@ -129,7 +127,7 @@ void	Server::acceptClient(void)
 	// instancier la classe Client
 
 	// utiliser new. Client *new_client est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==> comportement indéfini.
-	this->client = new Client(client_socket, client_address);
+	this->clients[client_socket] = new Client(client_socket, client_address);
 
 
 }
@@ -145,7 +143,7 @@ int							Server::getTimeout(void) {	return (this->timeout); }
 int							Server::getServerSocket(void) {	return (this->s_socket);	}
 struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}
 std::vector<struct pollfd>	Server::getFds(void) {	return (this->fds);	}
-Client*						Server::getClient(void) {	return (this->client);	}
+std::map<int, Client*>		Server::getClient(void) {	return (this->clients);	}
 
 
 void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}
