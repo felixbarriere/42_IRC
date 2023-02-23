@@ -82,8 +82,6 @@ void	Server::receiveRequest(int	client_socket)
 	int		res;
 	std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
 
-//	memset(&this->s_address, 0, sizeof(this->s_address));
-
 	memset(buffer, 0, BUFFER_SIZE + 1);
 
 	// int recv(int client_socket, void* buffer, size_t len, int flags);
@@ -111,18 +109,13 @@ void	Server::receiveRequest(int	client_socket)
 
 void Server::init_pollfd_struct(void)
 {
-	// std::cout << "DEBUG ===> fds:" << fds.back().fd << std::endl << std::endl;
-	// std::cout << "DEBUG ===> this->fds:" << this->fds.back().fd << std::endl << std::endl;
-
-	// (void)fds;
-
 	this->fds.clear();
 	this->fds.push_back(pollfd());	
 	this->fds.back().fd = this->s_socket;
 	this->fds.back().events = POLLIN;		
 	this->fds.back().revents = 0;
 
-	//la 2eme partie de la fct est censee d'initialiser le reste de clients
+	//la 2eme partie de la fct est censee d'initialiser le reste du clients
 }
 
 void	Server::usePoll(void)
@@ -135,19 +128,9 @@ void	Server::usePoll(void)
 	while(!serv_run)
 	{ 
 		// Préparer le vector de fd pour poll()
-		// init_pollfd_struct(this->fds);
+		
 		init_pollfd_struct();
 
-		// this->fds.clear();
-		// this->fds.push_back(pollfd());	// fds argument, which is an array of structures of the following form: 
-
-		// // Cette structure définit un tableau de descripteurs de fichier ou de pointeurs de fichier.
-		// this->fds.back().fd = this->s_socket;
-		// this->fds.back().events = POLLIN;		// données en attente de lecture.
-		// this->fds.back().revents = 0;
-		
-		
-		
 		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
 
@@ -176,11 +159,9 @@ void	Server::usePoll(void)
 				}
 			}
 		}
-
 		// std::cout << std::endl << " Server running (sleep: 1)" << std::endl;
 		// sleep(1);
 	}
-	
 	// If revents is not POLLIN, it's an unexpected result, log and end the server.          
 }
 
@@ -199,8 +180,6 @@ std::map<int, Client*>		Server::getClients(void) {	return (this->clients);	}
 
 Client*						Server::getUser(int fd)
 {
-	// return (this->clients[fd]->second); // marche pas
-
 	std::map<int, Client*>::const_iterator	ret;
 	ret = this->clients.find(fd);
 	if (ret == this->clients.end())

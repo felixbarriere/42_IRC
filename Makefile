@@ -12,7 +12,7 @@ SRCS = 	main.cpp \
 		class/server.cpp \
 		class/client.cpp \
 		class/message.cpp \
-		other.cpp \
+
 
 OBJS = ${SRCS:.cpp=.o}
 
