@@ -25,7 +25,7 @@ class Server
 
 
 		/************ Méthodes ************/
-		//void						init_pollfd_struct(std::vector<struct pollfd> &fds);
+		void						init_pollfd_struct(void);
 		void						usePoll(void);
 		void						acceptClient(void);
 		void						receiveRequest(int	client_socket);
