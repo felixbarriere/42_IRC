@@ -16,6 +16,9 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 	else
 		std::cout << "SOCKET CREATION OK" << std::endl;
 
+	//rendre le socket non-bloquant
+	fcntl(s_socket, F_SETFL, O_NONBLOCK);
+
  	// Configurer l'adresse et le port du serveur	(a mettre dans la class server)
 	memset(&this->s_address, 0, sizeof(this->s_address));
     this->s_address.sin_family = AF_INET;
@@ -93,7 +96,9 @@ void	Server::receiveRequest(int	client_socket)
         SERVER_ERR("Error during receipt");
 	else if (res == 0)
 		std::cout << "DEBUG ===> recv == 0 : disconnect client"  << std::endl;
-	else
+	//ici nous avons besoin un autre else if()qui va verifier si le buffer qu'on recoit n'est pas fragmente,
+	//dans ce cas la, va falloir le stocker jusqu'a ce qu'il soit entier
+	else 
 		std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl << std::endl;
 
 	buffer[res] = '\0';
@@ -128,15 +133,11 @@ void	Server::usePoll(void)
 	while(!serv_run)
 	{ 
 		// Préparer le vector de fd pour poll()
-		
 		init_pollfd_struct();
-
 		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
 
-
 		std::cout << "DEBUG ===> BEFORE for loop:" << std::endl << std::endl;
-
 
 		for (size_t i = 0; i < this->fds.size(); i++)
 		{

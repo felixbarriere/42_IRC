@@ -15,6 +15,7 @@
 #include <vector>
 #include <map>
 #include <signal.h>
+#include <fcntl.h>
 
 #include "class/server.hpp"
 #include "class/client.hpp"

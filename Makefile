@@ -25,7 +25,8 @@ INCS := ${addprefix ${INCS_PATH}, ${INCS}}
 SRCS := ${addprefix ${SRCS_PATH}, ${SRCS}}
 
 CXX = c++
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98
+#CXXFLAGS = -Wall -Werror -Wextra -std=c++98
+CXXFLAGS = -std=c++98
 
 all:		$(NAME)
 
