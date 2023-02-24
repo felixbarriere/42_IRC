@@ -17,6 +17,7 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 		std::cout << "SOCKET CREATION OK" << std::endl;
 
 	//rendre le socket non-bloquant
+
 	fcntl(s_socket, F_SETFL, O_NONBLOCK);
 
  	// Configurer l'adresse et le port du serveur	(a mettre dans la class server)
@@ -62,7 +63,9 @@ void	Server::acceptClient(void)
     
 	std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
 
-	if (client_socket < 0)
+	//int setsockopt(int socket_descriptor, int level, int option_name, char *option_value, int option_length)
+	//rendre le socket non-bloquant
+	if (client_socket == -1)
         SERVER_ERR("Error while accepting connexion");
 	else
 		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
@@ -104,6 +107,7 @@ void	Server::receiveRequest(int	client_socket)
 	buffer[res] = '\0';
 
 	std::cout << "DEBUG ===> buffer:"  << std::endl;
+	std::cout << "buffer_size : " << buffer2.size() <<std::endl;
 	for (size_t i = 0; i < buffer2.size(); i++)
 		std::cout << buffer2[i];
 	std::cout << std::endl;

@@ -19,6 +19,7 @@
 
 #include "class/server.hpp"
 #include "class/client.hpp"
+#include "class/message.hpp"
 
 extern int serv_run;
 
