@@ -96,23 +96,26 @@ void	Server::receiveRequest(int	client_socket)
 	// int recv(int client_socket, void* buffer, size_t len, int flags);
 	res = recv(client_socket , buffer, BUFFER_SIZE, 0);   // Ou on definit le BUFFER_SIZE? len?
 
-	std::string buf_str(buffer);
+	std::string buffer_str(buffer);
 
 	if (res < 0)
         SERVER_ERR("Error during receipt");
 	else if (res == 0)
 		std::cout << "DEBUG ===> recv == 0 : disconnect client"  << std::endl;
-	else if (res > 0 && (buf_str.rfind("\n\r")) != buf_str.size() - 2)
-		std::cout << "strdup le buffer recu par bouts" <<std::endl;
+	else if (res > 0 && (buffer_str.rfind("\n\r")) != buffer_str.size() - 2)
+	{
+		std::cout << "Command incomplete: on append() le buffer recu par bouts" <<std::endl;
+		this->getUser(client_socket)->setBuffer(this->getUser(client_socket)->getBuffer().append(buffer_str));	// strcat() works only for char *
+		this->getUser(client_socket)->createCommandList();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
+	}
 	else 
 		std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl << std::endl;
 
-	std::cout << "DEBUG ===> buffer_str:"  << std::endl;
-	
-	std::cout << "buffer_size : " << buf_str.size() <<std::endl;
-	for (size_t i = 0; i < buf_str.size(); i++)
-		std::cout << buf_str[i];
-	std::cout << std::endl;
+	std::cout << "buffer_size : " << buffer_str.size() <<std::endl;
+
+	buffer_str.clear();	//redondant avec memset en debut de fonction.
+
+	// std::cout << "buffer: " << this->getUser(client_socket)->getBuffer() <<std::endl;
 	//retour du buffer : CAP LS
 	//PASS pwd
 	//NICK sam
@@ -135,7 +138,7 @@ void	Server::usePoll(void)
 	// https://www.ibm.com/docs/en/i/7.3?topic=designs-using-poll-instead-select
 	// int poll(struct pollfd *fds, nfds_t nfds, int délai);
 
-	std::cout << "DEBUG ===> BEFORE POLL()" << std::endl << std::endl;
+	// std::cout << "DEBUG ===> BEFORE POLL()" << std::endl << std::endl;
 
 	while(!serv_run)
 	{ 
@@ -148,7 +151,7 @@ void	Server::usePoll(void)
 
 		for (size_t i = 0; i < this->fds.size(); i++)
 		{
-			std::cout << "DEBUG ===> this->fds.size():" << this->fds.size() << std::endl << std::endl;
+			// std::cout << "DEBUG ===> this->fds.size():" << this->fds.size() << std::endl << std::endl;
 			
 			if (this->fds[i].revents != 0) //revent == 1 : on a recu une requete de irssi
 			{

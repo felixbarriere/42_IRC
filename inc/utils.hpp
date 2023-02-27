@@ -4,6 +4,7 @@
 #define BUFFER_SIZE	512 // max size?
 
 #include <iostream>
+#include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <poll.h>
@@ -23,8 +24,9 @@
 
 extern int serv_run;
 
-void	next_steps(Server	*server);
-void ft_handler(int smth);
+void						next_steps(Server	*server);
+void						ft_handler(int smth);
+std::vector<std::string>	ft_split(const std::string &str, const std::string &sep);
 
 
 #endif
