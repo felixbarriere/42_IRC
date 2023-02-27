@@ -1,0 +1,60 @@
+
+https://en.wikipedia.org/wiki/List_of_Internet_Relay_Chat_commands
+
+https://modern.ircdocs.horse/#connection-messages
+
+"USER",
+
+"PASS"
+Parameters: <password>
+
+   The PASS command is used to set a 'connection password'.  The
+   optional password can and MUST be set before any attempt to register
+   the connection is made.  Currently this requires that user send a
+   PASS command before sending the NICK/USER combination.
+
+
+"JOIN"
+
+
+
+"PRIVMSG"
+
+"OPER"
+Parameters: <name> <password>
+
+   A normal user uses the OPER command to obtain operator privileges.
+   The combination of <name> and <password> are REQUIRED to gain
+   Operator privileges.  Upon success, the user will receive a MODE
+   message (see section 3.1.5) indicating the new user modes.
+
+"QUIT",
+"ERROR",
+"MODE",
+"TOPIC",
+"KICK",
+"INVITE",
+"KILL",
+"RESTART"
+"PING",
+"NOTICE"
+
+"MOTD"
+The MOTD command returns the current Message of the Day (MOTD) set on the server.
+The server’s MOTD is totally freeform and set by the administrator of the server.
+It typically includes a description of the server itself, the network the server’s
+a part of, and a list of rules to follow while connected.
+In addition, at the end of the connection registration burst,
+the MOTD is automatically sent to the client 
+(either the RPL_MOTDSTART, RPL_MOTD, and RPL_ENDOFMOTD responses,
+or alternatively the ERR_NOMOTD response).
+MOTD [<server>]
+
+"CONNECT"
+Syntax:
+
+CONNECT <target server> [<port> [<remote server>]] (RFC 1459)
+CONNECT <target server> <port> [<remote server>] (RFC 2812)
+Instructs the server <remote server> (or the current server, 
+if <remote server> is omitted) to connect to <target server> on port <port>.
+This command should only be available to IRC operators
