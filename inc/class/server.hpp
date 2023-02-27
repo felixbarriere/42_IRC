@@ -23,7 +23,6 @@ class Server
 		Server(char* portNumber, char* password);
 		~Server();
 
-
 		/************ Méthodes ************/
 		void						init_pollfd_struct(void);
 		void						usePoll(void);
@@ -53,7 +52,7 @@ class Server
 		int							s_socket;
 		struct sockaddr_in 			s_address;
 		std::vector<struct pollfd> 	fds;
-		// Client						*client;		//créer un vector ou une map pour pouvoir recevoir plusieurs clients
+		Client						*client;		//créer un vector ou une map pour pouvoir recevoir plusieurs clients
 		std::map<int, Client*>		clients;		//key: fd, value: client
 };
 
