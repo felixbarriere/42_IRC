@@ -17,8 +17,8 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 		std::cout << "SOCKET CREATION OK" << std::endl;
 
 	//rendre le socket non-bloquant
-
-	fcntl(s_socket, F_SETFL, O_NONBLOCK);
+	if (fcntl(s_socket, F_SETFL, O_NONBLOCK) == 1)
+		SERVER_ERR("Error while rendering the socket non-bloquant");
 
  	// Configurer l'adresse et le port du serveur	(a mettre dans la class server)
 	memset(&this->s_address, 0, sizeof(this->s_address));
@@ -70,6 +70,9 @@ void	Server::acceptClient(void)
 	else
 		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
 		<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
+	//setsockopt();
+	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
+		SERVER_ERR("Error while rendering the socket non-bloquant");
 
 	// instancier la classe Client
 	// utiliser new: "Client *new_client" est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==> comportement indéfini.
@@ -93,27 +96,27 @@ void	Server::receiveRequest(int	client_socket)
 	// int recv(int client_socket, void* buffer, size_t len, int flags);
 	res = recv(client_socket , buffer, BUFFER_SIZE, 0);   // Ou on definit le BUFFER_SIZE? len?
 
-	std::string buffer2(buffer);
+	std::string buf_str(buffer);
 
 	if (res < 0)
         SERVER_ERR("Error during receipt");
 	else if (res == 0)
 		std::cout << "DEBUG ===> recv == 0 : disconnect client"  << std::endl;
-	//ici nous avons besoin un autre else if()qui va verifier si le buffer qu'on recoit n'est pas fragmente,
-	//dans ce cas la, va falloir le stocker jusqu'a ce qu'il soit entier
+	else if (res > 0 && (buf_str.rfind("\n\r")) != buf_str.size() - 2)
+		std::cout << "strdup le buffer recu par bouts" <<std::endl;
 	else 
 		std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl << std::endl;
 
-	buffer[res] = '\0';
-
-	std::cout << "DEBUG ===> buffer:"  << std::endl;
-	std::cout << "buffer_size : " << buffer2.size() <<std::endl;
-	for (size_t i = 0; i < buffer2.size(); i++)
-		std::cout << buffer2[i];
-	std::cout << std::endl;
+	std::cout << "DEBUG ===> buffer_str:"  << std::endl;
 	
-
-
+	std::cout << "buffer_size : " << buf_str.size() <<std::endl;
+	for (size_t i = 0; i < buf_str.size(); i++)
+		std::cout << buf_str[i];
+	std::cout << std::endl;
+	//retour du buffer : CAP LS
+	//PASS pwd
+	//NICK sam
+	//USER masamoil masamoil localhost :Maryna SAMOILENKO
 }
 
 void Server::init_pollfd_struct(void)
@@ -124,7 +127,7 @@ void Server::init_pollfd_struct(void)
 	this->fds.back().events = POLLIN;		
 	this->fds.back().revents = 0;
 
-	//la 2eme partie de la fct est censee d'initialiser le reste du clients
+	//la 2eme partie de la fct est censee d'initialiser le reste des clients
 }
 
 void	Server::usePoll(void)
