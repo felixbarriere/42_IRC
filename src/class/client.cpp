@@ -10,7 +10,7 @@ Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket
 	std::cout << "DEBUG ===> Constructor CLIENT" << std::endl << std::endl;
 }
 
-Client::Client(const Client &src): _c_socket(-1)
+Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le const par copy
 {
 	(void)src;
 }
@@ -52,21 +52,32 @@ void	Client::createCommandList()
 
 		std::cout << "DEBUG == > mot 0:" << " ==> " << temp[0] << std::endl;
 		std::cout << "DEBUG == > mot 1:" << " ==> " << temp[1] << std::endl;
+		std::cout << std::endl;
 
 		if (temp.size() == 2)
 			this->_commands.insert(std::pair<std::string, std::string>( temp[0], temp[1]));
 		else
 		{
 			// Attention: gérer le cas si la value est constituée de plusieurs strings (ex: USER)
-			std::cout << "DEBUG == > temp.size():" << " ==> " <<  temp.size() << std::endl;
+			// pour trouver la string value, 	utiliser substr en enlevant temp[0].size() à line[i]
+			std::string line2 = lines[i].substr(temp[0].size() + 1, (lines[i].size() - temp[0].size()));
+			std::cout << "DEBUG == > temp[0]:" << " ==> " << temp[0] << std::endl;
+			std::cout << "DEBUG == > line2:" << " ==> " <<  line2 << std::endl;
+
+			this->_commands.insert(std::pair<std::string, std::string>( temp[0], line2));
+
+			line2.clear();
 		}
 		temp.clear();
+		// creer erreur si character particulier
 	}
-
+	std::cout << std::endl;
 	std::cout << "DEBUG == > command CAP:" << " ==> " << this->_commands["CAP"] << std::endl;
+	std::cout << "DEBUG == > command PWD:" << " ==> " << this->_commands["PWD"] << std::endl;
 	std::cout << "DEBUG == > commands NICK:" << " ==> " << this->_commands["NICK"] << std::endl;
+	std::cout << "DEBUG == > commands USER:" << " ==> " << this->_commands["USER"] << std::endl;
 
-	// stocker les différents résultats dans une map< commandName, command>
+	// stocker les différents résultats dans une map< commandName, command >
 	// clear this->_buffer.
 }
 

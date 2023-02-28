@@ -31,7 +31,7 @@ class Client
 		std::string							_buffer;
 		std::string							_user;
 		std::string							_nick;
-		int									_c_socket;	//a remettre private (getter a mettre)
+		int									_c_socket;
 		struct sockaddr_in 					_c_address;
 		std::map<std::string, std::string>	_commands;
 
