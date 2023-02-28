@@ -27,6 +27,8 @@ extern int serv_run;
 void						next_steps(Server	*server);
 void						ft_handler(int smth);
 std::vector<std::string>	ft_split(const std::string &str, const std::string &sep);
+int							checkCommand(std::string	str);
+std::string					ft_trim(std::string	str, char toTrim);
 
 
 #endif
