@@ -13,6 +13,7 @@ SRCS = 	main.cpp \
 		class/client.cpp \
 		class/message.cpp \
 		ft_split.cpp \
+		utils.cpp \
 
 
 OBJS = ${SRCS:.cpp=.o}
