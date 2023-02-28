@@ -89,7 +89,7 @@ void	Server::receiveRequest(int	client_socket)
 {
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
-	std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
+	// std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
 
 	memset(buffer, 0, BUFFER_SIZE + 1);
 
@@ -147,7 +147,7 @@ void	Server::usePoll(void)
 		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
 
-		std::cout << "DEBUG ===> BEFORE for loop:" << std::endl << std::endl;
+		// std::cout << "DEBUG ===> BEFORE for loop:" << std::endl << std::endl;
 
 		for (size_t i = 0; i < this->fds.size(); i++)
 		{
