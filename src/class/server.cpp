@@ -7,7 +7,7 @@
 
 Server::Server() {}
 
-Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), password(password), timeout(20000)
+Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), _password(password), timeout(20000)
 {
 	// Initialiser le socket du serveur (a mettre dans la class server)
 	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -40,11 +40,11 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 
 }
 
-Server::~Server() 
+Server::~Server()
 {
 	std::cout << "DEBUG ===> Destructor, closing server socket" << std::endl << std::endl;
 
-	close(this->s_socket);	
+	close(this->s_socket);
 }
 
 /**********************************************************************************************************/
@@ -63,13 +63,13 @@ void	Server::acceptClient(void)
     
 	std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
 
-	//int setsockopt(int socket_descriptor, int level, int option_name, char *option_value, int option_length)
-	//rendre le socket non-bloquant
 	if (client_socket == -1)
         SERVER_ERR("Error while accepting connexion");
-	else
-		std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
+	std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
 		<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
+		
+	//int setsockopt(int socket_descriptor, int level, int option_name, char *option_value, int option_length)
+	//rendre le socket non-bloquant
 	//setsockopt();
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 		SERVER_ERR("Error while rendering the socket non-bloquant");
@@ -102,10 +102,11 @@ void	Server::receiveRequest(int	client_socket)
         SERVER_ERR("Error during receipt");
 	else if (res == 0)
 		std::cout << "DEBUG ===> recv == 0 : disconnect client"  << std::endl;
-	else if (res > 0 && (buffer_str.rfind("\n\r")) != buffer_str.size() - 2)
+	else if (res > 0 && (buffer_str.rfind("\n\r")) != (buffer_str.size() - 2))
 	{
 		std::cout << "Command incomplete: on append() le buffer recu par bouts" <<std::endl;
 		this->getUser(client_socket)->setBuffer(this->getUser(client_socket)->getBuffer().append(buffer_str));	// strcat() works only for char *
+		// this->getUser(client_socket)->setBuffer(buffer_str);	// strcat() works only for char *
 		this->getUser(client_socket)->createCommandList();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 	}
 	else 
@@ -168,6 +169,10 @@ void	Server::usePoll(void)
 						// OU this->clients[i.fd]: les clés dans la map Clients correspondent aux fd: on cherche le fd de l'index i (necessite que ce soit un iterator).
 					}
 				}
+				else if (this->fds[i].revents & POLLRDHUP || this->fds[i].revents & POLLERR)
+				{
+	        		SERVER_ERR("Error Poll() in FDS");
+				}
 			}
 		}
 		// std::cout << std::endl << " Server running (sleep: 1)" << std::endl;
@@ -182,7 +187,7 @@ void	Server::usePoll(void)
 /*******************************************************************************************************************/
 
 char*						Server::getPortNumber(void) {	return (this->portNumber);	}
-char*						Server::getPassword(void) {	return (this->password);	}
+char*						Server::getPassword(void) {	return (this->_password);	}
 int							Server::getTimeout(void) {	return (this->timeout); }
 int							Server::getServerSocket(void) {	return (this->s_socket);	}
 struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}

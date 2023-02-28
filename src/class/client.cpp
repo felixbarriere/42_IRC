@@ -10,7 +10,7 @@ Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket
 	std::cout << "DEBUG ===> Constructor CLIENT" << std::endl << std::endl;
 }
 
-Client::Client(const Client &src): _c_socket(-1)
+Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le const par copy
 {
 	(void)src;
 }
@@ -69,13 +69,15 @@ void	Client::createCommandList()
 			line2.clear();
 		}
 		temp.clear();
+		// creer erreur si character particulier
 	}
 	std::cout << std::endl;
 	std::cout << "DEBUG == > command CAP:" << " ==> " << this->_commands["CAP"] << std::endl;
+	std::cout << "DEBUG == > command PWD:" << " ==> " << this->_commands["PWD"] << std::endl;
 	std::cout << "DEBUG == > commands NICK:" << " ==> " << this->_commands["NICK"] << std::endl;
 	std::cout << "DEBUG == > commands USER:" << " ==> " << this->_commands["USER"] << std::endl;
 
-	// stocker les différents résultats dans une map< commandName, command>
+	// stocker les différents résultats dans une map< commandName, command >
 	// clear this->_buffer.
 }
 
