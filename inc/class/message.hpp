@@ -10,6 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+//The extracted message is parsed into the components <prefix>,
+//  <command> and list of parameters (<params>).
+//https://www.tech-invite.com/y25/tinv-ietf-rfc-2812.html#e-2-3-1
+
+//to put class Message into class Client ?!
+
+
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
@@ -24,16 +31,22 @@ class Message
 		~Message();
 
 		/************ Getters / Setters ************/
-		void setMessage(std::string msg);
+		void setMessage(std::string msg);//buffer qu'on recoit
+		void setPrefix(std::string prefix);
 		void setCmd(std::string cmd);
+		void setParams(std::string params);
 
 		std::string getMessage(void) const;
+		std::string getPrefix(void) const;
 		std::string getCmd(void) const;
+		std::string getParams(void) const;
 
 		/************ Attributs ************/
 	private:
 		std::string	_message;
+		std::string _prefix;
 		std::string	_cmd;
+		std::string _params;
 
 	protected:
 
