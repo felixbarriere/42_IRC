@@ -38,9 +38,19 @@ void Message::setMessage(std::string msg)
 	this->_message = msg;
 }
 
+void Message::setPrefix(std::string prefix)
+{
+	this->_prefix = prefix;
+}
+
 void Message::setCmd(std::string cmd)
 {
 	this->_cmd = cmd;
+}
+
+void Message::setParams(std::string params)
+{
+	this->_params = params;
 }
 
 std::string Message::getMessage(void) const
@@ -48,13 +58,23 @@ std::string Message::getMessage(void) const
 	return (this->_message);
 }
 
+std::string Message::getPrefix(void) const
+{
+	return (this->_prefix);
+}
+
 std::string Message::getCmd(void) const
 {
 	return (this->_cmd);
 }
 
+std::string Message::getParams(void) const
+{
+	return (this->_params);
+}
+
 std::ostream &operator<<(std::ostream &out, Message &data)
 {
-	out << "CMD : " << data.getCmd();
+	out << "Prefix : "<< data.getParams() << "CMD : " << data.getCmd();
 	return out;
 }
