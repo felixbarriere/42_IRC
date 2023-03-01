@@ -12,6 +12,7 @@ SRCS = 	main.cpp \
 		class/server.cpp \
 		class/client.cpp \
 		class/message.cpp \
+		show_config.cpp \
 		ft_split.cpp \
 
 

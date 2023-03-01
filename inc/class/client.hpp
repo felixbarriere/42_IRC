@@ -37,8 +37,6 @@ class Client
 		int									_c_socket;
 		struct sockaddr_in 					_c_address;
 		std::map<std::string, std::string>	_commands;
-
-
 };
 
 #endif
