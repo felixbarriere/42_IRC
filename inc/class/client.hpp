@@ -23,10 +23,18 @@ class Client
 
 		/************ Getters / Setters ************/
 		int 				getC_socket() const;
-		struct sockaddr_in 	getSockaddr_in() const;
+		std::string		 	getSockaddr_in() const;
 		std::string 		getBuffer() const;
+		std::string 		getUser() const;
+		std::string 		getNick() const;
+		std::string 		getHostname() const;
 		
 		void 				setBuffer(std::string str);
+		void 				setUser(std::string str);
+		void		 		setNick(std::string str);
+		void		 		setHostname(std::string str);	//utile?
+
+
 
 		/************ Attributs ************/
 	private:
@@ -34,8 +42,9 @@ class Client
 		std::string							_buffer;
 		std::string							_user;
 		std::string							_nick;
+		std::string							_hostname;
 		int									_c_socket;
-		struct sockaddr_in 					_c_address;
+		std::string 						_c_address;
 		std::map<std::string, std::string>	_commands;
 };
 
