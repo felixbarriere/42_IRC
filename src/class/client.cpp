@@ -57,17 +57,38 @@ Client::~Client()
 
 void	Client::welcome_msg()
 {
-	ssize_t 		ret = 0;
-	ssize_t 		init_size = 0;
+	ssize_t 		ret = 0;	//number of bytes sent
 	std::string		str;
 	
-	str = "Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
+	// str = "Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
+	str = "test";
+	
 	std::cout << "DEBUG == > STR: " << str << std::endl;
+	// size_t 			init_size = str.size();
+	// size_t 			actual_size = 0;
+	// const char		*str2 = str.c_str();	
+
+	// while (actual_size < init_size)
+	// {
+	// 	ret = send(this->_c_socket, &str2[actual_size], init_size - actual_size, MSG_NOSIGNAL);
+	// 	if (ret == -1)
+	// 		SERVER_ERR("send() failed");
+	// 	actual_size += ret;
+	// }
+
+	std::cout << std::endl << "DEBUG == > sending... " << std::endl;
+	std::cout << "DEBUG == > str.size(): " << str.size() << std::endl;
+	std::cout << "DEBUG == > ret: " << ret << std::endl;
+	std::cout << "DEBUG == > this->_c_socket: " << this->_c_socket << std::endl;
 
 	// ssize_t send(int socket, const void *buffer, size_t length, int flags);
-	ret = send(this->_c_socket, str.c_str(), str.length(), 0) == -1;
+	ret = send(this->_c_socket, str.c_str(), str.length(), 0);
 	if (ret == -1)
 		SERVER_ERR("send() failed");
+	
+	std::cout << "DEBUG == > ret after send(): " << ret << std::endl;
+
+	str.clear();
 }
 
 void	Client::createCommandList()
@@ -93,7 +114,10 @@ void	Client::createCommandList()
 		if (temp.size() == 2)
 		{
 			if (checkCommand(temp[1]) == 0)
+			{
+				// std::cout << "checkCommand(temp[1]) == 0" << std::endl;
 				this->_commands.insert(std::pair<std::string, std::string>( temp[0], temp[1]));
+			}
 			else if (checkCommand(temp[1]) == 1)
 			{
 				std::cout << "Erroneous value, please try again." << std::endl;
@@ -114,12 +138,13 @@ void	Client::createCommandList()
 	std::cout << "DEBUG == > commands NICK:" << " ==> " << this->_commands["NICK"] << std::endl;
 	std::cout << "DEBUG == > commands USER:" << " ==> " << this->_commands["USER"] << std::endl;
 
-	setUser((ft_split(this->_commands["USER"], " "))[1]);  //bancal mais il faut comprendre s'il est utile de tout garder dans USER
+	if (getUser() != "")
+		setUser((ft_split(this->_commands["USER"], " "))[1]);  //bancal mais il faut comprendre s'il est utile de tout garder dans USER
 	setNick(this->_commands["NICK"]);
 
 	this->welcome_msg();
 
-	// clear this->_buffer.
+	this->setBuffer("");
 }
 
 

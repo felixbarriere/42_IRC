@@ -18,10 +18,10 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <netdb.h>
-
 #include "class/server.hpp"
 #include "class/client.hpp"
 #include "class/message.hpp"
+
 
 //****************Configs*************
 #define NAME "irc" 
