@@ -65,7 +65,7 @@ void	Client::welcome_msg()
 	std::cout << "DEBUG == > STR: " << str << std::endl;
 
 	// ssize_t send(int socket, const void *buffer, size_t length, int flags);
-	ret = send(this->_c_socket, str.c_str(), str.length(), 0) == -1;
+	ret = send(this->_c_socket, str.c_str(), str.length(), 0);
 	if (ret == -1)
 		SERVER_ERR("send() failed");
 }
