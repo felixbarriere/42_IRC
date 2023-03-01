@@ -17,9 +17,7 @@ class Client
 		void	addBuff(char buff_msg);
 		void	welcome_msg();
 		void	createCommandList();
-		void addBuff(char buff_msg);
-		void welcome_msg();
-		bool conn(std::string, int);
+		//bool conn(std::string, int);
         // bool send_data(std::string data);
 		//https://www.binarytides.com/code-a-simple-socket-client-class-in-c/
 
