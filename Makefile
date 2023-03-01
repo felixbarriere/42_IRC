@@ -14,6 +14,7 @@ SRCS = 	main.cpp \
 		class/message.cpp \
 		show_config.cpp \
 		ft_split.cpp \
+		utils.cpp \
 
 
 OBJS = ${SRCS:.cpp=.o}
