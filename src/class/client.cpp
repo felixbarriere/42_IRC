@@ -46,34 +46,39 @@ void	Client::createCommandList()
 
 	for(int i = 0; i < lines.size() ; i++)
 	{
-		std::cout << "DEBUG == > FT_SPLIT CLIENT:" << i << " ==> " << lines[i] << std::endl;
-		
 		std::vector<std::string>	temp = ft_split(lines[i], " ");
+		// std::vector<std::string>	temp = ft_split("NICK fel'ix", " ");  //delete later
 
-		std::cout << "DEBUG == > mot 0:" << " ==> " << temp[0] << std::endl;
-		std::cout << "DEBUG == > mot 1:" << " ==> " << temp[1] << std::endl;
-		std::cout << std::endl;
+		if (checkCommand(temp[1]) == 2)
+		{
+			if (temp[1][0] == '\"')
+				temp[1] = ft_trim(temp[1], '\"');
+			if (temp[1][0] == '\'')
+				temp[1] = ft_trim(temp[1], '\'');
+		}
 
 		if (temp.size() == 2)
-			this->_commands.insert(std::pair<std::string, std::string>( temp[0], temp[1]));
+		{
+			if (checkCommand(temp[1]) == 0)
+				this->_commands.insert(std::pair<std::string, std::string>( temp[0], temp[1]));
+			else
+			{
+				std::cout << "Erroneous value, please try again." << std::endl;
+				break ;
+			}
+		}
 		else
 		{
 			// Attention: gérer le cas si la value est constituée de plusieurs strings (ex: USER)
-			// pour trouver la string value, 	utiliser substr en enlevant temp[0].size() à line[i]
 			std::string line2 = lines[i].substr(temp[0].size() + 1, (lines[i].size() - temp[0].size()));
-			std::cout << "DEBUG == > temp[0]:" << " ==> " << temp[0] << std::endl;
-			std::cout << "DEBUG == > line2:" << " ==> " <<  line2 << std::endl;
-
 			this->_commands.insert(std::pair<std::string, std::string>( temp[0], line2));
-
 			line2.clear();
 		}
 		temp.clear();
-		// creer erreur si character particulier
 	}
 	std::cout << std::endl;
 	std::cout << "DEBUG == > command CAP:" << " ==> " << this->_commands["CAP"] << std::endl;
-	std::cout << "DEBUG == > command PWD:" << " ==> " << this->_commands["PWD"] << std::endl;
+	std::cout << "DEBUG == > command PWD:" << " ==> " << this->_commands["PASS"] << std::endl;
 	std::cout << "DEBUG == > commands NICK:" << " ==> " << this->_commands["NICK"] << std::endl;
 	std::cout << "DEBUG == > commands USER:" << " ==> " << this->_commands["USER"] << std::endl;
 
