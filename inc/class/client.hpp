@@ -18,7 +18,7 @@ class Client
 		void	welcome_msg();
 		void	createCommandList();
 		//bool conn(std::string, int);
-        // bool send_data(std::string data);
+    // bool send_data(std::string data);
 		//https://www.binarytides.com/code-a-simple-socket-client-class-in-c/
 
 		/************ Getters / Setters ************/
@@ -46,8 +46,6 @@ class Client
 		int									_c_socket;
 		std::string 						_c_address;
 		std::map<std::string, std::string>	_commands;
-
-
 };
 
 #endif

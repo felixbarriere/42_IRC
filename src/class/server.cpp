@@ -9,6 +9,7 @@ Server::Server() {}
 
 Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), _password(password), timeout(20000)
 {
+	showConfig();
 	int yes = 1;
 	// Initialiser le socket du serveur (a mettre dans la class server)
 	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -21,7 +22,7 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 	if (setsockopt(s_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
 		SERVER_ERR("setsockopt failed");
 	if (fcntl(s_socket, F_SETFL, O_NONBLOCK) == 1)
-		SERVER_ERR("Error while rendering the socket non-bloquant");
+		SERVER_ERR("Error while rendering the socket non-blocking");
 
  	// Configurer l'adresse et le port du serveur	(a mettre dans la class server)
 	memset(&this->s_address, 0, sizeof(this->s_address));

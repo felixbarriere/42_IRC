@@ -77,7 +77,6 @@ int	main (int ac, char **av)
 		std::cerr << "Error " << std::endl << "Syntax: ./IRC PORT PASSWORD" << std::endl ;
 		return (1);
 	}
-
 	Server	server(av[1], av[2]);
 	server.usePoll();
 	return (0);
