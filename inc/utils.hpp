@@ -17,6 +17,7 @@
 #include <map>
 #include <signal.h>
 #include <fcntl.h>
+#include <netdb.h>
 
 #include "class/server.hpp"
 #include "class/client.hpp"
