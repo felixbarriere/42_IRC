@@ -22,7 +22,7 @@
 #include "class/server.hpp"
 #include "class/client.hpp"
 #include "class/message.hpp"
-#include "class/config.hpp"
+// #include "class/config.hpp"
 
 //****************Configs*************
 #define NAME "irc" 
