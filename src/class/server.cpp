@@ -9,6 +9,7 @@ Server::Server() {}
 
 Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), _password(password), timeout(20000)
 {
+	int yes = 1;
 	// Initialiser le socket du serveur (a mettre dans la class server)
 	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (this->s_socket < 0)
@@ -17,6 +18,8 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 		std::cout << "SOCKET CREATION OK" << std::endl;
 
 	//rendre le socket non-bloquant
+	if (setsockopt(s_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
+		SERVER_ERR("setsockopt failed");
 	if (fcntl(s_socket, F_SETFL, O_NONBLOCK) == 1)
 		SERVER_ERR("Error while rendering the socket non-bloquant");
 
@@ -56,6 +59,7 @@ void	Server::acceptClient(void)
 	int client_socket;
 	struct sockaddr_in client_address;
 	socklen_t client_len;
+	int yes = 1;
 
 	// Accepter la connexion entrante du client	
 	client_len = sizeof(client_address);	
@@ -67,10 +71,8 @@ void	Server::acceptClient(void)
         SERVER_ERR("Error while accepting connexion");
 	std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
 		<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
-		
-	//int setsockopt(int socket_descriptor, int level, int option_name, char *option_value, int option_length)
-	//rendre le socket non-bloquant
-	//setsockopt();
+	if (setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
+		SERVER_ERR("setsockopt failed");
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 		SERVER_ERR("Error while rendering the socket non-bloquant");
 
