@@ -2,12 +2,12 @@
 
 Client::Client(): _c_socket(-1)
 {	
-	std::cout << "DEBUG ===> Default constructor CLIENT" << std::endl << std::endl;
+	std::cout << "Default constructor CLIENT" << std::endl << std::endl;
 }
 
 Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket(client_socket), _c_address(client_address)
 {
-	std::cout << "DEBUG ===> Constructor CLIENT" << std::endl << std::endl;
+	std::cout << "Constructor CLIENT" << std::endl << std::endl;
 }
 
 Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le const par copy
