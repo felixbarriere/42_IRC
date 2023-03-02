@@ -9,7 +9,7 @@ Client::Client(): _c_socket(-1)
 	std::cout << "Default constructor CLIENT" << std::endl << std::endl;
 }
 
-Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket(client_socket)
+Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket(client_socket), _welcomeMsg(false)
 {
 	std::cout << "Constructor CLIENT" << std::endl << std::endl;
 
@@ -55,43 +55,46 @@ Client::~Client()
 // 		return ;
 // }
 
-void	Client::welcome_msg()
+void	Client::sendMsg(std::string str)
 {
 	ssize_t 		ret = 0;	//number of bytes sent
-	std::string		str;
-	
-	str = "Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname + "\n";
-	// str = "test\n";
-	
-	std::cout << "DEBUG == > STR: " << str << std::endl;
-	// size_t 			init_size = str.size();
-	// size_t 			actual_size = 0;
-	// const char		*str2 = str.c_str();	
 
-	// while (actual_size < init_size)
-	// {
-	// 	ret = send(this->_c_socket, &str2[actual_size], init_size - actual_size, MSG_NOSIGNAL);
-	// 	if (ret == -1)
-	// 		SERVER_ERR("send() failed");
-	// 	actual_size += ret;
-	// }
-
-	std::cout << std::endl << "DEBUG == > sending... " << std::endl;
-	std::cout << "DEBUG == > str.size(): " << str.size() << std::endl;
-	std::cout << "DEBUG == > ret: " << ret << std::endl;
-	std::cout << "DEBUG == > this->_c_socket: " << this->_c_socket << std::endl;
+	// std::cout << std::endl << "DEBUG == > sending... " << std::endl;
+	// std::cout << "DEBUG == > str.size(): " << str.size() << std::endl;
+	// std::cout << "DEBUG == > ret: " << ret << std::endl;
+	// std::cout << "DEBUG == > this->_c_socket: " << this->_c_socket << std::endl;
 
 	// ssize_t send(int socket, const void *buffer, size_t length, int flags);
 	ret = send(this->_c_socket, str.c_str(), str.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		SERVER_ERR("send() failed");
 	
-	std::cout << "DEBUG == > ret after send(): " << ret << std::endl;
-
-	// close(this->_c_socket);  // a delete
-
+	// std::cout << "DEBUG == > ret after send(): " << ret << std::endl;
 
 	str.clear();
+}
+
+void	Client::welcome_msg()
+{
+	this->_welcomeMsg = true;
+	std::string		str;
+	
+	// "<client> :Welcome to the <networkname> Network, <nick>[!<user>@<host>]"
+	str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname + "\r\n";
+	std::cout << "DEBUG == > STR: " << str << std::endl;
+	this->sendMsg(str);
+	// "<client> :Your host is <servername>, running version <version>"
+	str = "002 " + this->_nick + ": Your host is " + NAME + ", running version " + VERSION + "\r\n";
+	this->sendMsg(str);
+	// "<client> :This server was created <datetime>"
+	str = "003 " + this->_nick +": This server was create " + "now"  + "\r\n";	//ctime(&(time(0)))
+	this->sendMsg(str);
+	
+	// "<client> <servername> <version> <available user modes> <available channel modes> [<channel modes with a parameter>]"
+	str = "004 " + this->_nick + " " + NAME + " " + VERSION  + "\r\n";
+	this->sendMsg(str);
+	this->sendMsg(MOTD);
+
 }
 
 void	Client::createCommandList()
@@ -140,7 +143,8 @@ void	Client::createCommandList()
 		setUser((ft_split(this->_commands["USER"], " "))[1]);  //bancal mais il faut comprendre s'il est utile de tout garder dans USER
 	setNick(this->_commands["NICK"]);
 
-	this->welcome_msg();
+	if (this->_welcomeMsg == false)
+		this->welcome_msg();
 }
 
 
