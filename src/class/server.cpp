@@ -11,8 +11,9 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 {
 	showConfig();
 	int yes = 1;
+
 	// Initialiser le socket du serveur (a mettre dans la class server)
-	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);
+	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);//AF_INET - IPv4
     if (this->s_socket < 0)
 		SERVER_ERR("Error during socket creation");
 	else
@@ -28,7 +29,7 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 	memset(&this->s_address, 0, sizeof(this->s_address));
     this->s_address.sin_family = AF_INET;
     this->s_address.sin_port = htons(atoi(this->portNumber));   // convert short integer value for port must be converted into network byte order
-    this->s_address.sin_addr.s_addr = INADDR_ANY;
+    this->s_address.sin_addr.s_addr = INADDR_ANY; //=inet_pton(AF_INET, "0.0.0.0", &s_address.sin_addr);
 
 	// Lier l'adresse au socket du serveur
 	if (bind(this->s_socket, (struct sockaddr *) &this->s_address, sizeof(this->s_address)) < 0)
@@ -37,11 +38,10 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 		std::cout << "BIND OK" << std::endl;
 
 	// Écouter les connexions entrantes
-	if (listen(this->s_socket, 5) < 0)				//  5: backlog définit une longueur maximale jusqu'à laquelle la file des connexions en attente pour sockfd peut croître.
+	if (listen(this->s_socket, 5) < 0) //SOMAXCONN (4096 on school machine)   5: backlog définit une longueur maximale jusqu'à laquelle la file des connexions en attente pour sockfd peut croître.
         SERVER_ERR("Error while listening");
 	else 
 		std::cout << "LISTEN OK" << std::endl;
-
 }
 
 Server::~Server()
@@ -75,7 +75,7 @@ void	Server::acceptClient(void)
 	if (setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
 		SERVER_ERR("setsockopt failed");
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
-		SERVER_ERR("Error while rendering the socket non-bloquant");
+		SERVER_ERR("Error while rendering the socket non blocking");
 
 	// instancier la classe Client
 	// utiliser new: "Client *new_client" est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==> comportement indéfini.
@@ -99,12 +99,13 @@ void	Server::receiveRequest(int	client_socket)
 	// int recv(int client_socket, void* buffer, size_t len, int flags);
 	res = recv(client_socket , buffer, BUFFER_SIZE, 0);   // Ou on definit le BUFFER_SIZE? len?
 
+	std::cout << "result of recv() = " << res << std::endl;
 	std::string buffer_str(buffer);
 
-	if (res < 0)
+	if (res == -1)
         SERVER_ERR("Error during receipt");
 	else if (res == 0)
-		std::cout << "DEBUG ===> recv == 0 : disconnect client"  << std::endl;
+		std::cout << "DEBUG ===> recv == 0 : the client disconnected"  << std::endl;
 	else if (res > 0 && (buffer_str.rfind("\n\r")) != (buffer_str.size() - 2))
 	{
 		std::cout << "Command incomplete: on append() le buffer recu par bouts" <<std::endl;
@@ -142,8 +143,6 @@ void	Server::usePoll(void)
 	// https://www.ibm.com/docs/en/i/7.3?topic=designs-using-poll-instead-select
 	// int poll(struct pollfd *fds, nfds_t nfds, int délai);
 
-	// std::cout << "DEBUG ===> BEFORE POLL()" << std::endl << std::endl;
-
 	while(!serv_run)
 	{ 
 		// Préparer le vector de fd pour poll()
@@ -159,7 +158,6 @@ void	Server::usePoll(void)
 			
 			if (this->fds[i].revents != 0) //revent == 1 : on a recu une requete de irssi
 			{
-				// mettre "this->fds[i].revents & POLLIN" car revents peut contenir plusieurs resultats en meme temps (en plus) que POLLIN
 				if (this->fds[i].revents & POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
 				{
 					if (i == 0)

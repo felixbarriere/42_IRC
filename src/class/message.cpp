@@ -12,12 +12,12 @@
 
 #include "utils.hpp"
 
-Message::Message():_message(NULL), _cmd()
+Message::Message():_message(NULL), _prefix(), _cmd(), _params()
 {}
 
 //Message::Message(arg){}
 
-Message::Message(const Message &src):_message(src._message), _cmd(src._cmd)
+Message::Message(const Message &src):_message(src._message), _prefix(src._prefix), _cmd(src._cmd), _params(src._params)
 {}
 
 Message &Message::operator=(const Message &rhs)
