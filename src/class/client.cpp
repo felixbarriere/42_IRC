@@ -60,8 +60,8 @@ void	Client::welcome_msg()
 	ssize_t 		ret = 0;	//number of bytes sent
 	std::string		str;
 	
-	// str = "Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
-	str = "test";
+	str = "Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname + "\n";
+	// str = "test\n";
 	
 	std::cout << "DEBUG == > STR: " << str << std::endl;
 	// size_t 			init_size = str.size();
@@ -82,11 +82,14 @@ void	Client::welcome_msg()
 	std::cout << "DEBUG == > this->_c_socket: " << this->_c_socket << std::endl;
 
 	// ssize_t send(int socket, const void *buffer, size_t length, int flags);
-	ret = send(this->_c_socket, str.c_str(), str.length(), 0);
+	ret = send(this->_c_socket, str.c_str(), str.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		SERVER_ERR("send() failed");
 	
 	std::cout << "DEBUG == > ret after send(): " << ret << std::endl;
+
+	// close(this->_c_socket);  // a delete
+
 
 	str.clear();
 }
