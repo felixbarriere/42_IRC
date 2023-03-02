@@ -19,6 +19,7 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <netdb.h>
+#include <ctime>
 #include "class/server.hpp"
 #include "class/client.hpp"
 #include "class/message.hpp"
@@ -27,7 +28,8 @@
 //****************Configs*************
 #define NAME "irc" 
 //max 63 ch-s
-#define VERSION 1.0
+#define MOTD "hola chicos! "
+#define VERSION "1.0"
 #define MAX_BACKLOGS 5
 //the maximum value is system-dependent (usually 5)
 #define MAX_USERS 20
