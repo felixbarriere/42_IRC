@@ -97,8 +97,6 @@ void	Client::welcome_msg()
 void	Client::createCommandList()
 {
 	std::cout << "DEBUG == > BUFFER CLIENT:" << std::endl << this->getBuffer() << std::endl;
-	// spliter le buffer (separateurs = sauts a la ligne). Chaque ligne aura une key (nom de commande) et une value.
-
 	std::vector<std::string>	lines(ft_split(this->getBuffer(), "\n\r"));
 
 	for(int i = 0; i < lines.size() ; i++)
@@ -106,7 +104,7 @@ void	Client::createCommandList()
 		std::vector<std::string>	temp = ft_split(lines[i], " ");
 		// std::vector<std::string>	temp = ft_split("NICK \"felix\"", " ");  //delete later
 
-		if (checkCommand(temp[1]) == 2)
+		if (checkCommand(temp[1]) == 2)		// utile pour le username? Ou irssi le gere tout seul?
 		{
 			if (temp[1][0] == '\"')
 				temp[1] = ft_trim(temp[1], '\"');
@@ -117,10 +115,7 @@ void	Client::createCommandList()
 		if (temp.size() == 2)
 		{
 			if (checkCommand(temp[1]) == 0)
-			{
-				// std::cout << "checkCommand(temp[1]) == 0" << std::endl;
 				this->_commands.insert(std::pair<std::string, std::string>( temp[0], temp[1]));
-			}
 			else if (checkCommand(temp[1]) == 1)
 			{
 				std::cout << "Erroneous value, please try again." << std::endl;
@@ -141,13 +136,11 @@ void	Client::createCommandList()
 	std::cout << "DEBUG == > commands NICK:" << " ==> " << this->_commands["NICK"] << std::endl;
 	std::cout << "DEBUG == > commands USER:" << " ==> " << this->_commands["USER"] << std::endl;
 
-	if (getUser() != "")
+	if (getUser() == "")
 		setUser((ft_split(this->_commands["USER"], " "))[1]);  //bancal mais il faut comprendre s'il est utile de tout garder dans USER
 	setNick(this->_commands["NICK"]);
 
 	this->welcome_msg();
-
-	this->setBuffer("");
 }
 
 
