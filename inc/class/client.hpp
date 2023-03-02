@@ -1,6 +1,7 @@
 #ifndef	CLIENT_HPP
 #define CLIENT_HPP
 
+class Message;
 
 class Client
 {
@@ -39,6 +40,7 @@ class Client
 		/************ Attributs ************/
 	private:
 		//pour stocker l'integralite du message recu
+		Message								*message;
 		std::string							_buffer;
 		std::string							_user;
 		std::string							_nick;

@@ -20,7 +20,6 @@ Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket
 
 	char	host[NI_MAXHOST];     // Client's remote name
 	memset(host, 0, NI_MAXHOST);
-	int		ret = 0;
 	if (getnameinfo((const struct sockaddr *)&client_address, sizeof(client_address), host, NI_MAXHOST, NULL, 0, 0) != 0)
 		SERVER_ERR("Error getnameinfo()");
 	_hostname = host;
