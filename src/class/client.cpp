@@ -18,11 +18,12 @@ Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket
 	// http://manpagesfr.free.fr/man/man3/getnameinfo.3.html
 	// int getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host, size_t hostlen, char *serv, size_t servlen, int flags);
 
-	char	temp[NI_MAXHOST];
+	char	host[NI_MAXHOST];     // Client's remote name
+	memset(host, 0, NI_MAXHOST);
 	int		ret = 0;
-	if (getnameinfo((const struct sockaddr *)&client_address, sizeof(client_address), temp, NI_MAXHOST, NULL, 0, 0) != 0)
+	if (getnameinfo((const struct sockaddr *)&client_address, sizeof(client_address), host, NI_MAXHOST, NULL, 0, 0) != 0)
 		SERVER_ERR("Error getnameinfo()");
-	_hostname = temp;
+	_hostname = host;
 
 }
 
