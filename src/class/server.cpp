@@ -93,12 +93,13 @@ void	Server::receiveRequest(int	client_socket)
 {
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
+
 	std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
 
 	memset(buffer, 0, BUFFER_SIZE + 1);
 
 	// int recv(int client_socket, void* buffer, size_t len, int flags);
-	res = recv(client_socket , buffer, BUFFER_SIZE, 0);   // Ou on definit le BUFFER_SIZE? len?
+	res = recv(client_socket , buffer, BUFFER_SIZE, 0);
 
 	std::cout << "result of recv() = " << res << std::endl;
 	std::string buffer_str(buffer);
@@ -106,7 +107,11 @@ void	Server::receiveRequest(int	client_socket)
 	if (res == -1)
         SERVER_ERR("Error during receipt");
 	else if (res == 0)
-		std::cout << "DEBUG ===> recv == 0 : the client disconnected"  << std::endl;
+	{
+		delete(this->clients[client_socket]);
+		std::cout << "Client is disconnected " << res << std::endl;
+		// SERVER_ERR("Client is disconnected");
+	}
 	else if (res > 0 && (buffer_str.rfind("\n\r")) != (buffer_str.size() - 2))
 	{
 		std::cout << "Command incomplete: on append() le buffer recu par bouts" <<std::endl;
@@ -114,11 +119,12 @@ void	Server::receiveRequest(int	client_socket)
 		this->getUser(client_socket)->createCommandList();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 	}
 	else 
+	{
 		std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl << std::endl;
-
+	}
+	
+	buffer_str.clear();
 	std::cout << "buffer_size : " << buffer_str.size() <<std::endl;
-
-	buffer_str.clear();	//redondant avec memset en debut de fonction.
 }
 
 void Server::init_pollfd_struct(void)
@@ -134,9 +140,6 @@ void Server::init_pollfd_struct(void)
 
 void	Server::usePoll(void)
 {
-	// https://www.ibm.com/docs/en/i/7.3?topic=designs-using-poll-instead-select
-	// int poll(struct pollfd *fds, nfds_t nfds, int délai);
-
 	init_pollfd_struct();
 
 	while(!serv_run)
@@ -145,12 +148,8 @@ void	Server::usePoll(void)
 		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
 
-		std::cout << "DEBUG ===> BEFORE for loop:" << std::endl << std::endl;
-
 		for (size_t i = 0; i < this->fds.size(); i++)
 		{
-			// std::cout << "DEBUG ===> this->fds.size():" << this->fds.size() << std::endl << std::endl;
-			
 			if (this->fds[i].revents != 0) //revent == 1 : on a recu une requete de irssi
 			{
 				if (this->fds[i].revents & POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
@@ -162,7 +161,6 @@ void	Server::usePoll(void)
 					else
 					{
 						this->receiveRequest(fds[i].fd);  //	on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
-						// OU this->clients[i.fd]: les clés dans la map Clients correspondent aux fd: on cherche le fd de l'index i (necessite que ce soit un iterator).
 					}
 				}
 				else if (this->fds[i].revents & POLLRDHUP || this->fds[i].revents & POLLERR)
@@ -171,10 +169,9 @@ void	Server::usePoll(void)
 				}
 			}
 		}
-		// std::cout << std::endl << " Server running (sleep: 1)" << std::endl;
-		// sleep(1);
+		std::cout << std::endl << " Server running (sleep: 1)" << std::endl;
+		sleep(5);
 	}
-	// If revents is not POLLIN, it's an unexpected result, log and end the server.          
 }
 
 

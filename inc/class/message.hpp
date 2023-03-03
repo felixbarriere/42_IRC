@@ -25,28 +25,32 @@ class Message
 	public:
 		/************ Constructors / Destructor ************/
 		Message();
-		//Message(arg constructor);
+		Message(Client *client);
 		Message(const Message &src);
 		Message &operator=(const Message &rhs);
 		~Message();
 
 		/************ Getters / Setters ************/
-		void setMessage(std::string msg);//buffer qu'on recoit
+		void 	createMessage(std::string buffer);//buffer qu'on recoit
+		int	 	tokenizer(std::string line);		// peupler les attributs puis appeler la fonction correspondante. On reset le tout a chaque commande.
+		void	tempUserNick(std::string str);
+		
 		void setPrefix(std::string prefix);
 		void setCmd(std::string cmd);
 		void setParams(std::string params);
 
-		std::string getMessage(void) const;
-		std::string getPrefix(void) const;
-		std::string getCmd(void) const;
-		std::string getParams(void) const;
+		std::string 				getMessage(void) const;
+		std::string 				getPrefix(void) const;
+		std::string 				getCmd(void) const;
+		std::vector<std::string>	getParams(void) const;
 
 		/************ Attributs ************/
 	private:
-		std::string	_message;
-		std::string _prefix;
-		std::string	_cmd;
-		std::string _params;
+		Client						*_client;
+		std::string					_message;   //buffer
+		std::string 				_prefix;	//"Le préfix n'est utilisé que pour un message provenant d'un serveur, il doit être ignoré s'il provient d'un client."
+		std::string					_cmd;
+		std::vector<std::string>	_params;
 
 	protected:
 
