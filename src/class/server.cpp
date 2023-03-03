@@ -42,6 +42,7 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
         SERVER_ERR("Error while listening");
 	else 
 		std::cout << "LISTEN OK" << std::endl;
+	setCommandList();
 }
 
 Server::~Server()
@@ -181,15 +182,15 @@ void	Server::usePoll(void)
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
 
-char*						Server::getPortNumber(void) {	return (this->portNumber);	}
-char*						Server::getPassword(void) {	return (this->_password);	}
-int							Server::getTimeout(void) {	return (this->timeout); }
-int							Server::getServerSocket(void) {	return (this->s_socket);	}
-struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}
-std::vector<struct pollfd>	Server::getFds(void) {	return (this->fds);	}
-std::map<int, Client*>		Server::getClients(void) {	return (this->clients);	}
+char*						Server::getPortNumber(void) const {	return (this->portNumber);	}
+char*						Server::getPassword(void) const {	return (this->_password);	}
+int							Server::getTimeout(void) const{	return (this->timeout); }
+int							Server::getServerSocket(void) const {	return (this->s_socket);	}
+struct sockaddr_in			Server::getServerAddress(void) const {	return (this->s_address);}
+std::vector<struct pollfd>	Server::getFds(void) const {	return (this->fds);	}
+std::map<int, Client*>		Server::getClients(void) const{	return (this->clients);	}
 
-Client*						Server::getUser(int fd)
+Client*						Server::getUser(int fd) const
 {
 	std::map<int, Client*>::const_iterator	ret;
 	ret = this->clients.find(fd);
@@ -199,4 +200,18 @@ Client*						Server::getUser(int fd)
 
 }
 
+std::map<std::string, fct_cmd>	Server::getCommandList(void) const
+{
+	return (this->_commandList);
+}
+
 void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}
+
+void Server::setCommandList(void)
+{
+	this->_commandList.insert(std::make_pair("JOIN", join));
+	this->_commandList.insert(std::make_pair("LIST", list));
+	this->_commandList.insert(std::make_pair("MOTD", motd));
+	this->_commandList.insert(std::make_pair("NICK", nick));
+	this->_commandList.insert(std::make_pair("USER", user));
+}

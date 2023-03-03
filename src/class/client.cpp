@@ -65,6 +65,7 @@ void	Client::sendMsg(std::string str)
 	// std::cout << "DEBUG == > this->_c_socket: " << this->_c_socket << std::endl;
 
 	// ssize_t send(int socket, const void *buffer, size_t length, int flags);
+	//std::cout << "STR dans send \033[1;31m" << str << "\033[0m" <<std::endl;
 	ret = send(this->_c_socket, str.c_str(), str.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		SERVER_ERR("send() failed");
@@ -94,7 +95,6 @@ void	Client::welcome_msg()
 	str = "004 " + this->_nick + " " + NAME + " " + VERSION  + "\r\n";
 	this->sendMsg(str);
 	this->sendMsg(MOTD);
-
 }
 
 void	Client::createCommandList()
