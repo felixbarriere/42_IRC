@@ -21,12 +21,14 @@
 #include <netdb.h>
 #include <ctime>
 #include <fstream>
+
+//*** class headers  ***
 #include "class/server.hpp"
 #include "class/client.hpp"
 #include "class/message.hpp"
 
 
-//****************Configs*************
+//*****  Configs  *****
 #define NAME "irc" 
 //max 63 ch-s
 #define MOTD "hola chicos! "
@@ -39,9 +41,14 @@
 #define PING 30
 #define TIMEOUT 1000
 
+//*****  defines  ******
+class Message;
+class Server;
+
 extern int serv_run;
 
-typedef void (*fct_cmd)();
+//typedef void (*fct_cmd)(Server *);
+
 void						next_steps(Server	*server);
 void						ft_handler(int smth);
 std::vector<std::string>	ft_split(const std::string &str, const std::string &sep);
@@ -49,7 +56,7 @@ void 						showConfig(void);
 int							checkCommand(std::string	str);
 std::string					ft_trim(std::string	str, char toTrim);
 
-//commands
+//****** commands ******
 void motd();
 
 #endif

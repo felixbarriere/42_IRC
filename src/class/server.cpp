@@ -209,9 +209,9 @@ void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}
 
 void Server::setCommandList(void)
 {
-	this->_commandList.insert(std::make_pair("JOIN", join));
-	this->_commandList.insert(std::make_pair("LIST", list));
-	this->_commandList.insert(std::make_pair("MOTD", motd));
-	this->_commandList.insert(std::make_pair("NICK", nick));
-	this->_commandList.insert(std::make_pair("USER", user));
+	//this->_commandList.insert(std::make_pair("JOIN", join));
+	//this->_commandList.insert(std::make_pair("LIST", list));
+	//this->_commandList.insert(std::make_pair("MOTD", motd));
+	//this->_commandList.insert(std::make_pair("NICK", nick));
+	//this->_commandList.insert(std::make_pair("USER", user));
 }

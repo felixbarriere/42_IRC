@@ -22,12 +22,13 @@
 
 #include "utils.hpp"
 
-void motd()
+void motd(Server *serv)
 {
+	(void)serv;
 	std::vector<std::string> msgotd;
 	std::string line;
 	std::ifstream	ifs;
-	ifs.open("./media/motd.txt", std::ifstream::in);
+	ifs.open("../../media/motd.txt", std::ifstream::in);
 	if(ifs.is_open())
 	{
 		while (getline(ifs, line))
