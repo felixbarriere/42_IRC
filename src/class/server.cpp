@@ -38,6 +38,8 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 	else 
 		std::cout << "LISTEN OK" << std::endl;
 
+	_oper.insert(std::pair<std::string, std::string>("admin", "pwd"));
+
 }
 
 Server::~Server()
@@ -153,9 +155,9 @@ void	Server::usePoll(void)
 		for (size_t i = 0; i < this->fds.size(); i++)
 		{
 			// std::cout << "DEBUG ===> this->fds.size():" << this->fds.size() << std::endl << std::endl;
-			
 			if (this->fds[i].revents != 0) //revent == 1 : on a recu une requete de irssi
 			{
+				std::cout << "ici" << std::endl;	
 				// mettre "this->fds[i].revents & POLLIN" car revents peut contenir plusieurs resultats en meme temps (en plus) que POLLIN
 				if (this->fds[i].revents & POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
 				{
@@ -186,22 +188,23 @@ void	Server::usePoll(void)
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
 
-char*						Server::getPortNumber(void) {	return (this->portNumber);	}
-char*						Server::getPassword(void) {	return (this->_password);	}
-int							Server::getTimeout(void) {	return (this->timeout); }
-int							Server::getServerSocket(void) {	return (this->s_socket);	}
-struct sockaddr_in			Server::getServerAddress(void) {	return (this->s_address);}
-std::vector<struct pollfd>	Server::getFds(void) {	return (this->fds);	}
-std::map<int, Client*>		Server::getClients(void) {	return (this->clients);	}
+char*								Server::getPortNumber() const { return (this->portNumber); }
+char*								Server::getPassword() const { return (this->_password); }
+int									Server::getTimeout() const { return (this->timeout); }
+int									Server::getServerSocket() const { return (this->s_socket); }
+struct sockaddr_in					Server::getServerAddress() const { return (this->s_address); }
+std::vector<struct pollfd>			Server::getFds() const { return (this->fds); }
+std::map<int, Client*>				Server::getClients() const { return (this->clients); }
+std::map<std::string, Channel>		Server::getChannels() const { return (_channels); }
+std::map<std::string, std::string>	Server::getOper() const { return (_oper); }
 
-Client*						Server::getUser(int fd)
+Client*						Server::getUser(int fd) const
 {
 	std::map<int, Client*>::const_iterator	ret;
 	ret = this->clients.find(fd);
 	if (ret == this->clients.end())
-		return NULL;
+		return (NULL);
 	return ret->second;
-
 }
 
 void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}

@@ -8,6 +8,16 @@ Client::Client(): _c_socket(-1)
 Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket(client_socket), _c_address(client_address)
 {
 	std::cout << "DEBUG ===> Constructor CLIENT" << std::endl << std::endl;
+	_modes.insert(std::pair<char, bool>('d', false));
+	_modes.insert(std::pair<char, bool>('e', false));
+	_modes.insert(std::pair<char, bool>('i', false));
+	_modes.insert(std::pair<char, bool>('o', false));
+	_modes.insert(std::pair<char, bool>('q', false));
+	_modes.insert(std::pair<char, bool>('t', false));
+	_modes.insert(std::pair<char, bool>('u', false));
+	_modes.insert(std::pair<char, bool>('v', false));
+	_modes.insert(std::pair<char, bool>('w', false));
+	_oper = false;
 }
 
 Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le const par copy
@@ -81,25 +91,21 @@ void	Client::createCommandList()
 	// clear this->_buffer.
 }
 
-/************ Getters / Setters ************/
-int Client::getC_socket() const
-{
-	return (this->_c_socket);
-}
+/************ Getters ************/
 
-struct sockaddr_in Client::getSockaddr_in() const
-{
-	return (this->_c_address);
-}
+int						Client::getC_socket() const { return (_c_socket); }
+struct  sockaddr_in		Client::getSockaddr_in() const { return (_c_address); }
+std::string				Client::getBuffer() const { return (_buffer); }
+Channel					*Client::getChannel() const { return (_channel); }
+std::string				Client::getNick() const { return (_nick); }
+std::string				Client::getUser() const { return (_user); }
+std::map<char, bool>	Client::getModes() const { return (_modes); }
+bool					Client::getOper() const { return (_oper); }
 
-std::string Client::getBuffer() const
-{
-	return (this->_buffer);
-}
+/************ Setters ************/
 
-void Client::setBuffer(std::string str)
-{
-	this->_buffer = str;
-}
-
-
+void	Client::setBuffer(const std::string str) { _buffer = str; }
+void	Client::setChannel(Channel *channel) { _channel = channel; }
+void	Client::setNick(const std::string nick) { _nick = nick; }
+void	Client::setUser(const std::string user) { _user = user; }
+void	Client::setOper(const bool oper) { _oper = oper; }
