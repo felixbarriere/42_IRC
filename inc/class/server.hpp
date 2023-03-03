@@ -1,9 +1,9 @@
 #ifndef	SERVER_HPP
 #define SERVER_HPP
 
-
 #include "utils.hpp"
 
+typedef void (*fct_cmd)();
 
 #define SERVER_ERR(err)                                                  	   \
 	do                                                                         \

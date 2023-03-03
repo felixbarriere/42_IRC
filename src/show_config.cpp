@@ -35,6 +35,4 @@ void showConfig(void)
 	std::cout << "---------------------------------" << std::endl;
 	std::cout << " Timeout       " << "     |     " << TIMEOUT << std::endl;
 	std::cout << "---------------------------------" << std::endl;
-	std::cout << " Max Backlogs  " << "     |     " << MAX_BACKLOGS << std::endl;
-	std::cout << "---------------------------------" << std::endl;
 }
