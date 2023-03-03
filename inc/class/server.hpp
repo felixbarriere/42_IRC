@@ -2,7 +2,7 @@
 #define SERVER_HPP
 
 
-// #include "utils.hpp"
+#include "utils.hpp"
 
 
 #define SERVER_ERR(err)                                                  	   \
@@ -31,29 +31,31 @@ class Server
 
 
 		/************ Getters / Setters ************/
-		char*						getPortNumber(void);
-		char*						getPassword(void);
-		int							getTimeout(void);
-		int							getServerSocket(void);
-		struct sockaddr_in			getServerAddress(void);
-		std::vector<struct pollfd>	getFds(void);
-		std::map<int, Client*>		getClients(void);
-		Client*						getUser(int fd);
+		char*							getPortNumber(void) const;
+		char*							getPassword(void) const;
+		int								getTimeout(void) const;
+		int								getServerSocket(void) const;
+		struct sockaddr_in				getServerAddress(void)const;
+		std::vector<struct pollfd>		getFds(void) const;
+		std::map<int, Client*>			getClients(void) const;
+		std::map<std::string, fct_cmd>	getCommandList(void) const; 
+		Client*							getUser(int fd) const;
 
-		void						setPortNumber(char * portNumber);
-
+		void							setPortNumber(char * portNumber);
+		void							setCommandList(void);
 
 		/************ Attributs ************/
 	private:
 
-		char*						portNumber;		// a mettre dans une classe config?
-		char*						_password;		// a mettre dans une classe config?
-		int							timeout;	
-		int							s_socket;
-		struct sockaddr_in 			s_address;
-		std::vector<struct pollfd> 	fds;
+		char*							portNumber;		// a mettre dans une classe config?
+		char*							_password;		// a mettre dans une classe config?
+		int								timeout;	
+		int								s_socket;
+		struct sockaddr_in 				s_address;
+		std::vector<struct pollfd> 		fds;
 		// Client						*client;		//créer un vector ou une map pour pouvoir recevoir plusieurs clients
-		std::map<int, Client*>		clients;		//key: fd, value: client
+		std::map<int, Client*>			clients;		//key: fd, value: client
+		std::map<std::string, fct_cmd>	_commandList; 
 };
 
 #endif

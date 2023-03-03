@@ -20,6 +20,7 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <ctime>
+#include <fstream>
 #include "class/server.hpp"
 #include "class/client.hpp"
 #include "class/message.hpp"
@@ -40,12 +41,15 @@
 
 extern int serv_run;
 
+typedef void (*fct_cmd)();
 void						next_steps(Server	*server);
 void						ft_handler(int smth);
 std::vector<std::string>	ft_split(const std::string &str, const std::string &sep);
-void showConfig(void);
+void 						showConfig(void);
 int							checkCommand(std::string	str);
 std::string					ft_trim(std::string	str, char toTrim);
 
+//commands
+void motd();
 
 #endif
