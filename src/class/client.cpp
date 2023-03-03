@@ -24,6 +24,11 @@ Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket
 		SERVER_ERR("Error getnameinfo()");
 	_hostname = host;
 
+	// instancier Message message;
+	this->_message = new Message(this);	//envoyer un pointeur de this
+
+
+
 }
 
 Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le const par copy
@@ -77,6 +82,8 @@ void	Client::sendMsg(std::string str)
 void	Client::welcome_msg()
 {
 	this->_welcomeMsg = true;
+
+	// this->sendMsg("test\r\n");
 	std::string		str;
 	
 	// "<client> :Welcome to the <networkname> Network, <nick>[!<user>@<host>]"
@@ -100,51 +107,13 @@ void	Client::welcome_msg()
 void	Client::createCommandList()
 {
 	std::cout << "DEBUG == > BUFFER CLIENT:" << std::endl << this->getBuffer() << std::endl;
-	std::vector<std::string>	lines(ft_split(this->getBuffer(), "\n\r"));
 
-	for(int i = 0; i < lines.size() ; i++)
-	{
-		std::vector<std::string>	temp = ft_split(lines[i], " ");
-		// std::vector<std::string>	temp = ft_split("NICK \"felix\"", " ");  //delete later
-
-		if (checkCommand(temp[1]) == 2)		// utile pour le username? Ou irssi le gere tout seul?
-		{
-			if (temp[1][0] == '\"')
-				temp[1] = ft_trim(temp[1], '\"');
-			if (temp[1][0] == '\'')
-				temp[1] = ft_trim(temp[1], '\'');
-		}
-
-		if (temp.size() == 2)
-		{
-			if (checkCommand(temp[1]) == 0)
-				this->_commands.insert(std::pair<std::string, std::string>( temp[0], temp[1]));
-			else if (checkCommand(temp[1]) == 1)
-			{
-				std::cout << "Erroneous value, please try again." << std::endl;
-				break ;
-			}
-		}
-		else	// Gérer le cas si la value est constituée de plusieurs strings (ex: USER)
-		{
-			std::string line2 = lines[i].substr(temp[0].size() + 1, (lines[i].size() - temp[0].size()));
-			this->_commands.insert(std::pair<std::string, std::string>( temp[0], line2));
-			line2.clear();
-		}
-		temp.clear();
-	}
-	std::cout << std::endl;
-	std::cout << "DEBUG == > command CAP:" << " ==> " << this->_commands["CAP"] << std::endl;
-	std::cout << "DEBUG == > command PWD:" << " ==> " << this->_commands["PASS"] << std::endl;
-	std::cout << "DEBUG == > commands NICK:" << " ==> " << this->_commands["NICK"] << std::endl;
-	std::cout << "DEBUG == > commands USER:" << " ==> " << this->_commands["USER"] << std::endl;
-
-	if (getUser() == "")
-		setUser((ft_split(this->_commands["USER"], " "))[1]);  //bancal mais il faut comprendre s'il est utile de tout garder dans USER
-	setNick(this->_commands["NICK"]);
+	this->_message->createMessage(this->getBuffer());	
 
 	if (this->_welcomeMsg == false)
 		this->welcome_msg();
+	if (this->_buffer.empty() == true)
+		this->_buffer.clear();
 }
 
 

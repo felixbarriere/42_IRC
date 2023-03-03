@@ -42,14 +42,15 @@ class Client
 	private:
 		//pour stocker l'integralite du message recu
 		bool								_welcomeMsg;	//le welcome_message a-t-il été envoyé?
-		Message								*message;
 		std::string							_buffer;
-		std::string							_user;
+		std::string							_user;			// Garder
 		std::string							_nick;
 		std::string							_hostname;
 		int									_c_socket;
 		std::string 						_c_address;
-		std::map<std::string, std::string>	_commands;
+		// std::map<std::string, std::string>	_infosClient;	//Supprimer. infos renvoyées par IRSSI lors de la connexion.
+		// std::map<char, bool>				_modes;	
+		Message								*_message;
 };
 
 #endif
