@@ -27,8 +27,17 @@ Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket
 	// instancier Message message;
 	this->_message = new Message(this);	//envoyer un pointeur de this
 
-
-
+	std::cout << "DEBUG ===> Constructor CLIENT" << std::endl << std::endl;
+	_modes.insert(std::pair<char, bool>('d', false));
+	_modes.insert(std::pair<char, bool>('e', false));
+	_modes.insert(std::pair<char, bool>('i', false));
+	_modes.insert(std::pair<char, bool>('o', false));
+	_modes.insert(std::pair<char, bool>('q', false));
+	_modes.insert(std::pair<char, bool>('t', false));
+	_modes.insert(std::pair<char, bool>('u', false));
+	_modes.insert(std::pair<char, bool>('v', false));
+	_modes.insert(std::pair<char, bool>('w', false));
+	_oper = false;
 }
 
 Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le const par copy
@@ -122,31 +131,24 @@ void	Client::createCommandList()
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
 
-int Client::getC_socket() const
-{
-	return (this->_c_socket);
-}
 
-std::string Client::getSockaddr_in() const
-{
-	return (this->_c_address);
-}
+/************ Getters ************/
 
-std::string Client::getBuffer() const
-{
-	return (this->_buffer);
-}
+int						Client::getC_socket() const { return (_c_socket); }
+std::string				Client::getSockaddr_in() const { return (_c_address); }
+std::string				Client::getBuffer() const { return (_buffer); }
+Channel					*Client::getChannel() const { return (_channel); }
+std::string				Client::getNick() const { return (_nick); }
+std::string				Client::getUser() const { return (_user); }
+std::string 			Client::getHostname() const { return (_hostname); }
+std::map<char, bool>	Client::getModes() const { return (_modes); }
+bool					Client::getOper() const { return (_oper); }
 
-std::string Client::getUser() const { return (this->_user); }
-std::string Client::getNick() const { return (this->_nick); }
-std::string Client::getHostname() const { return (this->_hostname); }
+/************ Setters ************/
 
-void 		Client::setBuffer(std::string str)
-{
-	this->_buffer = str;
-}
-
-void 		Client::setUser(std::string str) { this->_user = str;	}
-void 		Client::setNick(std::string str) { this->_nick = str;	}
-void 		Client::setHostname(std::string str) { this->_hostname = str;	}
-
+void	Client::setBuffer(const std::string str) { _buffer = str; }
+void	Client::setChannel(Channel *channel) { _channel = channel; }
+void	Client::setNick(const std::string nick) { _nick = nick; }
+void	Client::setUser(const std::string user) { _user = user; }
+void 	Client::setHostname(std::string str) { _hostname = str; }
+void	Client::setOper(const bool oper) { _oper = oper; }
