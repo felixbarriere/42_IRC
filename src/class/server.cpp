@@ -92,7 +92,7 @@ void	Server::receiveRequest(int	client_socket)
 {
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
-	// std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
+	std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
 
 	memset(buffer, 0, BUFFER_SIZE + 1);
 
@@ -110,7 +110,6 @@ void	Server::receiveRequest(int	client_socket)
 	{
 		std::cout << "Command incomplete: on append() le buffer recu par bouts" <<std::endl;
 		this->getUser(client_socket)->setBuffer(this->getUser(client_socket)->getBuffer().append(buffer_str));	// strcat() works only for char *
-		// this->getUser(client_socket)->setBuffer(buffer_str);	// strcat() works only for char *
 		this->getUser(client_socket)->createCommandList();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 	}
 	else 
@@ -119,12 +118,6 @@ void	Server::receiveRequest(int	client_socket)
 	std::cout << "buffer_size : " << buffer_str.size() <<std::endl;
 
 	buffer_str.clear();	//redondant avec memset en debut de fonction.
-
-	// std::cout << "buffer: " << this->getUser(client_socket)->getBuffer() <<std::endl;
-	//retour du buffer : CAP LS
-	//PASS pwd
-	//NICK sam
-	//USER masamoil masamoil localhost :Maryna SAMOILENKO
 }
 
 void Server::init_pollfd_struct(void)
@@ -143,14 +136,15 @@ void	Server::usePoll(void)
 	// https://www.ibm.com/docs/en/i/7.3?topic=designs-using-poll-instead-select
 	// int poll(struct pollfd *fds, nfds_t nfds, int délai);
 
+	init_pollfd_struct();
+
 	while(!serv_run)
 	{ 
 		// Préparer le vector de fd pour poll()
-		init_pollfd_struct();
 		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
 
-		// std::cout << "DEBUG ===> BEFORE for loop:" << std::endl << std::endl;
+		std::cout << "DEBUG ===> BEFORE for loop:" << std::endl << std::endl;
 
 		for (size_t i = 0; i < this->fds.size(); i++)
 		{

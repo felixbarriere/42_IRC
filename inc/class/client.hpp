@@ -18,6 +18,7 @@ class Client
 		void	addBuff(char buff_msg);
 		void	welcome_msg();
 		void	createCommandList();
+		void	sendMsg(std::string str);
 		//bool conn(std::string, int);
     // bool send_data(std::string data);
 		//https://www.binarytides.com/code-a-simple-socket-client-class-in-c/
@@ -40,6 +41,7 @@ class Client
 		/************ Attributs ************/
 	private:
 		//pour stocker l'integralite du message recu
+		bool								_welcomeMsg;	//le welcome_message a-t-il été envoyé?
 		Message								*message;
 		std::string							_buffer;
 		std::string							_user;
