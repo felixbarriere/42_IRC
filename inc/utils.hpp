@@ -70,5 +70,8 @@ void	msg(Server *server, Client *client);
 void	names(Server *server, Client *client);
 void	nick(Server *server, Client *client);
 void	user(Server *server, Client *client);
+// void	mode(Server *server, Client *client);
+// void	ping(Server *server, Client *client);
+// void	whoIs(Server *server, Client *client);
 
 #endif

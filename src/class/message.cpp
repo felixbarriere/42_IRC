@@ -84,7 +84,7 @@ void Message::createMessage()
 			break ;		// delete le message?
 		}
 
-		// check cmd then call function
+		// check cmd then call command function
 		std::map<std::string, fct_cmd>::iterator	ite;
 		ite = _client->getServer()->getCommandList().end();
 

@@ -26,6 +26,9 @@ SRCS = 	main.cpp \
 		cmd/names.cpp \
 		cmd/nick.cpp \
 		cmd/user.cpp \
+		cmd/mode.cpp \
+		cmd/ping.cpp \
+		cmd/whois.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
 
