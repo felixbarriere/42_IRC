@@ -1,10 +1,24 @@
 #include "../../inc/utils.hpp"
 
 void	names(Server *server, Client *client) {
-	(void) server;
-	std::vector<Client*>::const_iterator	it = client->getChannel()->getMembers().begin();
-	while (it != client->getChannel()->getMembers().end()) {
-		std::cout << (*it)->getNick() << std::endl;
+	if (!(client->getMessage()->getParams().size())) {
+		std::map<int, Client*>::const_iterator	it = server->getClients().begin();
+		while (it != server->getClients().end()) {
+			std::cout << it->second->getNick() << std::endl;
+			it++;
+		}
+		return ;
+	}
+	std::map<std::string, Channel>::const_iterator	it = server->getChannels().begin();
+	while (it != server->getChannels().end()) {
+		if (it->first == client->getMessage()->getParams()[0]) {
+			std::vector<Client*>::const_iterator	itt = it->second.getMembers().begin();
+			while (itt != it->second.getMembers().end()) {
+				std::cout << (*itt)->getNick() << std::endl;
+				itt++;
+			}
+			return ;
+		}
 		it++;
 	}
 }
