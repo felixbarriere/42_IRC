@@ -50,7 +50,6 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 Server::~Server()
 {
 	std::cout << "DEBUG ===> Destructor, closing server socket" << std::endl << std::endl;
-
 	close(this->s_socket);
 }
 
@@ -73,16 +72,17 @@ void	Server::acceptClient(void)
 
 	if (client_socket == -1)
         SERVER_ERR("Error while accepting connexion");
+
 	std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
 		<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
+		
 	if (setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
 		SERVER_ERR("setsockopt failed");
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 		SERVER_ERR("Error while rendering the socket non blocking");
 
-	// instancier la classe Client
 	// utiliser new: "Client *new_client" est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==> comportement indéfini.
-	this->clients[client_socket] = new Client(client_socket, client_address);
+	this->clients[client_socket] = new Client(client_socket, client_address, this);
 
 	// On ajoute le socket client à notre tableau de fds
 	this->fds.push_back(pollfd());	// fds argument, which is an array of structures of the following form: 
@@ -103,7 +103,6 @@ void	Server::receiveRequest(int	client_socket)
 	// int recv(int client_socket, void* buffer, size_t len, int flags);
 	res = recv(client_socket , buffer, BUFFER_SIZE, 0);
 
-	std::cout << "result of recv() = " << res << std::endl;
 	std::string buffer_str(buffer);
 
 	if (res == -1)
@@ -211,6 +210,6 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("MOTD", motd));
 	_commandList.insert(std::make_pair("MSG", msg));
 	_commandList.insert(std::make_pair("NAMES", names));
-	_commandList.insert(std::make_pair("NICK", nick));
 	_commandList.insert(std::make_pair("USER", user));
+	_commandList.insert(std::make_pair("NICK", nick));
 }

@@ -31,13 +31,13 @@ class Message
 		~Message();
 
 		/************ Getters / Setters ************/
-		void 	createMessage(std::string buffer);//buffer qu'on recoit
+		void 	createMessage();
 		int	 	tokenizer(std::string line);		// peupler les attributs puis appeler la fonction correspondante. On reset le tout a chaque commande.
 		void	tempUserNick(std::string str);
 		
 		void setPrefix(std::string prefix);
 		void setCmd(std::string cmd);
-		void setParams(std::string params);
+		void setParams(std::vector<std::string> params);
 
 		std::string 				getMessage(void) const;
 		std::string 				getPrefix(void) const;

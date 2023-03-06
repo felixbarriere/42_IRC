@@ -5,6 +5,7 @@
 
 class Message;
 class Channel;
+class Server;
 
 class Client
 {
@@ -16,7 +17,7 @@ class Client
 		Client();
 		Client(const Client &src);
 		Client &operator=(const Client &rhs);
-		Client(int client_socket, struct sockaddr_in client_address);
+		Client(int client_socket, struct sockaddr_in client_address, Server *server);
 		~Client();
 
 		/************ Méthodes ************/
@@ -35,6 +36,7 @@ class Client
 		std::string			 	getSockaddr_in() const;
 		std::string 			getBuffer() const ;
 		Channel					*getChannel() const ;
+		Server					*getServer() const ;
 		std::string				getNick() const ;
 		std::string				getUser() const ;
 		std::string		 		getHostname() const;
@@ -63,10 +65,11 @@ class Client
 		std::string 						_c_address;
 		// std::map<std::string, std::string>	_infosClient;	//Supprimer. infos renvoyées par IRSSI lors de la connexion.
 		// std::map<char, bool>				_modes;	
-		Message								*_message;
 		std::map<std::string, std::string>	_commands;
-		Channel								*_channel;	
 		std::map<char, bool>				_modes;
+		Message								*_message;
+		Channel								*_channel;	
+		Server								*_server;
 
 };
 
