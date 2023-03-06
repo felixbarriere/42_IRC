@@ -1,5 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	nick(Client *client, const std::string nick) {
-	client->setNick(nick);
+void	nick(Server *server, Client *client) {
+	(void) server;
+	client->setNick(client->getMessage()->getParams()[0]);
 }

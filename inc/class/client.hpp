@@ -40,6 +40,7 @@ class Client
 		std::string		 		getHostname() const;
 		std::map<char, bool>	getModes() const ;
 		bool					getOper() const ;
+		Message					*getMessage() const ;
 		
 		/************ Setters ************/
 

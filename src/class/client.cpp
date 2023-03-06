@@ -9,7 +9,10 @@ Client::Client(): _c_socket(-1)
 	std::cout << "Default constructor CLIENT" << std::endl << std::endl;
 }
 
-Client::Client(int client_socket, struct sockaddr_in client_address) : _c_socket(client_socket), _welcomeMsg(false)
+Client::Client(int client_socket, struct sockaddr_in client_address):
+	_welcomeMsg(false),
+	_c_socket(client_socket),
+	_channel(NULL)
 {
 	std::cout << "Constructor CLIENT" << std::endl << std::endl;
 
@@ -143,6 +146,7 @@ std::string				Client::getUser() const { return (_user); }
 std::string 			Client::getHostname() const { return (_hostname); }
 std::map<char, bool>	Client::getModes() const { return (_modes); }
 bool					Client::getOper() const { return (_oper); }
+Message					*Client::getMessage() const { return (_message); }
 
 /************ Setters ************/
 

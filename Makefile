@@ -6,6 +6,7 @@ NAME = IRC
 INCS = 	class/server.hpp \
 		class/client.hpp \
 		class/message.hpp \
+		class/channel.hpp \
 		utils.hpp \
 
 SRCS = 	main.cpp \
@@ -15,7 +16,15 @@ SRCS = 	main.cpp \
 		show_config.cpp \
 		ft_split.cpp \
 		utils.cpp \
-
+		cmd/addmotd.cpp \
+		cmd/addomotd.cpp \
+		cmd/chgname.cpp \
+		cmd/join.cpp \
+		cmd/list.cpp \
+		cmd/motd.cpp \
+		cmd/names.cpp \
+		cmd/nick.cpp \
+		cmd/user.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
 
@@ -28,15 +37,15 @@ INCS := ${addprefix ${INCS_PATH}, ${INCS}}
 SRCS := ${addprefix ${SRCS_PATH}, ${SRCS}}
 
 CXX = c++
-#CXXFLAGS = -Wall -Werror -Wextra -std=c++98
-CXXFLAGS = -std=c++98
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98
+# CXXFLAGS = -std=c++98
 
 all:		$(NAME)
 
 ${OBJS_PATH}%.o: ${SRCS_PATH}%.cpp
 		@mkdir -p $(OBJS_PATH)
 		@mkdir -p $(OBJS_PATH)/class
-		@mkdir -p $(OBJS_PATH)/commands
+		@mkdir -p $(OBJS_PATH)/cmd
 		${CXX} ${CXXFLAGS} -c $< -o $@ -I${INCS_PATH}
 
 $(NAME):	$(OBJS)

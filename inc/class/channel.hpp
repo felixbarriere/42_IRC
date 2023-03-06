@@ -9,6 +9,8 @@ class	Channel {
 
 		/*** MEMBER FUNCTIONS ***/
 
+		Channel() {}
+
 		Channel(Client *creator):
 			_creator(creator) {
 			_members.push_back(_creator);
@@ -26,12 +28,27 @@ class	Channel {
 			return (_creator);
 		}
 
-		std::vector<Client*>	getMembers() const {
+		const std::vector<Client*>	&getMembers() const {
 			return (_members);
 		}
 
-		std::map<char, bool>	getModes() const {
+		const std::map<char, bool>	&getModes() const {
 			return (_modes);
+		}
+
+		void	addMember(Client *client) {
+			_members.push_back(client);
+		}
+
+		void	removeMember(Client *client) {
+			std::vector<Client*>::iterator	it = _members.begin();
+			while (it != _members.end()){
+				if (*it == client) {
+					_members.erase(it);
+					return ;
+				}
+				it++;
+			}
 		}
 
 	private:

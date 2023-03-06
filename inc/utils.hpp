@@ -1,22 +1,22 @@
 #ifndef	UTILS_HPP
-#define UTILS_HPP
+# define UTILS_HPP
 
 /*** MACRO ***/
 
 # define BUFFER_SIZE	512 // max size?
 
 //*****  Configs  *****
-#define NAME "irc" 
+# define NAME "irc" 
 //max 63 ch-s
-#define MOTD "hola chicos! "
-#define VERSION "1.0"
-#define MAX_BACKLOGS 5
+# define MOTD "hola chicos! "
+# define VERSION "1.0"
+# define MAX_BACKLOGS 5
 //the maximum value is system-dependent (usually 5)
-#define MAX_USERS 20
-#define OPER_USER "admin"
-#define OPER_PASSWORD "pwd"
-#define PING 30
-#define TIMEOUT 1000
+# define MAX_USERS 20
+# define OPER_USER "admin"
+# define OPER_PASSWORD "pwd"
+# define PING 30
+# define TIMEOUT 1000
 
 /*** LIBRARY ***/
 
@@ -56,16 +56,18 @@ extern int serv_run;
 void						ft_handler(int smth);
 std::vector<std::string>	ft_split(const std::string &str, const std::string &sep);
 void 						showConfig(void);
-int							checkCommand(std::string	str);
+int							checkCommand(std::string str);
 std::string					ft_trim(std::string	str, char toTrim);
-void						addmotd(Client *client, const std::string text);
-void						addomotd(Client *client, const std::string text);
-void						chgname(Client *changer, Client *changee, const std::string name);
-void						join(Server *server, Client *client, const std::string name);
-void						list(Client *client, const Server *server);
-void						motd(Client *client);
-void						names(Channel *channel);
-void						nick(Client *client, const std::string nick);
-void						user(Client *client, const std::string user);
+
+class Server;
+void	addmotd(Server *server, Client *client);
+void	addomotd(Server *server, Client *client);
+void	chgname(Server *server, Client *client);
+void	join(Server *server, Client *client);
+void	list(Server *server, Client *client);
+void	motd(Server *server, Client *client);
+void	names(Server *server, Client *client);
+void	nick(Server *server, Client *client);
+void	user(Server *server, Client *client);
 
 #endif

@@ -1,9 +1,10 @@
 #include "../../inc/utils.hpp"
 
-void	addmotd(Client *client, const std::string text) {
+void	addmotd(Server *server, Client *client) {
+	(void) server;
 	if (!(client->getOper()))
 		return ;
 	std::ofstream	out;
 	out.open("motd/motd.txt", std::ios::app);
-	out << text;
+	out << client->getMessage()->getParams()[0];
 }
