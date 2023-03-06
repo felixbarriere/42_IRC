@@ -212,4 +212,7 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("NAMES", names));
 	_commandList.insert(std::make_pair("USER", user));
 	_commandList.insert(std::make_pair("NICK", nick));
+	_commandList.insert(std::make_pair("MODE", mode));
+	_commandList.insert(std::make_pair("WHOIS", whoIs));
+	_commandList.insert(std::make_pair("PING", ping));
 }
