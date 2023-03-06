@@ -66,6 +66,7 @@ void	chgname(Server *server, Client *client);
 void	join(Server *server, Client *client);
 void	list(Server *server, Client *client);
 void	motd(Server *server, Client *client);
+void	msg(Server *server, Client *client);
 void	names(Server *server, Client *client);
 void	nick(Server *server, Client *client);
 void	user(Server *server, Client *client);
