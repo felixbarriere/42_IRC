@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   show_config.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: masamoil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: baubigna <baubigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:11:13 by masamoil          #+#    #+#             */
-/*   Updated: 2023/03/01 13:11:15 by masamoil         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:35:27 by baubigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
-void showConfig(void)
-{
+void showConfig() {
 	std::cout << "---------------------------------" << std::endl;
 	std::cout << std::endl;
-	std::cout << "********** CONFIGUARTION ********" << std::endl;
+	std::cout << "********** CONFIGURATION ********" << std::endl;
 	std::cout << std::endl;
 	std::cout << "---------------------------------" << std::endl;
 	std::cout << " Server name   " << "     |     " << NAME << std::endl;

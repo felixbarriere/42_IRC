@@ -1,6 +1,7 @@
 #include "../../inc/utils.hpp"
 
-void	motd(Client *client) {
+void	motd(Server *server, Client *client) {
+	(void) server;
 	if (!(client->getOper()))
 		return ;
 	std::fstream	fp;

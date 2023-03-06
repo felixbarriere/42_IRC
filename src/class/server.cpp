@@ -1,5 +1,4 @@
-// #include "server.hpp"
-#include "utils.hpp"
+#include "../../inc/class/server.hpp"
 
 /***************************************************************************************************************************/
 /*                                                Constructors / Destructor                                                */
@@ -188,31 +187,30 @@ int									Server::getTimeout() const { return (this->timeout); }
 int									Server::getServerSocket() const { return (this->s_socket); }
 struct sockaddr_in					Server::getServerAddress() const { return (this->s_address); }
 std::vector<struct pollfd>			Server::getFds() const { return (this->fds); }
-std::map<int, Client*>				Server::getClients() const { return (this->clients); }
-std::map<std::string, Channel>		Server::getChannels() const { return (_channels); }
+const std::map<int, Client*>		&Server::getClients() const { return (this->clients); }
+std::map<std::string, Channel>		&Server::getChannels() { return (_channels); }
 std::map<std::string, std::string>	Server::getOper() const { return (_oper); }
+std::map<std::string, fct_cmd>		&Server::getCommandList(void) { return (_commandList); }
 
-Client*						Server::getUser(int fd) const
-{
+Client*	Server::getUser(int fd) const {
 	std::map<int, Client*>::const_iterator	ret;
 	ret = this->clients.find(fd);
 	if (ret == this->clients.end())
 		return (NULL);
-	return ret->second;
+	return (ret->second);
 }
 
-std::map<std::string, fct_cmd>	Server::getCommandList(void) const
-{
-	return (this->_commandList);
-}
 
-void	Server::setPortNumber(char * portNumber) {	this->portNumber = portNumber;	}
+void	Server::setPortNumber(char *portNumber) {	this->portNumber = portNumber;	}
 
-void Server::setCommandList(void)
-{
-	//this->_commandList.insert(std::make_pair("JOIN", join));
-	//this->_commandList.insert(std::make_pair("LIST", list));
-	//this->_commandList.insert(std::make_pair("MOTD", motd));
-	//this->_commandList.insert(std::make_pair("NICK", nick));
-	//this->_commandList.insert(std::make_pair("USER", user));
+void Server::setCommandList() {
+	_commandList.insert(std::make_pair("ADDMOTD", addmotd));
+	_commandList.insert(std::make_pair("ADDOMOTD", addomotd));
+	_commandList.insert(std::make_pair("CHGNAME", chgname));
+	_commandList.insert(std::make_pair("JOIN", join));
+	_commandList.insert(std::make_pair("LIST", list));
+	_commandList.insert(std::make_pair("MOTD", motd));
+	_commandList.insert(std::make_pair("NAMES", names));
+	_commandList.insert(std::make_pair("NICK", nick));
+	_commandList.insert(std::make_pair("USER", user));
 }

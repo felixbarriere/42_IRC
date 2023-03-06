@@ -1,5 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	user(Client *client, const std::string user) {
-	client->setUser(user);
+void	user(Server *server, Client *client) {
+	(void) server;
+	client->setUser(client->getMessage()->getParams()[0]);
 }

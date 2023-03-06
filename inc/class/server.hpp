@@ -1,9 +1,11 @@
 #ifndef	SERVER_HPP
 # define SERVER_HPP
 
-#include "../utils.hpp"
+# include "../utils.hpp"
 
-typedef void (*fct_cmd)();
+class Server;
+class Client;
+typedef void (*fct_cmd)(Server *server, Client *client);
 
 #define SERVER_ERR(err)                                                  	   \
 	do                                                                         \
@@ -33,16 +35,16 @@ class Server
 
 
 		/************ Getters / Setters ************/
-		std::map<std::string, fct_cmd>		getCommandList(void) const; 
+		std::map<std::string, fct_cmd>		&getCommandList(void); 
 		char*								getPortNumber() const ;
 		char*								getPassword() const ;
 		int									getTimeout() const ;
 		int									getServerSocket() const ;
 		struct sockaddr_in					getServerAddress() const ;
 		std::vector<struct pollfd>			getFds() const ;
-		std::map<int, Client*>				getClients() const ;
+		const std::map<int, Client*>		&getClients() const ;
 		Client*								getUser(int fd) const ;
-		std::map<std::string, Channel>		getChannels() const ;
+		std::map<std::string, Channel>		&getChannels();
 		std::map<std::string, std::string>	getOper() const ;
 
 		void	setPortNumber(char *portNumber);

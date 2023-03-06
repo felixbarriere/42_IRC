@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Message.cpp                                        :+:      :+:    :+:   */
+/*   message.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: masamoil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: baubigna <baubigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:58:59 by masamoil          #+#    #+#             */
-/*   Updated: 2023/02/22 12:01:12 by masamoil         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:59:15 by baubigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,18 +106,16 @@ int Message::tokenizer(std::string line)
 
 void Message::createMessage(std::string msg)
 {
+	(void) msg;
 	std::vector<std::string>	lines(ft_split(this->_client->getBuffer(), "\n\r"));
-
-	for(int i = 0; i < lines.size() ; i++)
+	for(unsigned long i = 0; i < lines.size() ; i++)
 	{
 		if (tokenizer(lines[i]) != 0)
 		{
 			std::cout << "Error tokenizer" << std::endl;
 			break ;		// delete le message?
 		}
-
 		std::cout << "test Tokenizer, CMD: " <<  _cmd << std::endl;
-
 		std::vector<std::string>::iterator	it = _params.begin();
 		for (; it != _params.end(); it++)
 			std::cout << "test Tokenizer, params: " << *it << std::endl;
