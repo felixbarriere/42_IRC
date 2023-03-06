@@ -2,7 +2,7 @@
 
 void	addomotd(Server *server, Client *client) {
 	(void) server;
-	if (!(client->getOper()))
+	if (!(client->getModes().find('o')->second))
 		return ;
 	std::ofstream	out;
 	out.open("motd/omotd.txt", std::ios::app);

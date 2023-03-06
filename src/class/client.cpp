@@ -40,7 +40,6 @@ Client::Client(int client_socket, struct sockaddr_in client_address):
 	_modes.insert(std::pair<char, bool>('u', false));
 	_modes.insert(std::pair<char, bool>('v', false));
 	_modes.insert(std::pair<char, bool>('w', false));
-	_oper = false;
 }
 
 Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le const par copy
@@ -144,8 +143,7 @@ Channel					*Client::getChannel() const { return (_channel); }
 std::string				Client::getNick() const { return (_nick); }
 std::string				Client::getUser() const { return (_user); }
 std::string 			Client::getHostname() const { return (_hostname); }
-std::map<char, bool>	Client::getModes() const { return (_modes); }
-bool					Client::getOper() const { return (_oper); }
+std::map<char, bool>	&Client::getModes() { return (_modes); }
 Message					*Client::getMessage() const { return (_message); }
 
 /************ Setters ************/
@@ -155,4 +153,3 @@ void	Client::setChannel(Channel *channel) { _channel = channel; }
 void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
-void	Client::setOper(const bool oper) { _oper = oper; }

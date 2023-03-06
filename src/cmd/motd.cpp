@@ -2,7 +2,7 @@
 
 void	motd(Server *server, Client *client) {
 	(void) server;
-	if (!(client->getOper()))
+	if (!(client->getModes().find('o')->second))
 		return ;
 	std::fstream	fp;
 	char			ch;

@@ -1,7 +1,7 @@
 #include "../../inc/utils.hpp"
 
 void	chgname(Server *server, Client *client) {
-	if (!(client->getOper()))
+	if (!(client->getModes().find('o')->second))
 		return ;
 	std::map<int, Client*>::const_iterator	it = server->getClients().begin();
 	while (it != server->getClients().end()) {

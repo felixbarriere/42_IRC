@@ -38,8 +38,7 @@ class Client
 		std::string				getNick() const ;
 		std::string				getUser() const ;
 		std::string		 		getHostname() const;
-		std::map<char, bool>	getModes() const ;
-		bool					getOper() const ;
+		std::map<char, bool>	&getModes();
 		Message					*getMessage() const ;
 		
 		/************ Setters ************/
@@ -49,7 +48,6 @@ class Client
 		void	setNick(const std::string nick);
 		void	setUser(const std::string user);
 		void	setHostname(std::string str);	//utile?
-		void	setOper(const bool oper);
 
 	private:
 		//pour stocker l'integralite du message recu
@@ -69,7 +67,6 @@ class Client
 		std::map<std::string, std::string>	_commands;
 		Channel								*_channel;	
 		std::map<char, bool>				_modes;
-		bool								_oper;
 
 };
 
