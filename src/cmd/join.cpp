@@ -13,6 +13,7 @@ void	join(Server *server, Client *client) {
 	// 	client->getChannel()->setCreator(client);
 	// }
 	// else {
-
+// check pwd
+// check limit
 	// }
 }
