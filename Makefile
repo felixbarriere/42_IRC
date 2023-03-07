@@ -16,7 +16,6 @@ SRCS = 	main.cpp \
 		show_config.cpp \
 		ft_split.cpp \
 		utils.cpp \
-		reply.cpp \
 		cmd/addmotd.cpp \
 		cmd/addomotd.cpp \
 		cmd/chgname.cpp \
