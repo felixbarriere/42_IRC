@@ -10,7 +10,8 @@ class	Channel {
 		/*** MEMBER FUNCTIONS ***/
 
 		Channel():
-			_pwd(NULL) {
+			_pwd(NULL),
+			_limit(0) {
 			_modes.insert(std::pair<char, bool>('k', false));
 			_modes.insert(std::pair<char, bool>('l', false));
 			_modes.insert(std::pair<char, bool>('m', false));
@@ -25,9 +26,11 @@ class	Channel {
 		std::vector<Client*>	&getMembers() { return (_members); }
 		std::map<char, bool>	&getModes() { return (_modes); }
 		std::string				getPwd() const { return (_pwd); }
+		int						getLimit() const { return (_limit); }
 
 		void	setCreator(Client *client) { _creator = client; }
 		void	setPwd(const std::string pwd) { _pwd = pwd; }
+		void	setLimit(int limit) { _limit = limit; }
 
 		void	addMember(Client *client) {
 			_members.push_back(client);
@@ -52,6 +55,7 @@ class	Channel {
 		std::vector<Client*>	_members;
 		std::map<char, bool>	_modes;
 		std::string				_pwd;
+		int						_limit;
 
 };
 
