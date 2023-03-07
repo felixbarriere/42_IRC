@@ -11,4 +11,5 @@ void	motd(Server *server, Client *client) {
 		std::cout << ch;
 	fp.close();
 	std::cout << std::endl;
+// must send RPL_MOTD RFC1459 :- <string>
 }

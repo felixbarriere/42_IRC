@@ -188,7 +188,8 @@ struct sockaddr_in					Server::getServerAddress() const { return (this->s_addres
 std::vector<struct pollfd>			Server::getFds() const { return (this->fds); }
 std::map<int, Client*>				&Server::getClients() { return (_clients); }
 std::map<std::string, Channel>		&Server::getChannels() { return (_channels); }
-std::map<std::string, fct_cmd>		&Server::getCommandList(void) { return (_commandList); }
+std::map<std::string, fct_cmd>		&Server::getCommandList() { return (_commandList); }
+std::map<std::string, std::string>	&Server::getOper() { return (_oper); }
 
 Client*	Server::getUser(int fd) const {
 	std::map<int, Client*>::const_iterator	ret;

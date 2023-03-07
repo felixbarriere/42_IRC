@@ -18,6 +18,10 @@
 # define PING 30
 # define TIMEOUT 1000
 
+/*** COMMAND ERRORS ***/
+
+# define ERR_NEEDMOREPARAMS "462"
+
 /*** LIBRARY ***/
 
 # include <arpa/inet.h>
@@ -65,13 +69,13 @@ void	addomotd(Server *server, Client *client);
 void	chgname(Server *server, Client *client);
 void	join(Server *server, Client *client);
 void	list(Server *server, Client *client);
+void	mode(Server *server, Client *client);
 void	motd(Server *server, Client *client);
 void	msg(Server *server, Client *client);
 void	names(Server *server, Client *client);
 void	nick(Server *server, Client *client);
-void	user(Server *server, Client *client);
-void	mode(Server *server, Client *client);
 void	ping(Server *server, Client *client);
+void	user(Server *server, Client *client);
 void	whoIs(Server *server, Client *client);
 
 #endif

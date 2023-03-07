@@ -45,7 +45,7 @@ class Server
 		std::map<int, Client*>				&getClients();
 		Client*								getUser(int fd) const ;
 		std::map<std::string, Channel>		&getChannels();
-		std::map<std::string, std::string>	getOper() const ;
+		std::map<std::string, std::string>	&getOper();
 
 		void	setPortNumber(char *portNumber);
 		void	setCommandList();

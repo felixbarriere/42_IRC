@@ -22,10 +22,11 @@ class Client
 
 		/************ Méthodes ************/
 
-		void	addBuff(char buff_msg);
-		void	welcome_msg();
-		void	createCommandList();
-		void	sendMsg(std::string str);
+		void		addBuff(char buff_msg);
+		void		welcome_msg();
+		void		createCommandList();
+		void		sendMsg(std::string str);
+		std::string	getPrefix() const;
 		//bool conn(std::string, int);
     // bool send_data(std::string data);
 		//https://www.binarytides.com/code-a-simple-socket-client-class-in-c/
@@ -64,7 +65,6 @@ class Client
 		int									_c_socket;
 		std::string 						_c_address;
 		// std::map<std::string, std::string>	_infosClient;	//Supprimer. infos renvoyées par IRSSI lors de la connexion.
-		// std::map<char, bool>				_modes;	
 		std::map<std::string, std::string>	_commands;
 		std::map<char, bool>				_modes;
 		Message								*_message;

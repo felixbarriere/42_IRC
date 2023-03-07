@@ -9,11 +9,8 @@ class	Channel {
 
 		/*** MEMBER FUNCTIONS ***/
 
-		Channel() {}
-
-		Channel(Client *creator):
-			_creator(creator) {
-			_members.push_back(_creator);
+		Channel():
+			_pwd(NULL) {
 			_modes.insert(std::pair<char, bool>('k', false));
 			_modes.insert(std::pair<char, bool>('l', false));
 			_modes.insert(std::pair<char, bool>('m', false));
@@ -24,17 +21,13 @@ class	Channel {
 
 		~Channel() {}
 
-		Client	*getCreator() const {
-			return (_creator);
-		}
+		Client					*getCreator() const { return (_creator); }
+		std::vector<Client*>	&getMembers() { return (_members); }
+		std::map<char, bool>	&getModes() { return (_modes); }
+		std::string				getPwd() const { return (_pwd); }
 
-		std::vector<Client*>	&getMembers() {
-			return (_members);
-		}
-
-		std::map<char, bool>	&getModes() {
-			return (_modes);
-		}
+		void	setCreator(Client *client) { _creator = client; }
+		void	setPwd(const std::string pwd) { _pwd = pwd; }
 
 		void	addMember(Client *client) {
 			_members.push_back(client);
@@ -58,6 +51,7 @@ class	Channel {
 		Client					*_creator;
 		std::vector<Client*>	_members;
 		std::map<char, bool>	_modes;
+		std::string				_pwd;
 
 };
 

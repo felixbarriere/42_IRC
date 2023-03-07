@@ -13,7 +13,9 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_welcomeMsg(false),
 	_c_socket(client_socket),
 	_channel(NULL),
-	_server(server)
+	_server(server),
+	_nick(NULL),
+	_user(NULL)
 {
 	std::cout << "Constructor CLIENT" << std::endl << std::endl;
 
@@ -108,6 +110,18 @@ void	Client::createCommandList()
 		this->_buffer.clear();
 }
 
+std::string	Client::getPrefix() const {
+	if (!_nick.size())
+		return (":" + std::string(NAME));
+	std::string	prefix = "" + _nick;
+	if (_user.size())
+		prefix += "!" + _user;
+	if (_hostname.size())
+		prefix += "@" + _hostname;
+	else
+		prefix += "@" + _c_address;
+	return (prefix);
+}
 
 /*******************************************************************************************************************/
 /*                                                Getters / Setters                                                */

@@ -21,4 +21,5 @@ void	names(Server *server, Client *client) {
 		}
 		it++;
 	}
+// must send RPL_NAMRPLY_ RFC1459 ( '=' / '*' / '@' ) <channel> ' ' : [ '@' / '+' ] <nick> *( ' ' [ '@' / '+' ] <nick> )
 }
