@@ -49,7 +49,7 @@ Message::~Message()
 
 int Message::tokenizer(std::string line)
 {
-	std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
+	// std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
 	
 	this->_cmd.clear();
 	this->_params.clear();
@@ -125,7 +125,7 @@ std::string Message::getMessage(void) const
 
 std::string Message::getPrefix(void) const
 {
-	return (this->_prefix);
+	return (this->_client->getNick() + "!" + this->_client->getUser() + "@" + this->_client->getHostname() + " ");
 }
 
 std::string Message::getCmd(void) const

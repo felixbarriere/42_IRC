@@ -96,7 +96,7 @@ void	Server::receiveRequest(int	client_socket)
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
 
-	std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
+	// std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
 
 	memset(buffer, 0, BUFFER_SIZE + 1);
 
@@ -125,7 +125,6 @@ void	Server::receiveRequest(int	client_socket)
 	}
 	
 	buffer_str.clear();
-	std::cout << "buffer_size : " << buffer_str.size() <<std::endl;
 }
 
 void Server::init_pollfd_struct(void)
@@ -170,8 +169,8 @@ void	Server::usePoll(void)
 				}
 			}
 		}
-		std::cout << std::endl << " Server running (sleep: 1)" << std::endl;
-		sleep(5);
+		// std::cout << std::endl << " Server running (sleep: 1)" << std::endl;
+		// sleep(5);
 	}
 }
 

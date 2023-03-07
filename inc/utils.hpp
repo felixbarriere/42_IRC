@@ -8,7 +8,7 @@
 //*****  Configs  *****
 # define NAME "irc" 
 //max 63 ch-s
-# define MOTD "hola chicos! "
+# define MOTD "hola chicos!"
 # define VERSION "1.0"
 # define MAX_BACKLOGS 5
 //the maximum value is system-dependent (usually 5)
@@ -16,7 +16,7 @@
 # define OPER_USER "admin"
 # define OPER_PASSWORD "pwd"
 # define PING 30
-# define TIMEOUT 1000
+# define TIMEOUT 5000
 
 /*** COMMAND ERRORS ***/
 
