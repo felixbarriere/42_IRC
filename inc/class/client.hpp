@@ -42,6 +42,7 @@ class Client
 		std::string		 		getHostname() const;
 		std::map<char, bool>	&getModes();
 		Message					*getMessage() const ;
+		bool					getWelcome() const ;
 		
 		/************ Setters ************/
 
