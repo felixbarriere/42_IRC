@@ -28,11 +28,11 @@ class	Channel {
 			return (_creator);
 		}
 
-		const std::vector<Client*>	&getMembers() const {
+		std::vector<Client*>	&getMembers() {
 			return (_members);
 		}
 
-		const std::map<char, bool>	&getModes() const {
+		std::map<char, bool>	&getModes() {
 			return (_modes);
 		}
 

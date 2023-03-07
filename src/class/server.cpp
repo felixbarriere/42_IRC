@@ -82,7 +82,7 @@ void	Server::acceptClient(void)
 		SERVER_ERR("Error while rendering the socket non blocking");
 
 	// utiliser new: "Client *new_client" est simplement la déclaration d'un pointeur de type Client, mais il ne crée pas d'objet Client ni n'alloue de mémoire pour un tel objet ==> comportement indéfini.
-	this->clients[client_socket] = new Client(client_socket, client_address, this);
+	_clients[client_socket] = new Client(client_socket, client_address, this);
 
 	// On ajoute le socket client à notre tableau de fds
 	this->fds.push_back(pollfd());	// fds argument, which is an array of structures of the following form: 
@@ -109,7 +109,7 @@ void	Server::receiveRequest(int	client_socket)
         SERVER_ERR("Error during receipt");
 	else if (res == 0)
 	{
-		delete(this->clients[client_socket]);
+		delete(_clients[client_socket]);
 		std::cout << "Client is disconnected " << res << std::endl;
 		// SERVER_ERR("Client is disconnected");
 	}
@@ -186,20 +186,19 @@ int									Server::getTimeout() const { return (this->timeout); }
 int									Server::getServerSocket() const { return (this->s_socket); }
 struct sockaddr_in					Server::getServerAddress() const { return (this->s_address); }
 std::vector<struct pollfd>			Server::getFds() const { return (this->fds); }
-const std::map<int, Client*>		&Server::getClients() const { return (this->clients); }
+std::map<int, Client*>				&Server::getClients() { return (_clients); }
 std::map<std::string, Channel>		&Server::getChannels() { return (_channels); }
 std::map<std::string, fct_cmd>		&Server::getCommandList(void) { return (_commandList); }
 
 Client*	Server::getUser(int fd) const {
 	std::map<int, Client*>::const_iterator	ret;
-	ret = this->clients.find(fd);
-	if (ret == this->clients.end())
+	ret = _clients.find(fd);
+	if (ret == _clients.end())
 		return (NULL);
 	return (ret->second);
 }
 
-
-void	Server::setPortNumber(char *portNumber) {	this->portNumber = portNumber;	}
+void	Server::setPortNumber(char *portNumber) { this->portNumber = portNumber; }
 
 void Server::setCommandList() {
 	_commandList.insert(std::make_pair("ADDMOTD", addmotd));

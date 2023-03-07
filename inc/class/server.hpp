@@ -35,14 +35,14 @@ class Server
 
 
 		/************ Getters / Setters ************/
-		std::map<std::string, fct_cmd>		&getCommandList(void); 
+		std::map<std::string, fct_cmd>		&getCommandList(); 
 		char*								getPortNumber() const ;
 		char*								getPassword() const ;
 		int									getTimeout() const ;
 		int									getServerSocket() const ;
 		struct sockaddr_in					getServerAddress() const ;
 		std::vector<struct pollfd>			getFds() const ;
-		const std::map<int, Client*>		&getClients() const ;
+		std::map<int, Client*>				&getClients();
 		Client*								getUser(int fd) const ;
 		std::map<std::string, Channel>		&getChannels();
 		std::map<std::string, std::string>	getOper() const ;
@@ -60,8 +60,7 @@ class Server
 		int									s_socket;
 		struct sockaddr_in		 			s_address;
 		std::vector<struct pollfd>		 	fds;
-		// Client							*client;		//créer un vector ou une map pour pouvoir recevoir plusieurs clients
-		std::map<int, Client*>				clients;		//key: fd, value: client
+		std::map<int, Client*>				_clients;		//key: fd, value: client
 		std::map<std::string, Channel>		_channels;
 		std::map<std::string, std::string>	_oper;
 
