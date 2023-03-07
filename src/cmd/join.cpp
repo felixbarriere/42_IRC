@@ -2,10 +2,8 @@
 
 void	join(Server *server, Client *client) {
 	(void) server;
-	(void) client;
-	// if (!client->getMessage()->getParams().size()) {
-
-	// }
+	if (!client->getMessage()->getParams().size())
+		reply(client, ERR_NEEDMOREPARAMS + client->getNick() + ": err need more params");
 	// std::map<std::string, Channel>::iterator	it = server->getChannels().find(client->getMessage()->getParams()[0]);
 	// if (it == server->getChannels().end()) {
 	// 	if (client->getChannel())
