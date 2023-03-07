@@ -1,6 +1,8 @@
 #include "../../inc/utils.hpp"
 
 void	join(Server *server, Client *client) {
+	(void) server;
+	(void) client;
 	// if (!client->getMessage()->getParams().size()) {
 
 	// }

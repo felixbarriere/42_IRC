@@ -11,11 +11,11 @@ Client::Client(): _c_socket(-1)
 
 Client::Client(int client_socket, struct sockaddr_in client_address, Server *server):
 	_welcomeMsg(false),
+	_user(NULL),
+	_nick(NULL),
 	_c_socket(client_socket),
 	_channel(NULL),
-	_server(server),
-	_nick(NULL),
-	_user(NULL)
+	_server(server)
 {
 	std::cout << "Constructor CLIENT" << std::endl << std::endl;
 
@@ -42,6 +42,9 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_modes.insert(std::pair<char, bool>('u', false));
 	_modes.insert(std::pair<char, bool>('v', false));
 	_modes.insert(std::pair<char, bool>('w', false));
+
+	std::cout << "PREFIX: " << getPrefix() << std::endl;
+
 }
 
 Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le const par copy
