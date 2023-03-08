@@ -66,6 +66,23 @@ Client::~Client()
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
+void	Client::sendMsg2(std::string str)
+{
+	ssize_t 		ret = 0;	//number of bytes sent
+	// std::string		toSend = _message->getPrefix() + str;
+	std::string		toSend =  _nick + " " + str;
+	
+	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << toSend << "]" << std::endl;
+	toSend += "\r\n";
+	
+	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
+	if (ret == -1)
+		std::cout << "send() failed " << std::endl;
+	std::cout << "ret:  " << ret << std::endl;
+	
+	str.clear();
+}
+
 void	Client::sendMsg(std::string str)
 {
 	ssize_t 		ret = 0;	//number of bytes sent
@@ -78,7 +95,7 @@ void	Client::sendMsg(std::string str)
 	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		std::cout << "send() failed " << std::endl;
-	// std::cout << "ret:  " << ret << std::endl;
+	std::cout << "ret:  " << ret << std::endl;
 	
 	str.clear();
 }
