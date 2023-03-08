@@ -18,13 +18,13 @@
 
 Message::Message() //:_message(NULL), _prefix(), _cmd(), _params()
 {
-	std::cout << "Default constructor MESSAGE" << std::endl << std::endl;
+	// std::cout << "Default constructor MESSAGE" << std::endl << std::endl;
 }
 
 Message::Message(Client *client)
 {
 	this->_client = client;
-	std::cout << "constructor MESSAGE" << std::endl << std::endl;
+	// std::cout << "constructor MESSAGE" << std::endl << std::endl;
 }
 
 Message::Message(const Message &src):_message(src._message), _prefix(src._prefix), _cmd(src._cmd), _params(src._params)

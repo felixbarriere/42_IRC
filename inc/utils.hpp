@@ -8,7 +8,6 @@
 //*****  Configs  *****
 # define NAME "irc" 
 //max 63 ch-s
-# define MOTD "hola chicos!"
 # define VERSION "1.0"
 # define MAX_BACKLOGS 5
 //the maximum value is system-dependent (usually 5)
@@ -17,6 +16,13 @@
 # define OPER_PASSWORD "pwd"
 # define PING 30
 # define TIMEOUT 5000
+
+/*** REPLY CODE ***/
+
+# define RPL_WELCOME "001 "
+# define RPL_YOURHOST "002 "
+# define RPL_CREATED "003 "
+# define RPL_MYINFO "004 "
 
 /*** COMMAND ERRORS ***/
 
@@ -36,6 +42,7 @@
 # include <netinet/in.h>
 # include <poll.h>
 # include <signal.h>
+# include <sstream>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/socket.h>
@@ -72,11 +79,13 @@ void	join(Server *server, Client *client);
 void	list(Server *server, Client *client);
 void	mode(Server *server, Client *client);
 void	motd(Server *server, Client *client);
+void	opermotd(Server *server, Client *client);
 void	msg(Server *server, Client *client);
 void	names(Server *server, Client *client);
 void	nick(Server *server, Client *client);
 void	ping(Server *server, Client *client);
 void	user(Server *server, Client *client);
+void	wallops(Server *server, Client *client);
 void	whoIs(Server *server, Client *client);
 
 #endif

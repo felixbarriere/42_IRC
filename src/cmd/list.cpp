@@ -5,7 +5,7 @@ void	list(Server *server, Client *client) {
 	while (it != server->getChannels().end()) {
 		std::map<char, bool>::iterator	m = it->second.getModes().find('s');
 		if (!(m->second) || (m->second && client->getModes().find('o')->second))
-			std::cout << it->first << std::endl;
+			client->sendMsg(it->first);
 		it++;
 	}
 }

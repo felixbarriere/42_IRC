@@ -6,7 +6,7 @@
 
 Client::Client(): _c_socket(-1)
 {	
-	std::cout << "Default constructor CLIENT" << std::endl << std::endl;
+	// std::cout << "Default constructor CLIENT" << std::endl << std::endl;
 }
 
 Client::Client(int client_socket, struct sockaddr_in client_address, Server *server):
@@ -17,7 +17,7 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_channel(NULL),
 	_server(server)
 {
-	std::cout << "Constructor CLIENT" << std::endl << std::endl;
+	// std::cout << "Constructor CLIENT" << std::endl << std::endl;
 
 	this->_c_address = inet_ntoa(client_address.sin_addr);
 	
@@ -59,7 +59,7 @@ Client &Client::operator=(const Client &rhs)
 Client::~Client() 
 {	
 	close(this->_c_socket);
-	std::cout << "DEBUG ===> Destructor CLIENT" << std::endl << std::endl;
+	// std::cout << "DEBUG ===> Destructor CLIENT" << std::endl << std::endl;
 }
 
 /**********************************************************************************************************/
@@ -90,19 +90,28 @@ void	Client::welcome_msg()
 	std::string		str;
 
 	// str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
-	str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_message->getPrefix();
-	std::cout << "DEBUG == > STR: " << str << std::endl;
+	str = RPL_WELCOME + this->_nick + ": Welcome to the Internet Relay Network " + this->_message->getPrefix();
+	// std::cout << "DEBUG == > STR: " << str << std::endl;
 	this->sendMsg(str);
 
-	str = "002 " + this->_nick + ": Your host is " + NAME + ", running version " + VERSION;
+	str = RPL_YOURHOST + this->_nick + ": Your host is " + NAME + ", running version " + VERSION;
 	this->sendMsg(str);
 
-	str = "003 " + this->_nick +": This server was create " + "now";	//ctime(&(time(0)))
+	str = RPL_CREATED + this->_nick +": This server was create " + "now";	//ctime(&(time(0)))
 	this->sendMsg(str);
 	
-	str = "004 " + this->_nick + " " + NAME + " " + VERSION;
+	str = RPL_MYINFO + this->_nick + " " + NAME + " " + VERSION;
 	this->sendMsg(str);
-	this->sendMsg(MOTD);
+
+	std::ifstream	ifs;
+	if (getModes().find('o')->second)
+		ifs.open("src/motd/omotd.txt");
+	else
+		ifs.open("src/motd/motd.txt");
+	std::stringstream	s;
+	s << ifs.rdbuf();
+	sendMsg(s.str());
+
 }
 
 void	Client::createCommandList()  //changer nom function

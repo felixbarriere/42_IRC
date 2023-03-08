@@ -15,8 +15,8 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);//AF_INET - IPv4
     if (this->s_socket < 0)
 		SERVER_ERR("Error during socket creation");
-	else
-		std::cout << "SOCKET CREATION OK" << std::endl;
+	// else
+		// std::cout << "SOCKET CREATION OK" << std::endl;
 
 	//rendre le socket non-bloquant
 	if (setsockopt(s_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
@@ -33,14 +33,14 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 	// Lier l'adresse au socket du serveur
 	if (bind(this->s_socket, (struct sockaddr *) &this->s_address, sizeof(this->s_address)) < 0)
         SERVER_ERR("Error during bind");   // try above 1024: the first 1024 ports are 'special' and usually need super user privileges to use them
-	else
-		std::cout << "BIND OK" << std::endl;
+	// else
+	// 	std::cout << "BIND OK" << std::endl;
 
 	// Écouter les connexions entrantes
 	if (listen(this->s_socket, 5) < 0) //SOMAXCONN (4096 on school machine)   5: backlog définit une longueur maximale jusqu'à laquelle la file des connexions en attente pour sockfd peut croître.
         SERVER_ERR("Error while listening");
-	else 
-		std::cout << "LISTEN OK" << std::endl;
+	// else 
+	// 	std::cout << "LISTEN OK" << std::endl;
 	setCommandList();
 
 	_oper.insert(std::pair<std::string, std::string>("admin", "pwd"));
@@ -49,7 +49,7 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 
 Server::~Server()
 {
-	std::cout << "DEBUG ===> Destructor, closing server socket" << std::endl << std::endl;
+	// std::cout << "DEBUG ===> Destructor, closing server socket" << std::endl << std::endl;
 	close(this->s_socket);
 }
 
@@ -68,7 +68,7 @@ void	Server::acceptClient(void)
 	client_len = sizeof(client_address);	
     client_socket = accept(this->getServerSocket(), (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
     
-	std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
+	// std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
 
 	if (client_socket == -1)
         SERVER_ERR("Error while accepting connexion");
@@ -122,10 +122,10 @@ void	Server::receiveRequest(int	client_socket)
 		this->getUser(client_socket)->setBuffer(this->getUser(client_socket)->getBuffer().append(buffer_str));	// strcat() works only for char *
 		this->getUser(client_socket)->createCommandList();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 	}
-	else 
-	{
-		std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl << std::endl;
-	}
+	// else 
+	// {
+	// 	std::cout << "DEBUG ===> recv > 0 : MESSAGE FROM CLIENT"  << std::endl << std::endl;
+	// }
 	
 	buffer_str.clear();
 }
@@ -210,12 +210,14 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("GLOBOPS", globops));
 	_commandList.insert(std::make_pair("JOIN", join));
 	_commandList.insert(std::make_pair("LIST", list));
-	_commandList.insert(std::make_pair("MODE", motd));
-	_commandList.insert(std::make_pair("MOTD", mode));
+	_commandList.insert(std::make_pair("MODE", mode));
+	_commandList.insert(std::make_pair("MOTD", motd));
+	_commandList.insert(std::make_pair("OPERMOTD", opermotd));
 	_commandList.insert(std::make_pair("MSG", msg));
 	_commandList.insert(std::make_pair("NAMES", names));
-	_commandList.insert(std::make_pair("NICK", names));
+	_commandList.insert(std::make_pair("NICK", nick));
 	_commandList.insert(std::make_pair("PING", ping));
 	_commandList.insert(std::make_pair("USER", user));
+	_commandList.insert(std::make_pair("WALLOPS", wallops));
 	_commandList.insert(std::make_pair("WHOIS", whoIs));
 }

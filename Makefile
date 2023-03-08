@@ -23,12 +23,14 @@ SRCS = 	main.cpp \
 		cmd/join.cpp \
 		cmd/list.cpp \
 		cmd/motd.cpp \
+		cmd/opermotd.cpp \
 		cmd/msg.cpp \
 		cmd/names.cpp \
 		cmd/nick.cpp \
 		cmd/user.cpp \
 		cmd/mode.cpp \
 		cmd/ping.cpp \
+		cmd/wallops.cpp \
 		cmd/whois.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
