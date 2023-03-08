@@ -26,7 +26,9 @@
 
 /*** COMMAND ERRORS ***/
 
-# define ERR_NEEDMOREPARAMS "462"
+# define ERR_NEEDMOREPARAMS 		"461 "
+# define ERR_ALREADYREGISTERED		"462 "
+
 
 /*** LIBRARY ***/
 

@@ -42,7 +42,7 @@ class Message
 		std::string 				getMessage(void) const;
 		std::string 				getPrefix(void) const;
 		std::string 				getCmd(void) const;
-		std::vector<std::string>	getParams(void) const;
+		std::vector<std::string>	&getParams(void);
 
 		/************ Attributs ************/
 	private:

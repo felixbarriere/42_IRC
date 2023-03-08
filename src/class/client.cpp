@@ -155,6 +155,7 @@ Channel					*Client::getChannel() const { return (_channel); }
 Server					*Client::getServer() const { return (_server); }
 std::string				Client::getNick() const { return (_nick); }
 std::string				Client::getUser() const { return (_user); }
+std::string				Client::getRealName() const { return (_realName); }
 std::string 			Client::getHostname() const { return (_hostname); }
 std::map<char, bool>	&Client::getModes() { return (_modes); }
 Message					*Client::getMessage() const { return (_message); }
@@ -166,4 +167,5 @@ void	Client::setBuffer(const std::string str) { _buffer = str; }
 void	Client::setChannel(Channel *channel) { _channel = channel; }
 void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
+void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
