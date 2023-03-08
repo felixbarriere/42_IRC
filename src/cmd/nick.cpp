@@ -24,8 +24,10 @@ void	nick(Server *server, Client *client) {
 
 // solutions: tester une boucle sur send()
 // solutions: envoyer nickname au lieu de prefix
+// solutions: manque le num RPL?
+// solutions: le client attend d'abord un PONG du server pour etre sur que la communication est ok?
 
-
+// ATTENTION: si meme syntaxe, renvoyer 433 et irssi se charge lui meme d'ajouter un "_"
 
 
 // NICK ==> irssi indique le Nickname, pas d'envoi au serveur?

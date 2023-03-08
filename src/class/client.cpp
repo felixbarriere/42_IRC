@@ -69,21 +69,17 @@ Client::~Client()
 void	Client::sendMsg(std::string str)
 {
 	ssize_t 		ret = 0;	//number of bytes sent
-	// std::string		toSend = ":" + _message->getPrefix() + str;
-	std::string		toSend = ":" + _nick + " " + str;
+	std::string		toSend = ":" + _message->getPrefix() + str;
+	// std::string		toSend = ":" + _nick + " " + str;
 	
-	// toSend += str;
 	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << toSend << "]" << std::endl;
 	toSend += "\r\n";
 	
 	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		std::cout << "send() failed " << std::endl;
-	std::cout << "ret:  " << ret << std::endl;
+	// std::cout << "ret:  " << ret << std::endl;
 	
-	// std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << "test" << "]" << std::endl;
-
-	// SERVER_ERR("send() failed");
 	str.clear();
 }
 
@@ -109,9 +105,9 @@ void	Client::welcome_msg()
 	this->sendMsg(MOTD);
 }
 
-void	Client::createCommandList()
+void	Client::createCommandList()  //changer nom function
 {
-	std::cout << "DEBUG == > BUFFER CLIENT:" << std::endl << this->getBuffer() << std::endl;
+	// std::cout << "DEBUG == > BUFFER CLIENT:" << std::endl << this->getBuffer() << std::endl;
 
 	this->_message->createMessage();	
 

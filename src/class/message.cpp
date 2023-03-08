@@ -90,11 +90,11 @@ void Message::createMessage()
 
 		if (_client->getServer()->getCommandList().find(_cmd) != ite)
 		{
-			std::cout << "CMD " << _cmd << " EXISTS" << std::endl;
+			// std::cout << "CMD " << _cmd << " EXISTS" << std::endl;
 			_client->getServer()->getCommandList()[_cmd](_client->getServer(), _client);
 		}
-		else
-			std::cout << "CMD " << _cmd << " doesn't EXISTS :(" << std::endl;
+		// else
+		// 	std::cout << "CMD " << _cmd << " doesn't EXISTS :(" << std::endl;
 	}
 }
 
