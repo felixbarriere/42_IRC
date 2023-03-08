@@ -5,7 +5,7 @@ void	msg(Server *server, Client *client) {
 	while (it != server->getClients().end()) {
 		if (it->second->getUser() == client->getMessage()->getParams()[0]) {
 			for (unsigned long i = 1; i < client->getMessage()->getParams().size(); i++)
-				std::cout << client->getMessage()->getParams()[i] << std::endl;
+				it->second->sendMsg(client->getMessage()->getParams()[i]);
 			return ;
 		}
 		it++;

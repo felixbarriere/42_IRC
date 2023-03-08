@@ -19,6 +19,7 @@ SRCS = 	main.cpp \
 		cmd/addmotd.cpp \
 		cmd/addomotd.cpp \
 		cmd/chgname.cpp \
+		cmd/globops.cpp \
 		cmd/join.cpp \
 		cmd/list.cpp \
 		cmd/motd.cpp \

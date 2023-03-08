@@ -67,6 +67,7 @@ class Server;
 void	addmotd(Server *server, Client *client);
 void	addomotd(Server *server, Client *client);
 void	chgname(Server *server, Client *client);
+void	globops(Server *server, Client *client);
 void	join(Server *server, Client *client);
 void	list(Server *server, Client *client);
 void	mode(Server *server, Client *client);
