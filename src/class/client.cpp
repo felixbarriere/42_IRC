@@ -69,12 +69,21 @@ Client::~Client()
 void	Client::sendMsg(std::string str)
 {
 	ssize_t 		ret = 0;	//number of bytes sent
-
-	// ssize_t send(int socket, const void *buffer, size_t length, int flags);
-	ret = send(this->_c_socket, str.c_str(), str.length(), MSG_NOSIGNAL);
-	if (ret == -1)
-		SERVER_ERR("send() failed");
+	// std::string		toSend = ":" + _message->getPrefix() + str;
+	std::string		toSend = ":" + _nick + " " + str;
 	
+	// toSend += str;
+	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << toSend << "]" << std::endl;
+	toSend += "\r\n";
+	
+	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
+	if (ret == -1)
+		std::cout << "send() failed " << std::endl;
+	std::cout << "ret:  " << ret << std::endl;
+	
+	// std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << "test" << "]" << std::endl;
+
+	// SERVER_ERR("send() failed");
 	str.clear();
 }
 
@@ -83,18 +92,19 @@ void	Client::welcome_msg()
 	this->_welcomeMsg = true;
 
 	std::string		str;
-	
-	str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname + "\r\n";
+
+	// str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
+	str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_message->getPrefix();
 	std::cout << "DEBUG == > STR: " << str << std::endl;
 	this->sendMsg(str);
 
-	str = "002 " + this->_nick + ": Your host is " + NAME + ", running version " + VERSION + "\r\n";
+	str = "002 " + this->_nick + ": Your host is " + NAME + ", running version " + VERSION;
 	this->sendMsg(str);
 
-	str = "003 " + this->_nick +": This server was create " + "now"  + "\r\n";	//ctime(&(time(0)))
+	str = "003 " + this->_nick +": This server was create " + "now";	//ctime(&(time(0)))
 	this->sendMsg(str);
 	
-	str = "004 " + this->_nick + " " + NAME + " " + VERSION  + "\r\n";
+	str = "004 " + this->_nick + " " + NAME + " " + VERSION;
 	this->sendMsg(str);
 	this->sendMsg(MOTD);
 }
@@ -106,8 +116,10 @@ void	Client::createCommandList()
 	this->_message->createMessage();	
 
 	if (this->_welcomeMsg == false)
+	{
 		this->welcome_msg();
-	if (this->_buffer.empty() == true)
+	}
+	if (this->_buffer.empty() != true)
 		this->_buffer.clear();
 }
 
@@ -141,6 +153,7 @@ std::string				Client::getUser() const { return (_user); }
 std::string 			Client::getHostname() const { return (_hostname); }
 std::map<char, bool>	&Client::getModes() { return (_modes); }
 Message					*Client::getMessage() const { return (_message); }
+bool					Client::getWelcome() const { return (_welcomeMsg); }
 
 /************ Setters ************/
 
