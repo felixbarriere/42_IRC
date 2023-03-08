@@ -105,7 +105,7 @@ void	Server::receiveRequest(int	client_socket)
 
 	std::string buffer_str(buffer);
 
-	std::cout << "Message from client #" << client_socket << " (" << this->getUser(client_socket)->getNick() << ") >> " << buffer_str  << std::endl;
+	std::cout << "Message from client #" << client_socket << " (" << this->getUser(client_socket)->getNick() << ") >> " << buffer_str;
 
 
 	if (res == -1)
