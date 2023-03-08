@@ -26,6 +26,7 @@ class Client
 		void		welcome_msg();
 		void		createCommandList();
 		void		sendMsg(std::string str);
+		void		sendMsg2(std::string str);
 		std::string	getPrefix() const;
 		//bool conn(std::string, int);
     // bool send_data(std::string data);
