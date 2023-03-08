@@ -105,6 +105,9 @@ void	Server::receiveRequest(int	client_socket)
 
 	std::string buffer_str(buffer);
 
+	std::cout << "Message from client #" << client_socket << " (" << this->getUser(client_socket)->getNick() << ") >> " << buffer_str  << std::endl;
+
+
 	if (res == -1)
         SERVER_ERR("Error during receipt");
 	else if (res == 0)
@@ -115,7 +118,7 @@ void	Server::receiveRequest(int	client_socket)
 	}
 	else if (res > 0 && (buffer_str.rfind("\n\r")) != (buffer_str.size() - 2))
 	{
-		std::cout << "Command incomplete: on append() le buffer recu par bouts" <<std::endl;
+		// std::cout << "Command incomplete: on append() le buffer recu par bouts" <<std::endl;
 		this->getUser(client_socket)->setBuffer(this->getUser(client_socket)->getBuffer().append(buffer_str));	// strcat() works only for char *
 		this->getUser(client_socket)->createCommandList();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 	}
