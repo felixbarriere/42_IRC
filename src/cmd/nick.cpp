@@ -24,6 +24,8 @@ void	nick(Server *server, Client *client) {
 
 // solutions: tester une boucle sur send()
 // solutions: envoyer nickname au lieu de prefix
+// solutions: manque le num RPL?
+// solutions: le client attend d'abord un PONG du server pour etre sur que la communication est ok?
 
 
 
