@@ -49,7 +49,7 @@ Message::~Message()
 
 int Message::tokenizer(std::string line)
 {
-	// std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
+	std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
 	
 	this->_cmd.clear();
 	this->_params.clear();
@@ -133,7 +133,7 @@ std::string Message::getCmd(void) const
 	return (this->_cmd);
 }
 
-std::vector<std::string> Message::getParams(void) const
+std::vector<std::string> &Message::getParams(void)
 {
 	return (this->_params);
 }

@@ -40,6 +40,7 @@ class Client
 		Server					*getServer() const ;
 		std::string				getNick() const ;
 		std::string				getUser() const ;
+		std::string				getRealName() const ;
 		std::string		 		getHostname() const;
 		std::map<char, bool>	&getModes();
 		Message					*getMessage() const ;
@@ -51,6 +52,7 @@ class Client
 		void	setBuffer(const std::string str);
 		void	setNick(const std::string nick);
 		void	setUser(const std::string user);
+		void	setRealName(const std::string realName);
 		void	setHostname(std::string str);	//utile?
 
 	private:
@@ -62,6 +64,7 @@ class Client
 		std::string							_buffer; //pour stocker l'integralite du message recu
 		std::string							_user;
 		std::string							_nick;
+		std::string							_realName;
 		std::string							_hostname;
 		int									_c_socket;
 		std::string 						_c_address;
