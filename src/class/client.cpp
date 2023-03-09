@@ -11,6 +11,7 @@ Client::Client(): _c_socket(-1)
 
 Client::Client(int client_socket, struct sockaddr_in client_address, Server *server):
 	_welcomeMsg(false),
+	_authorized(false),
 	_user(),
 	_nick(),
 	_c_socket(client_socket),
@@ -68,6 +69,9 @@ Client::~Client()
 
 void	Client::sendMsg2(std::string str)
 {
+	if (getAuthorized() == false)
+		return ;
+		
 	ssize_t 		ret = 0;	//number of bytes sent
 	// std::string		toSend = _message->getPrefix() + str;
 	std::string		toSend =  _nick + " " + str;
@@ -85,6 +89,9 @@ void	Client::sendMsg2(std::string str)
 
 void	Client::sendMsg(std::string str)
 {
+	if (getAuthorized() == false)
+		return ;
+
 	ssize_t 		ret = 0;	//number of bytes sent
 	std::string		toSend = ":" + _message->getPrefix() + str;
 	// std::string		toSend = ":" + _nick + " " + str;
@@ -177,6 +184,8 @@ std::string 			Client::getHostname() const { return (_hostname); }
 std::map<char, bool>	&Client::getModes() { return (_modes); }
 Message					*Client::getMessage() const { return (_message); }
 bool					Client::getWelcome() const { return (_welcomeMsg); }
+bool					Client::getAuthorized() const { return (_authorized); }
+
 
 /************ Setters ************/
 
@@ -186,3 +195,5 @@ void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
+void	Client::setAuthorized(bool	isAuth) { _authorized = isAuth; }
+

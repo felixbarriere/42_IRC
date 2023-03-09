@@ -46,6 +46,7 @@ class Client
 		std::map<char, bool>	&getModes();
 		Message					*getMessage() const ;
 		bool					getWelcome() const ;
+		bool					getAuthorized() const ;
 		
 		/************ Setters ************/
 
@@ -55,6 +56,7 @@ class Client
 		void	setUser(const std::string user);
 		void	setRealName(const std::string realName);
 		void	setHostname(std::string str);	//utile?
+		void	setAuthorized(bool);
 
 	private:
 		//pour stocker l'integralite du message recu
@@ -62,6 +64,7 @@ class Client
 		/************ Attributs ************/
 
 		bool								_welcomeMsg;	//le welcome_message a-t-il été envoyé?
+		bool								_authorized;	//le welcome_message a-t-il été envoyé?
 		std::string							_buffer; //pour stocker l'integralite du message recu
 		std::string							_user;
 		std::string							_nick;

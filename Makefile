@@ -32,6 +32,7 @@ SRCS = 	main.cpp \
 		cmd/ping.cpp \
 		cmd/wallops.cpp \
 		cmd/whois.cpp \
+		cmd/pass.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
 
