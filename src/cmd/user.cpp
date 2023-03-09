@@ -16,12 +16,10 @@ void	user(Server *server, Client *client) {
 		std::vector<std::string>::const_iterator ite = client->getMessage()->getParams().end();
 		for (int i = 0; it != ite; it++, i++)
 		{
-			std::cout << "ET ENCORE ICI:" << *it  << std::endl;
-			std::cout << "ET ENCORE ICI2:" << (*it)[0]  << std::endl;
+			// std::cout << "ET ENCORE ICI2:" << (*it)[0]  << std::endl;
 			if ((*it)[0] == ':')
 				client->setRealName((*it).substr(1, ((*it).length() - 1)));
 		}
-		std::cout << "DEBUG ===> real_name: "  << client->getRealName() << std::endl;
 	}
 }
 
