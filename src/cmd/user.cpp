@@ -2,7 +2,7 @@
 
 void	user(Server *server, Client *client) {
 	(void) server;
-	std::cout << "DEBUG ===> USER function called"  << std::endl << std::endl;
+	// std::cout << "DEBUG ===> USER function called"  << std::endl << std::endl;
 
 	if (client->getUser().size() != 0 ) // || client->getWelcome() == true
 		client->sendMsg(ERR_ALREADYREGISTERED + client->getNick() + " USER : already registered");

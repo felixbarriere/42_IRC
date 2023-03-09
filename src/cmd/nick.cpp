@@ -5,7 +5,7 @@
 void	nick(Server *server, Client *client) {
 	(void) server;
 
-	std::cout << "DEBUG ===> NICK function called"  << std::endl << std::endl;
+	// std::cout << "DEBUG ===> NICK function called"  << std::endl << std::endl;
 
 	// check command syntax
 
@@ -13,12 +13,14 @@ void	nick(Server *server, Client *client) {
 		client->setNick(client->getMessage()->getParams()[0]);
 		return ;
 	}
-	else {
+	if (client->getAuthorized() == true)
+	{
 		// utiliser send pour indiquer au client que le nickname à changé
 		// client->sendMsg("NICK " + client->getMessage()->getParams()[0]);
-		client->sendMsg2("NICK " + client->getMessage()->getParams()[0]);
+		client->sendMsg("NICK " + client->getMessage()->getParams()[0]);
 		client->setNick(client->getMessage()->getParams()[0]);
 	}
+	
 
 	// créer un vector dans Server pour enregistrer les userName et nickNames existants
 

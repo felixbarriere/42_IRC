@@ -2,12 +2,6 @@
 
 void	pass(Server *server, Client *client)
 {
-	std::cout << "DEBUG ===> PASS function called"  << std::endl << std::endl;
-	std::cout << "DEBUG ===> serv password: "  << server->getPassword() << std::endl;
-	std::cout << "DEBUG ===> test: "  << client->getMessage()->getParams()[0] << std::endl;
-	std::cout << "DEBUG ===> authorized: "  << client->getAuthorized() << std::endl;
-
-
 	if (client->getMessage()->getParams().size() == 0 && client->getAuthorized() == false)
 	{
 		client->setAuthorized(true);
@@ -17,7 +11,7 @@ void	pass(Server *server, Client *client)
 	else if (client->getMessage()->getParams().size() == 1)
 	{
 		if (client->getAuthorized() == true)
-			client->sendMsg(ERR_ALREADYREGISTERED + client->getNick() + " PASS : already registered");
+			client->sendMsg(ERR_ALREADYREGISTERED + client->getNick() + " PASS :Already registered");
 		else if (client->getMessage()->getParams()[0] == server->getPassword())
 			client->setAuthorized(true);
 		else
@@ -27,10 +21,7 @@ void	pass(Server *server, Client *client)
 			client->setAuthorized(false);
 			// delete (client);
 		}
-			
 	}
-	std::cout << "DEBUG ===> authorized: "  << client->getAuthorized() << std::endl;
-
 }
 
 // ERR_NEEDMOREPARAMS
