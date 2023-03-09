@@ -48,18 +48,20 @@ Message::~Message()
 /**********************************************************************************************************/
 
 void	Message::tokenizer(std::string line) {
-	std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
+	// std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
 	
 	_cmd.clear();
 	_params.clear();
 
 	std::vector<std::string>	temp = ft_split(line, " ");
 
-	if (temp.size() == 2) {
+	if (temp.size() == 2) 
+	{
 		_cmd = temp[0];
 		_params.push_back(temp[1]);
 	}
-	else {	
+	else 
+	{	
 		// la value est constituée de plusieurs strings (ex: USER)
 		_cmd = temp[0];
 		std::vector<std::string>::iterator	it = temp.begin() + 1;

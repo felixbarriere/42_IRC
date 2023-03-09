@@ -67,25 +67,25 @@ Client::~Client()
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
-void	Client::sendMsg2(std::string str)
-{
-	if (getAuthorized() == false)
-		return ;
+// void	Client::sendMsg2(std::string str)
+// {
+// 	if (getAuthorized() == false)
+// 		return ;
 		
-	ssize_t 		ret = 0;	//number of bytes sent
-	// std::string		toSend = _message->getPrefix() + str;
-	std::string		toSend =  _nick + " " + str;
+// 	ssize_t 		ret = 0;	//number of bytes sent
+// 	// std::string		toSend = _message->getPrefix() + str;
+// 	// std::string		toSend =  _nick + str;
 	
-	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << toSend << "]" << std::endl;
-	toSend += "\r\n";
+// 	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << str << "]" << std::endl << std::endl;
+// 	str += "\r\n";
 	
-	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
-	if (ret == -1)
-		std::cout << "send() failed " << std::endl;
-	std::cout << "ret:  " << ret << std::endl;
+// 	ret = send(this->_c_socket, str.c_str(), str.length(), MSG_NOSIGNAL);
+// 	if (ret == -1)
+// 		std::cout << "send() failed " << std::endl;
+// 	std::cout << "ret:  " << ret << std::endl;
 	
-	str.clear();
-}
+// 	str.clear();
+// }
 
 void	Client::sendMsg(std::string str)
 {
@@ -94,17 +94,16 @@ void	Client::sendMsg(std::string str)
 
 	ssize_t 		ret = 0;	//number of bytes sent
 	std::string		toSend = ":" + _message->getPrefix() + str;
-	// std::string		toSend = ":" + _nick + " " + str;
 	
-	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << toSend << "]" << std::endl;
+	std::cout << "#" << this->_c_socket <<  " >> " << toSend << std::endl;
 	toSend += "\r\n";
 	
 	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		std::cout << "send() failed " << std::endl;
-	std::cout << "ret:  " << ret << std::endl;
+	// std::cout << "ret:  " << ret << std::endl;
 	
-	str.clear();
+	toSend.clear();
 }
 
 void	Client::welcome_msg()
@@ -148,9 +147,8 @@ void	Client::initMsg()  //changer nom function
 		_buffer.clear();
 }
 
-std::string	Client::getPrefix() const {
-	if (!_nick.size())
-		return (":" + std::string(NAME));
+std::string	Client::getPrefix() const
+{
 	std::string	prefix = "" + _nick;
 	if (_user.size())
 		prefix += "!" + _user;
