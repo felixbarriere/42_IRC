@@ -3,7 +3,7 @@
 
 /*** MACRO ***/
 
-# define BUFFER_SIZE	512 // max size?
+# define BUFFER_SIZE 512 // max size?
 
 //*****  Configs  *****
 # define NAME "irc" 
@@ -28,7 +28,6 @@
 
 # define ERR_NEEDMOREPARAMS 		"461 "
 # define ERR_ALREADYREGISTERED		"462 "
-
 
 /*** LIBRARY ***/
 

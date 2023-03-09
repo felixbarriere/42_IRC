@@ -19,7 +19,7 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 		// std::cout << "SOCKET CREATION OK" << std::endl;
 
 	//rendre le socket non-bloquant
-	if (setsockopt(s_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
+	if (setsockopt(s_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
 		SERVER_ERR("setsockopt failed");
 	if (fcntl(s_socket, F_SETFL, O_NONBLOCK) == 1)
 		SERVER_ERR("Error while rendering the socket non-blocking");
@@ -59,14 +59,14 @@ Server::~Server()
 
 void	Server::acceptClient(void)
 {
-	int client_socket;
-	struct sockaddr_in client_address;
-	socklen_t client_len;
-	int yes = 1;
+	int					client_socket;
+	struct sockaddr_in	client_address;
+	socklen_t			client_len;
+	int					yes = 1;
 
 	// Accepter la connexion entrante du client	
 	client_len = sizeof(client_address);	
-    client_socket = accept(this->getServerSocket(), (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
+    client_socket = accept(getServerSocket(), (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
     
 	// std::cout << "DEBUG ===>  AFTER ACCEPT: client_socket = " << client_socket << std::endl << std::endl;
 
@@ -85,42 +85,38 @@ void	Server::acceptClient(void)
 	_clients[client_socket] = new Client(client_socket, client_address, this);
 
 	// On ajoute le socket client à notre tableau de fds
-	this->fds.push_back(pollfd());	// fds argument, which is an array of structures of the following form: 
-	this->fds.back().fd = client_socket;
-	this->fds.back().events = POLLIN;		// données en attente de lecture.
-	this->fds.back().revents = POLLIN;
+	fds.push_back(pollfd());	// fds argument, which is an array of structures of the following form: 
+	fds.back().fd = client_socket;
+	fds.back().events = POLLIN;		// données en attente de lecture.
+	fds.back().revents = POLLIN;
 }
 
-void	Server::receiveRequest(int	client_socket)
-{
+void	Server::receiveRequest(int client_socket) {
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
 
 	// std::cout << "DEBUG ===> Receive request" << std::endl << std::endl;
-
 	memset(buffer, 0, BUFFER_SIZE + 1);
 
 	// int recv(int client_socket, void* buffer, size_t len, int flags);
-	res = recv(client_socket , buffer, BUFFER_SIZE, 0);
+	res = recv(client_socket, buffer, BUFFER_SIZE, MSG_DONTWAIT);
 
 	std::string buffer_str(buffer);
 
 	std::cout << "Message from client #" << client_socket << " (" << this->getUser(client_socket)->getNick() << ") >> " << buffer_str;
 
-
 	if (res == -1)
         SERVER_ERR("Error during receipt");
-	else if (res == 0)
-	{
+	else if (res == 0) {
 		delete(_clients[client_socket]);
 		std::cout << "Client is disconnected " << res << std::endl;
 		// SERVER_ERR("Client is disconnected");
 	}
-	else if (res > 0 && (buffer_str.rfind("\n\r")) != (buffer_str.size() - 2))
-	{
+	else {
+	// else if (res > 0 && (buffer_str.rfind("\n\r")) != (buffer_str.size() - 2)) {
 		// std::cout << "Command incomplete: on append() le buffer recu par bouts" <<std::endl;
-		this->getUser(client_socket)->setBuffer(this->getUser(client_socket)->getBuffer().append(buffer_str));	// strcat() works only for char *
-		this->getUser(client_socket)->createCommandList();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
+		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));	// strcat() works only for char *
+		getUser(client_socket)->initMsg();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 	}
 	// else 
 	// {
@@ -132,44 +128,44 @@ void	Server::receiveRequest(int	client_socket)
 
 void Server::init_pollfd_struct(void)
 {
-	this->fds.clear();
-	this->fds.push_back(pollfd());	
-	this->fds.back().fd = this->s_socket;
-	this->fds.back().events = POLLIN;		
-	this->fds.back().revents = 0;
+	fds.clear();
+	fds.push_back(pollfd());	
+	fds.back().fd = s_socket;
+	fds.back().events = POLLIN;		
+	fds.back().revents = 0;
 
 	//la 2eme partie de la fct est censee d'initialiser le reste des clients
+	// std::map<int, Client*>::iterator	it = getClients().begin();
+	// while (it != getClients().end()) {
+	// 	fds.push_back(pollfd());	
+	// 	fds.back().fd = it->first;
+	// 	fds.back().events = POLLIN;
+	// 	fds.back().revents = 0;
+	// 	it++;
+	// }
 }
 
 void	Server::usePoll(void)
 {
 	init_pollfd_struct();
-
 	while(!serv_run)
 	{ 
 		// Préparer le vector de fd pour poll()
-		if (poll(fds.data(), this->fds.size(), this->timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
+		if (poll(fds.data(), fds.size(), timeout) < 0)	// ou &this->fds[0], mais fds.data() permet de boucler par la suite
 	        SERVER_ERR("Error Poll()");
-
-		for (size_t i = 0; i < this->fds.size(); i++)
+		for (size_t i = 0; i < fds.size(); i++)
 		{
-			if (this->fds[i].revents != 0) //revent == 1 : on a recu une requete de irssi
+			if (fds[i].revents) //revent == 1 : on a recu une requete de irssi
 			{
-				if (this->fds[i].revents & POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
+				if (fds[i].revents & POLLIN)	// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
 				{
 					if (i == 0)
-					{
-						this->acceptClient();
-					}
+						acceptClient();
 					else
-					{
-						this->receiveRequest(fds[i].fd);  //	on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
-					}
+						receiveRequest(fds[i].fd);  //	on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
 				}
-				else if (this->fds[i].revents & POLLRDHUP || this->fds[i].revents & POLLERR)
-				{
+				else if (fds[i].revents & POLLRDHUP || fds[i].revents & POLLERR)
 	        		SERVER_ERR("Error Poll() in FDS");
-				}
 			}
 		}
 		// std::cout << std::endl << " Server running (sleep: 1)" << std::endl;

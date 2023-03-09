@@ -47,51 +47,43 @@ Message::~Message()
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
-int Message::tokenizer(std::string line)
-{
+void	Message::tokenizer(std::string line) {
 	std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
 	
-	this->_cmd.clear();
-	this->_params.clear();
+	_cmd.clear();
+	_params.clear();
 
 	std::vector<std::string>	temp = ft_split(line, " ");
 
-	if (temp.size() == 2)
-	{
-			this->_cmd = temp[0];
-			this->_params.push_back(temp[1]);
+	if (temp.size() == 2) {
+		_cmd = temp[0];
+		_params.push_back(temp[1]);
 	}
-	else	// la value est constituée de plusieurs strings (ex: USER)
-	{
-		this->_cmd = temp[0];
+	else {	
+		// la value est constituée de plusieurs strings (ex: USER)
+		_cmd = temp[0];
 		std::vector<std::string>::iterator	it = temp.begin() + 1;
 		for (; it != temp.end(); it++)
-			this->_params.push_back(*it);
+			_params.push_back(*it);
 	}
-	return (0);
 }
 
-void Message::createMessage()
-{
-	std::vector<std::string>	lines(ft_split(this->_client->getBuffer(), "\n\r"));
-
-	for(unsigned long i = 0; i < lines.size() ; i++)
-	{
+void Message::createMessage() {
+	std::vector<std::string>	lines(ft_split(_client->getBuffer(), "\n\r"));
+	for (unsigned long i = 0; i < lines.size() ; i++) {
 		// répartir la ligne en _cmd et _params
-		if (tokenizer(lines[i]) != 0)
-		{
-			std::cout << "Error tokenizer" << std::endl;
-			break ;		// delete le message?
-		}
-
+		tokenizer(lines[i]);
+		// if (tokenizer(lines[i]))
+		// {
+		// 	std::cout << "Error tokenizer" << std::endl;
+		// 	break ;		// delete le message?
+		// }
 		// check cmd then call command function
 		std::map<std::string, fct_cmd>::iterator	ite;
 		ite = _client->getServer()->getCommandList().end();
-
-		if (_client->getServer()->getCommandList().find(_cmd) != ite)
-		{
-			// std::cout << "CMD " << _cmd << " EXISTS" << std::endl;
-			_client->getServer()->getCommandList()[_cmd](_client->getServer(), _client);
+		if (_client->getServer()->getCommandList().find(_cmd) != ite) {
+			if (_client->getWelcome() || getCmd() == "PASS" || getCmd() == "NICK" || getCmd() == "USER")
+				_client->getServer()->getCommandList()[_cmd](_client->getServer(), _client);
 		}
 		// else
 		// 	std::cout << "CMD " << _cmd << " doesn't EXISTS :(" << std::endl;

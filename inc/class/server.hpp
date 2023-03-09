@@ -33,7 +33,6 @@ class Server
 		void							acceptClient();
 		void							receiveRequest(int	client_socket);
 
-
 		/************ Getters / Setters ************/
 		std::map<std::string, fct_cmd>		&getCommandList(); 
 		char*								getPortNumber() const ;

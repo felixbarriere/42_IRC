@@ -18,23 +18,23 @@
 
 
 #ifndef MESSAGE_HPP
-#define MESSAGE_HPP
+# define MESSAGE_HPP
 
-class Message
-{
+class Message {
+
 	public:
-		/************ Constructors / Destructor ************/
+	
+		/************ Member functions ************/
 		Message();
 		Message(Client *client);
 		Message(const Message &src);
 		Message &operator=(const Message &rhs);
 		~Message();
 
-		/************ Getters / Setters ************/
 		void 	createMessage();
-		int	 	tokenizer(std::string line);		// peupler les attributs puis appeler la fonction correspondante. On reset le tout a chaque commande.
-		void	tempUserNick(std::string str);
+		void	tokenizer(std::string line);		// peupler les attributs puis appeler la fonction correspondante. On reset le tout a chaque commande.
 		
+		/************ Getters / Setters ************/
 		void setPrefix(std::string prefix);
 		void setCmd(std::string cmd);
 		void setParams(std::vector<std::string> params);
@@ -44,15 +44,14 @@ class Message
 		std::string 				getCmd(void) const;
 		std::vector<std::string>	&getParams(void);
 
-		/************ Attributs ************/
 	private:
+
+		/************ Attributes ************/
 		Client						*_client;
 		std::string					_message;   //buffer
 		std::string 				_prefix;	//"Le préfix n'est utilisé que pour un message provenant d'un serveur, il doit être ignoré s'il provient d'un client."
 		std::string					_cmd;
 		std::vector<std::string>	_params;
-
-	protected:
 
 };
 

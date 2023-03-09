@@ -131,18 +131,14 @@ void	Client::welcome_msg()
 
 }
 
-void	Client::createCommandList()  //changer nom function
+void	Client::initMsg()  //changer nom function
 {
 	// std::cout << "DEBUG == > BUFFER CLIENT:" << std::endl << this->getBuffer() << std::endl;
-
-	this->_message->createMessage();	
-
-	if (this->_welcomeMsg == false)
-	{
-		this->welcome_msg();
-	}
-	if (this->_buffer.empty() != true)
-		this->_buffer.clear();
+	_message->createMessage();	
+	if (!_welcomeMsg)
+		welcome_msg();
+	if (!_buffer.empty())
+		_buffer.clear();
 }
 
 std::string	Client::getPrefix() const {

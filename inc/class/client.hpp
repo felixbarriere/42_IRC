@@ -24,7 +24,7 @@ class Client
 
 		void		addBuff(char buff_msg);
 		void		welcome_msg();
-		void		createCommandList();
+		void		initMsg();
 		void		sendMsg(std::string str);
 		void		sendMsg2(std::string str);
 		std::string	getPrefix() const;

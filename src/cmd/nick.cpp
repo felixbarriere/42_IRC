@@ -9,20 +9,16 @@ void	nick(Server *server, Client *client) {
 
 	// check command syntax
 
-	if (client->getWelcome() == false)
-	{
+	if (!client->getWelcome()) {
 		client->setNick(client->getMessage()->getParams()[0]);
 		return ;
 	}
-	else
-	{
+	else {
 		// utiliser send pour indiquer au client que le nickname à changé
 		// client->sendMsg("NICK " + client->getMessage()->getParams()[0]);
 		client->sendMsg2("NICK " + client->getMessage()->getParams()[0]);
 		client->setNick(client->getMessage()->getParams()[0]);
 	}
-
-
 
 	// créer un vector dans Server pour enregistrer les userName et nickNames existants
 
