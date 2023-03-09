@@ -13,7 +13,14 @@ void	nick(Server *server, Client *client) {
 		client->setNick(client->getMessage()->getParams()[0]);
 		return ;
 	}
-	if (client->getAuthorized() == true)
+	
+	if (client->getMessage()->getParams().size() == 0)
+	{
+		std::cout << "DEBUG ===> ICI"  << std::endl << std::endl;
+
+		client->sendMsg("431 :No nickname given");  //ERR_NONICKNAMEGIVEN
+	}
+	else if (client->getAuthorized() == true)
 	{
 		// utiliser send pour indiquer au client que le nickname à changé
 		// client->sendMsg("NICK " + client->getMessage()->getParams()[0]);

@@ -113,14 +113,14 @@ void	Client::welcome_msg()
 	std::string		str;
 
 	// str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
-	str = RPL_WELCOME + this->_nick + ": Welcome to the Internet Relay Network " + this->_message->getPrefix();
+	str = RPL_WELCOME + this->_nick + " : Welcome to the Internet Relay Network " + this->_message->getPrefix();
 	// std::cout << "DEBUG == > STR: " << str << std::endl;
 	this->sendMsg(str);
 
-	str = RPL_YOURHOST + this->_nick + ": Your host is " + NAME + ", running version " + VERSION;
+	str = RPL_YOURHOST + this->_nick + " : Your host is " + NAME + ", running version " + VERSION;
 	this->sendMsg(str);
 
-	str = RPL_CREATED + this->_nick +": This server was create " + "now";	//ctime(&(time(0)))
+	str = RPL_CREATED + this->_nick +" : This server was create " + "now";	//ctime(&(time(0)))
 	this->sendMsg(str);
 	
 	str = RPL_MYINFO + this->_nick + " " + NAME + " " + VERSION;
@@ -149,14 +149,15 @@ void	Client::initMsg()  //changer nom function
 
 std::string	Client::getPrefix() const
 {
-	std::string	prefix = "" + _nick;
-	if (_user.size())
-		prefix += "!" + _user;
-	if (_hostname.size())
-		prefix += "@" + _hostname;
-	else
-		prefix += "@" + _c_address;
-	return (prefix);
+	return (getMessage()->getPrefix());
+	// std::string	prefix = "" + _nick;
+	// if (_user.size())
+	// 	prefix += "!" + _user;
+	// if (_hostname.size())
+	// 	prefix += "@" + _hostname;
+	// else
+	// 	prefix += "@" + _c_address;
+	// return (prefix);
 }
 
 /*******************************************************************************************************************/
