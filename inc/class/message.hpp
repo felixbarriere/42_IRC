@@ -27,6 +27,7 @@ class Message {
 		/************ Member functions ************/
 		Message();
 		Message(Client *client);
+		Message(const std::string cmd);
 		Message(const Message &src);
 		Message &operator=(const Message &rhs);
 		~Message();

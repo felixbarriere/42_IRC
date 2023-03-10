@@ -16,52 +16,43 @@
 /*                                                Constructors / Destructor                                                */
 /***************************************************************************************************************************/
 
-Message::Message() //:_message(NULL), _prefix(), _cmd(), _params()
-{
-	// std::cout << "Default constructor MESSAGE" << std::endl << std::endl;
-}
+Message::Message() {}
 
-Message::Message(Client *client)
-{
-	this->_client = client;
-	// std::cout << "constructor MESSAGE" << std::endl << std::endl;
-}
+Message::Message(Client *client):
+	_client(client) {}
 
-Message::Message(const Message &src):_message(src._message), _prefix(src._prefix), _cmd(src._cmd), _params(src._params)
-{}
+Message::Message(const std::string cmd):
+	_cmd(cmd) {}
 
-Message &Message::operator=(const Message &rhs)
-{
-	if(this != &rhs)
-	{
-		this->_message = rhs.getMessage();
-		this->_cmd = rhs.getCmd();
+Message::Message(const Message &src):
+	_message(src._message),
+	_prefix(src._prefix),
+	_cmd(src._cmd),
+	_params(src._params) {}
+
+Message &Message::operator=(const Message &rhs) {
+	if(this != &rhs) {
+		_message = rhs.getMessage();
+		_cmd = rhs.getCmd();
 	}
-	return *this;
+	return (*this);
 }
 
-Message::~Message()
-{}
+Message::~Message() {}
 
 /**********************************************************************************************************/
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
 void	Message::tokenizer(std::string line) {
-	// std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
-	
 	_cmd.clear();
 	_params.clear();
-
 	std::vector<std::string>	temp = ft_split(line, " ");
-
-	if (temp.size() == 2) 
-	{
+	if (temp.size() == 2) {
 		_cmd = temp[0];
 		_params.push_back(temp[1]);
 	}
-	else 
-	{	
+	else {	
 		// la value est constituée de plusieurs strings (ex: USER)
 		_cmd = temp[0];
 		std::vector<std::string>::iterator	it = temp.begin() + 1;
@@ -96,52 +87,18 @@ void Message::createMessage() {
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
 
+void	Message::setPrefix(std::string prefix) { _prefix = prefix; }
+void	Message::setCmd(std::string cmd) { _cmd = cmd; }
+void	Message::setParams(std::vector<std::string> params) { _params = params; }
 
-void Message::setPrefix(std::string prefix)
-{
-	this->_prefix = prefix;
+std::string					Message::getMessage() const { return (_message); }
+std::string					Message::getCmd() const { return (_cmd); }
+std::vector<std::string>	&Message::getParams() { return (_params); }
+
+std::string		Message::getPrefix() const {
+	return (_client->getNick() + "!" + _client->getUser() + "@" + _client->getHostname() + " ");
 }
-
-void Message::setCmd(std::string cmd)
-{
-	this->_cmd = cmd;
-}
-
-void Message::setParams(std::vector<std::string> params)
-{
-	this->_params = params;
-}
-
-std::string Message::getMessage(void) const
-{
-	return (this->_message);
-}
-
-std::string Message::getPrefix(void) const
-{
-	return (this->_client->getNick() + "!" + this->_client->getUser() + "@" + this->_client->getHostname() + " ");
-}
-
-std::string Message::getCmd(void) const
-{
-	return (this->_cmd);
-}
-
-std::vector<std::string> &Message::getParams(void)
-{
-	return (this->_params);
-}
-
-std::ostream &operator<<(std::ostream &out, Message &data)
-{
+std::ostream	&operator<<(std::ostream &out, Message &data) {
 	out << "Prefix : "<< data.getPrefix() << "CMD : " << data.getCmd();
-	return out;
+	return (out);
 }
-
-
-
-
-/* *************************************************************************** */
-
-
-

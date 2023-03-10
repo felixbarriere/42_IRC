@@ -9,8 +9,9 @@ class	Channel {
 
 		/*** MEMBER FUNCTIONS ***/
 
-		Channel():
-			_pwd(NULL),
+		Channel(Client *client):
+			_creator(client),
+			_pwd(""),
 			_limit(0) {
 			_modes.insert(std::pair<char, bool>('k', false));
 			_modes.insert(std::pair<char, bool>('l', false));
@@ -18,6 +19,7 @@ class	Channel {
 			_modes.insert(std::pair<char, bool>('n', false));
 			_modes.insert(std::pair<char, bool>('p', false));
 			_modes.insert(std::pair<char, bool>('s', false));
+			addMember(client);
 		}
 
 		~Channel() {}
@@ -28,7 +30,6 @@ class	Channel {
 		std::string				getPwd() const { return (_pwd); }
 		int						getLimit() const { return (_limit); }
 
-		void	setCreator(Client *client) { _creator = client; }
 		void	setPwd(const std::string pwd) { _pwd = pwd; }
 		void	setLimit(int limit) { _limit = limit; }
 
@@ -43,6 +44,15 @@ class	Channel {
 					_members.erase(it);
 					return ;
 				}
+				it++;
+			}
+		}
+
+		void	broadcast(Client *client, std::string msg) const {
+			std::vector<Client*>::const_iterator	it = _members.begin();
+			while (it != _members.end()) {
+				if (*it != client)
+					(*it)->sendMsg(client->getPrefix() + " " + msg);
 				it++;
 			}
 		}

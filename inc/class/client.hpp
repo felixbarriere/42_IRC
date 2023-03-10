@@ -57,6 +57,7 @@ class Client
 		void	setRealName(const std::string realName);
 		void	setHostname(std::string str);	//utile?
 		void	setAuthorized(bool);
+		void	setMessage(Message *message);
 
 	private:
 		//pour stocker l'integralite du message recu

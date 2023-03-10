@@ -95,10 +95,10 @@ void	Client::sendMsg(std::string str)
 	ssize_t 		ret = 0;	//number of bytes sent
 	std::string		toSend = ":" + _message->getPrefix() + str;
 	
-	std::cout << "#" << this->_c_socket <<  " >> " << toSend << std::endl;
+	std::cout << "#" << _c_socket <<  " >> " << toSend << std::endl;
 	toSend += "\r\n";
-	
-	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
+
+	ret = send(_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		std::cout << "send() failed " << std::endl;
 	// std::cout << "ret:  " << ret << std::endl;
@@ -190,5 +190,5 @@ void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
-void	Client::setAuthorized(bool	isAuth) { _authorized = isAuth; }
-
+void	Client::setAuthorized(bool isAuth) { _authorized = isAuth; }
+void	Client::setMessage(Message *message) { _message = message; }

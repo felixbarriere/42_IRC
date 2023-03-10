@@ -26,12 +26,11 @@
 
 /*** COMMAND ERRORS ***/
 
-# define ERR_NONICKNAMEGIVEN		"431 "
-# define ERR_ERRONEUSNICKNAME		"432 "
-# define ERR_NEEDMOREPARAMS 		"461 "
-# define ERR_ALREADYREGISTERED		"462 "
-# define ERR_PASSWDMISMATCH			"464 "
-
+# define ERR_NONICKNAMEGIVEN	"431 "
+# define ERR_ERRONEUSNICKNAME	"432 "
+# define ERR_NEEDMOREPARAMS 	"461 "
+# define ERR_ALREADYREGISTERED	"462 "
+# define ERR_PASSWDMISMATCH		"464 "
 
 /*** LIBRARY ***/
 
@@ -89,7 +88,9 @@ void	msg(Server *server, Client *client);
 void	names(Server *server, Client *client);
 void	nick(Server *server, Client *client);
 void	ping(Server *server, Client *client);
+void	part(Server *server, Client *client);
 void	pass(Server *server, Client *client);
+void	privmsg(Server *server, Client *client);
 void	user(Server *server, Client *client);
 void	wallops(Server *server, Client *client);
 void	whoIs(Server *server, Client *client);
