@@ -191,6 +191,8 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("ADDOMOTD", addomotd));
 	_commandList.insert(std::make_pair("CHGNAME", chgname));
 	_commandList.insert(std::make_pair("GLOBOPS", globops));
+	_commandList.insert(std::make_pair("CHGHOST", chgname));
+	_commandList.insert(std::make_pair("CHGNAME", chgname));
 	_commandList.insert(std::make_pair("JOIN", join));
 	_commandList.insert(std::make_pair("LIST", list));
 	_commandList.insert(std::make_pair("MODE", mode));
