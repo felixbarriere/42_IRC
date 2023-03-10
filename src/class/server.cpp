@@ -94,7 +94,8 @@ void	Server::receiveRequest(int client_socket) {
 
 	std::string buffer_str(buffer);
 
-	std::cout << "#" << client_socket << " << " << buffer_str << std::endl;
+	if (buffer_str.size() != 0)
+		std::cout << "#" << client_socket << " << " << buffer_str << std::endl;
 
 	if (res == -1)
 	{
@@ -130,15 +131,6 @@ void Server::init_pollfd_struct(void)
 	fds.back().events = POLLIN;		
 	fds.back().revents = 0;
 
-	//la 2eme partie de la fct est censee d'initialiser le reste des clients
-	// std::map<int, Client*>::iterator	it = getClients().begin();
-	// while (it != getClients().end()) {
-	// 	fds.push_back(pollfd());	
-	// 	fds.back().fd = it->first;
-	// 	fds.back().events = POLLIN;
-	// 	fds.back().revents = 0;
-	// 	it++;
-	// }
 }
 
 void	Server::usePoll(void)
@@ -195,24 +187,26 @@ Client*	Server::getUser(int fd) const {
 void	Server::setPortNumber(char *portNumber) { this->portNumber = portNumber; }
 
 void Server::setCommandList() {
-	// _commandList.insert(std::make_pair("ADDMOTD", addmotd));
-	// _commandList.insert(std::make_pair("ADDOMOTD", addomotd));
+	_commandList.insert(std::make_pair("ADDMOTD", addmotd));
+	_commandList.insert(std::make_pair("ADDOMOTD", addomotd));
+	_commandList.insert(std::make_pair("CHGNAME", chgname));
+	_commandList.insert(std::make_pair("GLOBOPS", globops));
 	_commandList.insert(std::make_pair("CHGHOST", chgname));
 	_commandList.insert(std::make_pair("CHGNAME", chgname));
-	// _commandList.insert(std::make_pair("GLOBOPS", globops));
 	_commandList.insert(std::make_pair("JOIN", join));
-	// _commandList.insert(std::make_pair("LIST", list));
+	_commandList.insert(std::make_pair("LIST", list));
 	_commandList.insert(std::make_pair("MODE", mode));
-	// _commandList.insert(std::make_pair("MOTD", motd));
-	// _commandList.insert(std::make_pair("OPERMOTD", opermotd));
-	// _commandList.insert(std::make_pair("MSG", msg));
-	// _commandList.insert(std::make_pair("NAMES", names));
+	_commandList.insert(std::make_pair("MOTD", motd));
+	_commandList.insert(std::make_pair("OPERMOTD", opermotd));
+	_commandList.insert(std::make_pair("MSG", msg));
+	_commandList.insert(std::make_pair("NAMES", names));
 	_commandList.insert(std::make_pair("NICK", nick));
 	_commandList.insert(std::make_pair("PING", ping));
 	_commandList.insert(std::make_pair("USER", user));
-	// _commandList.insert(std::make_pair("WALLOPS", wallops));
-	// _commandList.insert(std::make_pair("WHOIS", whoIs));
+	_commandList.insert(std::make_pair("WALLOPS", wallops));
+	_commandList.insert(std::make_pair("WHOIS", whoIs));
 	_commandList.insert(std::make_pair("PASS", pass));
 	_commandList.insert(std::make_pair("PART", part));
 	_commandList.insert(std::make_pair("PRIVMSG", privmsg));
+	_commandList.insert(std::make_pair("QUIT", quit));
 }

@@ -67,26 +67,6 @@ Client::~Client()
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
-// void	Client::sendMsg2(std::string str)
-// {
-// 	if (getAuthorized() == false)
-// 		return ;
-		
-// 	ssize_t 		ret = 0;	//number of bytes sent
-// 	// std::string		toSend = _message->getPrefix() + str;
-// 	// std::string		toSend =  _nick + str;
-	
-// 	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << str << "]" << std::endl << std::endl;
-// 	str += "\r\n";
-	
-// 	ret = send(this->_c_socket, str.c_str(), str.length(), MSG_NOSIGNAL);
-// 	if (ret == -1)
-// 		std::cout << "send() failed " << std::endl;
-// 	std::cout << "ret:  " << ret << std::endl;
-	
-// 	str.clear();
-// }
-
 void	Client::sendMsg(std::string str)
 {
 	if (getAuthorized() == false)
