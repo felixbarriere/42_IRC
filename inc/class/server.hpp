@@ -11,8 +11,9 @@ typedef void (*fct_cmd)(Server *server, Client *client);
 	do                                                                         \
 	{                                                                          \
 		std::cerr << err << ": " << strerror(errno) << std::endl; 			   \
-		exit(1);                                                               \
 	} while (0)
+// 		==> exit(1);
+
 
 class Client;
 class Channel;

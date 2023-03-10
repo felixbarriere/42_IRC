@@ -66,8 +66,8 @@ void	Server::acceptClient(void)
 	if (client_socket == -1)
         SERVER_ERR("Error while accepting connexion");
 
-	std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
-		<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
+	// std::cout << "ACCEPT OK, got connexion from " << inet_ntoa(client_address.sin_addr)
+	// 	<< " port " << ntohs(client_address.sin_port) << std::endl << std::endl;
 		
 	if (setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
 		SERVER_ERR("setsockopt failed");
