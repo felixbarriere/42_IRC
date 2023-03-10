@@ -1,7 +1,7 @@
 #include "utils.hpp"
 
 
-std::string	ft_trim(std::string	str, char toTrim)
+std::string	ft_trim(std::string	str, char toTrim)	// useless, irssi le fait tout seul
 {
 	std::string temp;
 
@@ -13,18 +13,18 @@ std::string	ft_trim(std::string	str, char toTrim)
 	return (temp);
 }
 
-int	checkCommand(std::string	str)
+bool	checkCommand(std::string	str)
 {
-	if (str[0] == '\"' || str[0] == '\'')   //"felix" et 'felix' ==> acceptés mais "felix' ==> error
-		return (2);
+	// if (str[0] == '\"' || str[0] == '\'')   //"felix" et 'felix' ==> acceptés mais "felix' ==> error
+	// 	return (2);
+	std::cout << "DEBUG ===> check nick: " << str << std::endl << std::endl;
 
 	for (int i = 0; str[i] ; i++)
 	{
 		// {} and [] accepted in irssi
 		if ((isalnum(str[i]) == 0) && str[i] != '{' && str[i] != '}'
 									&& str[i] != '[' && str[i] != ']')
-			return (1);
+			return (false);
 	}
-
-	return (0);
+	return (true);
 }

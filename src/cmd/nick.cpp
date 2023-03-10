@@ -5,23 +5,30 @@
 void	nick(Server *server, Client *client) {
 	(void) server;
 
-	std::cout << "DEBUG ===> NICK function called"  << std::endl << std::endl;
-
-	// check command syntax
-
-	if (!client->getWelcome()) {
+	// && checkCommand(client->getMessage()->getParams()[0]) == true
+	if (!client->getWelcome() ) 
+	{
 		client->setNick(client->getMessage()->getParams()[0]);
 		return ;
 	}
-	else {
-		// utiliser send pour indiquer au client que le nickname à changé
-		// client->sendMsg("NICK " + client->getMessage()->getParams()[0]);
+	
+	if (client->getMessage()->getParams().size() == 0)
+	{
+		client->sendMsg(ERR_NONICKNAMEGIVEN " : No nickname given");  // normalement irssi n'envoie rien dans ce cas
+	}
+	else if (checkCommand(client->getMessage()->getParams()[0]) == false)
+	{
+		std::cout << "DEBUG ===> Erroneous nickname"  << std::endl << std::endl;
+		std::cout << "DEBUG ===> nickname: " << client->getMessage()->getParams()[0] << std::endl << std::endl;
+		client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " : Erroneous nickname");
+
+	}
+	else if (client->getAuthorized() == true)
+	{
 		client->sendMsg("NICK " + client->getMessage()->getParams()[0]);
 		client->setNick(client->getMessage()->getParams()[0]);
 	}
-
 	// créer un vector dans Server pour enregistrer les userName et nickNames existants
-
 }
 
 // solutions: tester une boucle sur send()
@@ -48,3 +55,31 @@ void	nick(Server *server, Client *client) {
 //    NICK Wiz                        ; Introducing new nick "Wiz".
 
 //    :WiZ NICK Kilroy                ; WiZ changed his nickname to Kilroy.
+
+/* 
+Si on garde checkCommand lors de la reception des commandes depuis irssi lors de la connexion:
+
+if (temp.size() == 2)
+	{
+		if (checkCommand(temp[1]) == 0)		//checkcommand utile du coup?
+		{
+			this->_cmd = temp[0];
+			this->_params.push_back(temp[1]);
+		}
+		else if (checkCommand(temp[1]) == 1)
+		{
+			std::cout << "Erroneous value, please try again." << std::endl;
+			return (1);
+		}
+	}
+
+ 	TRIM: utile pour le username? IRSSI gere tout seul
+	if (checkCommand(temp[1]) == 2)		
+	{
+		if (temp[1][0] == '\"')
+			temp[1] = ft_trim(temp[1], '\"');
+		if (temp[1][0] == '\'')
+			temp[1] = ft_trim(temp[1], '\'');
+	}
+	
+ */

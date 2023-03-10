@@ -1,4 +1,4 @@
-#include "utils.hpp"
+#include "../../inc/utils.hpp"
 
 /***************************************************************************************************************************/
 /*                                                Constructors / Destructor                                                */
@@ -67,25 +67,25 @@ Client::~Client()
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
-void	Client::sendMsg2(std::string str)
-{
-	if (getAuthorized() == false)
-		return ;
+// void	Client::sendMsg2(std::string str)
+// {
+// 	if (getAuthorized() == false)
+// 		return ;
 		
-	ssize_t 		ret = 0;	//number of bytes sent
-	// std::string		toSend = _message->getPrefix() + str;
-	std::string		toSend =  _nick + " " + str;
+// 	ssize_t 		ret = 0;	//number of bytes sent
+// 	// std::string		toSend = _message->getPrefix() + str;
+// 	// std::string		toSend =  _nick + str;
 	
-	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << toSend << "]" << std::endl;
-	toSend += "\r\n";
+// 	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << str << "]" << std::endl << std::endl;
+// 	str += "\r\n";
 	
-	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
-	if (ret == -1)
-		std::cout << "send() failed " << std::endl;
-	std::cout << "ret:  " << ret << std::endl;
+// 	ret = send(this->_c_socket, str.c_str(), str.length(), MSG_NOSIGNAL);
+// 	if (ret == -1)
+// 		std::cout << "send() failed " << std::endl;
+// 	std::cout << "ret:  " << ret << std::endl;
 	
-	str.clear();
-}
+// 	str.clear();
+// }
 
 void	Client::sendMsg(std::string str)
 {
@@ -94,17 +94,16 @@ void	Client::sendMsg(std::string str)
 
 	ssize_t 		ret = 0;	//number of bytes sent
 	std::string		toSend = ":" + _message->getPrefix() + str;
-	// std::string		toSend = ":" + _nick + " " + str;
 	
-	std::cout << "Message to client #" << this->_c_socket << " (" << this->_nick << ") >> [" << toSend << "]" << std::endl;
+	std::cout << "#" << this->_c_socket <<  " >> " << toSend << std::endl;
 	toSend += "\r\n";
 	
 	ret = send(this->_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		std::cout << "send() failed " << std::endl;
-	std::cout << "ret:  " << ret << std::endl;
+	// std::cout << "ret:  " << ret << std::endl;
 	
-	str.clear();
+	toSend.clear();
 }
 
 void	Client::welcome_msg()
@@ -114,14 +113,14 @@ void	Client::welcome_msg()
 	std::string		str;
 
 	// str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
-	str = RPL_WELCOME + this->_nick + ": Welcome to the Internet Relay Network " + this->_message->getPrefix();
+	str = RPL_WELCOME + this->_nick + " : Welcome to the Internet Relay Network " + this->_message->getPrefix();
 	// std::cout << "DEBUG == > STR: " << str << std::endl;
 	this->sendMsg(str);
 
-	str = RPL_YOURHOST + this->_nick + ": Your host is " + NAME + ", running version " + VERSION;
+	str = RPL_YOURHOST + this->_nick + " : Your host is " + NAME + ", running version " + VERSION;
 	this->sendMsg(str);
 
-	str = RPL_CREATED + this->_nick +": This server was create " + "now";	//ctime(&(time(0)))
+	str = RPL_CREATED + this->_nick +" : This server was create " + "now";	//ctime(&(time(0)))
 	this->sendMsg(str);
 	
 	str = RPL_MYINFO + this->_nick + " " + NAME + " " + VERSION;
@@ -148,17 +147,17 @@ void	Client::initMsg()  //changer nom function
 		_buffer.clear();
 }
 
-std::string	Client::getPrefix() const {
-	if (!_nick.size())
-		return (":" + std::string(NAME));
-	std::string	prefix = "" + _nick;
-	if (_user.size())
-		prefix += "!" + _user;
-	if (_hostname.size())
-		prefix += "@" + _hostname;
-	else
-		prefix += "@" + _c_address;
-	return (prefix);
+std::string	Client::getPrefix() const
+{
+	return (getMessage()->getPrefix());
+	// std::string	prefix = "" + _nick;
+	// if (_user.size())
+	// 	prefix += "!" + _user;
+	// if (_hostname.size())
+	// 	prefix += "@" + _hostname;
+	// else
+	// 	prefix += "@" + _c_address;
+	// return (prefix);
 }
 
 /*******************************************************************************************************************/

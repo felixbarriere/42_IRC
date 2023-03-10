@@ -48,18 +48,20 @@ Message::~Message()
 /**********************************************************************************************************/
 
 void	Message::tokenizer(std::string line) {
-	std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
+	// std::cout <<  std::endl << "test Tokenizer, line: "  << line << std::endl;
 	
 	_cmd.clear();
 	_params.clear();
 
 	std::vector<std::string>	temp = ft_split(line, " ");
 
-	if (temp.size() == 2) {
+	if (temp.size() == 2) 
+	{
 		_cmd = temp[0];
 		_params.push_back(temp[1]);
 	}
-	else {	
+	else 
+	{	
 		// la value est constituée de plusieurs strings (ex: USER)
 		_cmd = temp[0];
 		std::vector<std::string>::iterator	it = temp.begin() + 1;
@@ -141,31 +143,5 @@ std::ostream &operator<<(std::ostream &out, Message &data)
 
 /* *************************************************************************** */
 
-/* 
-Si on garde checkCommand lors de la reception des commandes depuis irssi lors de la connexion:
 
-if (temp.size() == 2)
-	{
-		if (checkCommand(temp[1]) == 0)		//checkcommand utile du coup?
-		{
-			this->_cmd = temp[0];
-			this->_params.push_back(temp[1]);
-		}
-		else if (checkCommand(temp[1]) == 1)
-		{
-			std::cout << "Erroneous value, please try again." << std::endl;
-			return (1);
-		}
-	}
-
- 	TRIM: utile pour le username? Ou irssi le gere tout seul?
-	if (checkCommand(temp[1]) == 2)		
-	{
-		if (temp[1][0] == '\"')
-			temp[1] = ft_trim(temp[1], '\"');
-		if (temp[1][0] == '\'')
-			temp[1] = ft_trim(temp[1], '\'');
-	}
-	
- */
 
