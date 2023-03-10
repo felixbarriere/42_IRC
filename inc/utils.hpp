@@ -94,5 +94,6 @@ void	privmsg(Server *server, Client *client);
 void	user(Server *server, Client *client);
 void	wallops(Server *server, Client *client);
 void	whoIs(Server *server, Client *client);
+void	quit(Server *server, Client *client);
 
 #endif

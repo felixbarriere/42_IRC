@@ -35,6 +35,7 @@ SRCS = 	main.cpp \
 		cmd/pass.cpp \
 		cmd/part.cpp \
 		cmd/privmsg.cpp \
+		cmd/quit.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
 
