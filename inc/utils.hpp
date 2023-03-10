@@ -26,7 +26,8 @@
 
 /*** COMMAND ERRORS ***/
 
-# define ERR_NONICKNAMEGIVEN		"431"
+# define ERR_NONICKNAMEGIVEN		"431 "
+# define ERR_ERRONEUSNICKNAME		"432 "
 # define ERR_NEEDMOREPARAMS 		"461 "
 # define ERR_ALREADYREGISTERED		"462 "
 # define ERR_PASSWDMISMATCH			"464 "
@@ -71,7 +72,7 @@ extern int serv_run;
 void						ft_handler(int smth);
 std::vector<std::string>	ft_split(const std::string &str, const std::string &sep);
 void 						showConfig(void);
-int							checkCommand(std::string str);
+bool						checkCommand(std::string str);
 std::string					ft_trim(std::string	str, char toTrim);
 
 class Server;
