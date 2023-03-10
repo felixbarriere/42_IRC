@@ -197,7 +197,8 @@ void	Server::setPortNumber(char *portNumber) { this->portNumber = portNumber; }
 void Server::setCommandList() {
 	// _commandList.insert(std::make_pair("ADDMOTD", addmotd));
 	// _commandList.insert(std::make_pair("ADDOMOTD", addomotd));
-	// _commandList.insert(std::make_pair("CHGNAME", chgname));
+	_commandList.insert(std::make_pair("CHGHOST", chgname));
+	_commandList.insert(std::make_pair("CHGNAME", chgname));
 	// _commandList.insert(std::make_pair("GLOBOPS", globops));
 	_commandList.insert(std::make_pair("JOIN", join));
 	// _commandList.insert(std::make_pair("LIST", list));

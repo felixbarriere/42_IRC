@@ -77,6 +77,7 @@ std::string					ft_trim(std::string	str, char toTrim);
 class Server;
 void	addmotd(Server *server, Client *client);
 void	addomotd(Server *server, Client *client);
+void	chghost(Server *server, Client *client);
 void	chgname(Server *server, Client *client);
 void	globops(Server *server, Client *client);
 void	join(Server *server, Client *client);
