@@ -16,7 +16,7 @@ void	nick(Server *server, Client *client) {
 	else {
 		// utiliser send pour indiquer au client que le nickname à changé
 		// client->sendMsg("NICK " + client->getMessage()->getParams()[0]);
-		client->sendMsg2("NICK " + client->getMessage()->getParams()[0]);
+		client->sendMsg("NICK " + client->getMessage()->getParams()[0]);
 		client->setNick(client->getMessage()->getParams()[0]);
 	}
 
