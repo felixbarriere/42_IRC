@@ -6,9 +6,17 @@ void	nick(Server *server, Client *client) {
 	(void) server;
 
 	// && checkCommand(client->getMessage()->getParams()[0]) == true
-	if (!client->getWelcome() ) 
+	if (!client->getWelcome()) 
 	{
-		client->setNick(client->getMessage()->getParams()[0]);
+		if (checkCommand(client->getMessage()->getParams()[0]) == false)
+			client->sendMsg(ERR_ERRONEUSNICKNAME " Erroneous nickname");
+		else if (server->nickIsUsed(client->getMessage()->getParams()[0]) == true)
+		{
+			std::cout << "DEBUG ===> nickname already used"   << std::endl;
+			client->sendMsg(ERR_NICKNAMEINUSE + client->getMessage()->getParams()[0] + " " + client->getMessage()->getParams()[0]);
+		}
+		else
+			client->setNick(client->getMessage()->getParams()[0]);
 		return ;
 	}
 	
@@ -21,14 +29,28 @@ void	nick(Server *server, Client *client) {
 		std::cout << "DEBUG ===> Erroneous nickname"  << std::endl << std::endl;
 		std::cout << "DEBUG ===> nickname: " << client->getMessage()->getParams()[0] << std::endl << std::endl;
 		client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " : Erroneous nickname");
-
+	}
+	else if (server->nickIsUsed(client->getMessage()->getParams()[0]) == true)
+	{
+		std::cout << "DEBUG ===> nickname already used 2"  << std::endl << std::endl;
+		client->sendMsg(ERR_NICKNAMEINUSE + client->getMessage()->getParams()[0] + " " + client->getMessage()->getParams()[0] );
 	}
 	else if (client->getAuthorized() == true)
 	{
 		client->sendMsg("NICK " + client->getMessage()->getParams()[0]);
 		client->setNick(client->getMessage()->getParams()[0]);
+
+		// ajouter un broadcast pour avertir les membres du channel concerné d'un nouveau nickname
+		if (client->getChannel() != NULL)
+		{
+			// std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
+			// while (;it != server->getChannels().end(); it++) 
+			// {
+			// 	if ( it == client->getChannel())
+				client->getChannel()->broadcast(client, " changed nickname to " + client->getMessage()->getParams()[0]);
+			// }
+		}
 	}
-	// créer un vector dans Server pour enregistrer les userName et nickNames existants
 }
 
 // solutions: tester une boucle sur send()

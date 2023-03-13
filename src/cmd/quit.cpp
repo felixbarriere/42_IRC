@@ -9,19 +9,23 @@ void	quit(Server *server, Client *client) {
 	// 	std::cout << "DEBUG ===> no channel" << std::endl << std::endl;
 	// 	client->sendMsg(" QUIT : Bye for now! " );
 	// }
-if (client->getMessage()->getParams().size() > 0)	// client->getChannel() == NULL
+	if (client->getMessage()->getParams().size() > 0)	// client->getChannel() == NULL
 	{
-		std::cout << "DEBUG ===> message: ";
 		std::string	str;
 
-		// std::vector<std::string>::iterator	it = getParams().begin();
-		// std::vector<std::string>::iterator	ite = getParams().end();
+
 		for (size_t i = 0; i < client->getMessage()->getParams().size(); i++)
 		{
 			// std::cout << client->getMessage()->getParams()[i] << std::endl;
-			str+= client->getMessage()->getParams()[i];
+			str += client->getMessage()->getParams()[i] + " ";
 		}
-		std::cout << str << std::endl;
+		std::cout << "DEBUG ===> QUIT message: " << str << std::endl;
+
+		if (client->getChannel() != NULL)
+		{
+			client->getChannel()->broadcast(client, client->getNick() + str);
+		}
+		client->sendMsg("QUIT " + str);
 
 	}
 

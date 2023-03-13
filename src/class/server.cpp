@@ -97,10 +97,9 @@ void	Server::receiveRequest(int client_socket) {
 	if (buffer_str.size() != 0)
 		std::cout << "#" << client_socket << " << " << buffer_str << std::endl;
 
-	if (res == -1)
-	{
+	if (res == -1) {
 		std::cout << "Error during receipt " << res << std::endl;
-		getUser(client_socket)->setBuffer("");
+		// getUser(client_socket)->setBuffer("");
         // SERVER_ERR("Error during receipt");
 	}
 	else if (res == 0) {
@@ -182,6 +181,21 @@ Client*	Server::getUser(int fd) const {
 	if (ret == _clients.end())
 		return (NULL);
 	return (ret->second);
+}
+
+bool	Server::nickIsUsed(std::string str) const {
+	std::cout << "DEBUG ===> nickIsUsed test"   << std::endl;
+
+	std::map<int, Client*>::const_iterator	it = _clients.begin();
+	std::map<int, Client*>::const_iterator	ite = _clients.end();
+	for (; it != ite ; it++)
+	{
+		std::cout << "DEBUG ===> existing nicknames: " << (it->second->getNick()) << std::endl;
+
+		if (str == it->second->getNick())
+			return (true);
+	}
+	return (false);
 }
 
 void	Server::setPortNumber(char *portNumber) { this->portNumber = portNumber; }

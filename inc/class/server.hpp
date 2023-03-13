@@ -33,6 +33,7 @@ class Server
 		void							usePoll();
 		void							acceptClient();
 		void							receiveRequest(int	client_socket);
+		bool							nickIsUsed(std::string str) const;
 
 		/************ Getters / Setters ************/
 		std::map<std::string, fct_cmd>		&getCommandList(); 
