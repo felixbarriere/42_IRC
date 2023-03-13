@@ -73,7 +73,11 @@ void	Client::sendMsg(std::string str)
 		return ;
 
 	ssize_t 		ret = 0;	//number of bytes sent
-	std::string		toSend = ":" + _message->getPrefix() + str;
+	std::string		toSend;
+	if (this->_nick.size() != 0 && this->_user.size() != 0)
+		toSend = ":" + _message->getPrefix() + str;
+	else
+		toSend = str;
 	
 	std::cout << "#" << _c_socket <<  " >> " << toSend << std::endl;
 	toSend += "\r\n";
@@ -121,7 +125,7 @@ void	Client::initMsg()  //changer nom function
 {
 	// std::cout << "DEBUG == > BUFFER CLIENT:" << std::endl << this->getBuffer() << std::endl;
 	_message->createMessage();	
-	if (!_welcomeMsg)
+	if (!_welcomeMsg && this->_nick.size() != 0 && this->_user.size() != 0)
 		welcome_msg();
 	if (!_buffer.empty())
 		_buffer.clear();
@@ -130,14 +134,6 @@ void	Client::initMsg()  //changer nom function
 std::string	Client::getPrefix() const
 {
 	return (getMessage()->getPrefix());
-	// std::string	prefix = "" + _nick;
-	// if (_user.size())
-	// 	prefix += "!" + _user;
-	// if (_hostname.size())
-	// 	prefix += "@" + _hostname;
-	// else
-	// 	prefix += "@" + _c_address;
-	// return (prefix);
 }
 
 /*******************************************************************************************************************/
