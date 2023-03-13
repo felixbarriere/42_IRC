@@ -25,7 +25,6 @@ SRCS = 	main.cpp \
 		cmd/list.cpp \
 		cmd/motd.cpp \
 		cmd/opermotd.cpp \
-		cmd/msg.cpp \
 		cmd/names.cpp \
 		cmd/nick.cpp \
 		cmd/user.cpp \

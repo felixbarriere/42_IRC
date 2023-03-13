@@ -48,12 +48,10 @@ class	Channel {
 			}
 		}
 
-		void	broadcast(Client *client, std::string msg) const {
-			std::vector<Client*>::const_iterator	it = _members.begin();
-			while (it != _members.end()) {
-				if (*it != client)
-					(*it)->sendMsg(client->getPrefix() + " " + msg);
-				it++;
+		void	broadcast(Client *client, std::string msg) {
+			for (long unsigned int i = 0; i < _members.size(); i++) {
+				if (_members[i] != client)
+					_members[i]->sendMsg(msg);
 			}
 		}
 

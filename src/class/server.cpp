@@ -198,7 +198,6 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("MODE", mode));
 	_commandList.insert(std::make_pair("MOTD", motd));
 	_commandList.insert(std::make_pair("OPERMOTD", opermotd));
-	_commandList.insert(std::make_pair("MSG", msg));
 	_commandList.insert(std::make_pair("NAMES", names));
 	_commandList.insert(std::make_pair("NICK", nick));
 	_commandList.insert(std::make_pair("PING", ping));
