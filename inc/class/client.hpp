@@ -37,7 +37,7 @@ class Client
 		int 					getC_socket() const ;
 		std::string			 	getSockaddr_in() const;
 		std::string 			getBuffer() const ;
-		Channel					*getChannel() const ;
+		Channel					*getChannel();
 		Server					*getServer() const ;
 		std::string				getNick() const ;
 		std::string				getUser() const ;

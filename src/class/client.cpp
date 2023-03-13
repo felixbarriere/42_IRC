@@ -150,7 +150,7 @@ std::string	Client::getPrefix() const
 int						Client::getC_socket() const { return (_c_socket); }
 std::string				Client::getSockaddr_in() const { return (_c_address); }
 std::string				Client::getBuffer() const { return (_buffer); }
-Channel					*Client::getChannel() const { return (_channel); }
+Channel					*Client::getChannel() { return (_channel); }
 Server					*Client::getServer() const { return (_server); }
 std::string				Client::getNick() const { return (_nick); }
 std::string				Client::getUser() const { return (_user); }
