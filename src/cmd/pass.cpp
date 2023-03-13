@@ -3,7 +3,9 @@
 void	pass(Server *server, Client *client)
 {
 		std::cout << "DEBUG ===> PASS  " << std::endl;
-
+	if (client->getWelcome()) 
+		return ;
+		
 	if (client->getMessage()->getParams().size() == 0 && client->getAuthorized() == false)
 	{
 		std::cout << "DEBUG ===> PASS 1 " << std::endl;
