@@ -131,10 +131,44 @@ void	Client::initMsg()  //changer nom function
 		_buffer.clear();
 }
 
-std::string	Client::getPrefix() const
+
+void		Client::addMode(char newMode)
 {
-	return (getMessage()->getPrefix());
+	std::map<char, bool>::iterator		found = _modes.find(newMode);
+
+	if (found != _modes.end() && found->second == false)
+		found->second = true;
+	std::cout << "DEBUG ===> mode[newMode] BIS: " << newMode << ": " << found->second << std::endl << std::endl;
 }
+
+void		Client::removeMode(char newMode)
+{
+	std::map<char, bool>::iterator		found = _modes.find(newMode);
+
+	if (found != _modes.end() && found->second == true)
+		found->second = false;
+	std::cout << "DEBUG ===> mode[newMode] BIS: " << newMode << ": " << found->second << std::endl << std::endl;
+}
+
+std::string	Client::getModesString()
+{
+	std::cout << "DEBUG ===> : getModesString() " << std::endl << std::endl;
+
+	std::string	ret;
+	std::map<char, bool>::iterator		it = _modes.begin();
+	std::map<char, bool>::iterator		ite = _modes.end();
+	for (; it != ite; it++)
+	{
+		std::cout << "DEBUG ===> :it " << it->first << " : " << it->second << std::endl << std::endl;
+
+		if (it->second == true)
+		{
+			ret += it->first;
+		}
+	}
+	 return (ret); 
+}
+
 
 /*******************************************************************************************************************/
 /*                                                Getters / Setters                                                */
@@ -143,6 +177,7 @@ std::string	Client::getPrefix() const
 
 /************ Getters ************/
 
+std::string				Client::getPrefix() const {	return (getMessage()->getPrefix());	}
 int						Client::getC_socket() const { return (_c_socket); }
 std::string				Client::getSockaddr_in() const { return (_c_address); }
 std::string				Client::getBuffer() const { return (_buffer); }
