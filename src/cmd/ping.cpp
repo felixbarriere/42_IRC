@@ -7,7 +7,7 @@ void	ping(Server *server, Client *client) {
 		return ;
 
 	if (client->getMessage()->getParams()[0].size() <= 0)
-		client->sendMsg("409 " + client->getNick() +":No origin specified");
+		client->sendMsg("409 " + client->getNick() +":No origin specified");	//err_nbr
 
 	client->sendMsg("PONG " + client->getMessage()->getParams()[0]);
 

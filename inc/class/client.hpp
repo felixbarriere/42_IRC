@@ -28,6 +28,11 @@ class Client
 		void		sendMsg(std::string str);
 		void		sendMsg2(std::string str);
 		std::string	getPrefix() const;
+		void		addMode(char newMode);
+		void		removeMode(char newMode);
+
+
+
 		//bool conn(std::string, int);
     // bool send_data(std::string data);
 		//https://www.binarytides.com/code-a-simple-socket-client-class-in-c/
@@ -44,6 +49,7 @@ class Client
 		std::string				getRealName() const ;
 		std::string		 		getHostname() const;
 		std::map<char, bool>	&getModes();
+		std::string				getModesString();
 		Message					*getMessage() const ;
 		bool					getWelcome() const ;
 		bool					getAuthorized() const ;
