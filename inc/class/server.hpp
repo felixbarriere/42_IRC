@@ -29,11 +29,12 @@ class Server
 		~Server();
 
 		/************ Méthodes ************/
-		void							init_pollfd_struct();
-		void							usePoll();
-		void							acceptClient();
-		void							receiveRequest(int	client_socket);
-		bool							nickIsUsed(std::string str) const;
+		void								init_pollfd_struct();
+		void								usePoll();
+		void								acceptClient();
+		void								removeClients(void);
+		void								receiveRequest(int	client_socket);
+		bool								nickIsUsed(std::string str) const;
 
 		/************ Getters / Setters ************/
 		std::map<std::string, fct_cmd>		&getCommandList(); 

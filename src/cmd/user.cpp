@@ -2,10 +2,14 @@
 
 void	user(Server *server, Client *client) {
 	(void) server;
-	// std::cout << "DEBUG ===> USER function called"  << std::endl << std::endl;
+	std::cout << "DEBUG ===> USER function called"  << std::endl << std::endl;
 
 	if (client->getUser().size() != 0 ) // || client->getWelcome() == true
+	{
+		std::cout << "DEBUG ===> test"  << std::endl << std::endl;
+		
 		client->sendMsg(ERR_ALREADYREGISTERED + client->getNick() + " USER : already registered");
+	}
 	else if (client->getMessage()->getParams().size() < 4)
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " USER :Not enough parameters");
 	else if (client->getMessage()->getParams().size() >= 4)

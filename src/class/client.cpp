@@ -60,7 +60,9 @@ Client &Client::operator=(const Client &rhs)
 Client::~Client() 
 {	
 	close(this->_c_socket);
-	// std::cout << "DEBUG ===> Destructor CLIENT" << std::endl << std::endl;
+	delete (this->_message);
+	delete (this->_channel);
+	std::cout << "DEBUG ===> Destructor CLIENT" << std::endl << std::endl;
 }
 
 /**********************************************************************************************************/
@@ -84,8 +86,7 @@ void	Client::sendMsg(std::string str)
 
 	ret = send(_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
-		std::cout << "send() failed " << std::endl;
-	// std::cout << "ret:  " << ret << std::endl;
+		SERVER_ERR("send() failed");
 	
 	toSend.clear();
 }
@@ -96,9 +97,7 @@ void	Client::welcome_msg()
 
 	std::string		str;
 
-	// str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
 	str = RPL_WELCOME + this->_nick + " : Welcome to the Internet Relay Network " + this->_message->getPrefix();
-	// std::cout << "DEBUG == > STR: " << str << std::endl;
 	this->sendMsg(str);
 
 	str = RPL_YOURHOST + this->_nick + " : Your host is " + NAME + ", running version " + VERSION;
@@ -121,10 +120,10 @@ void	Client::welcome_msg()
 
 }
 
-void	Client::initMsg()  //changer nom function
+void	Client::initMsg()  			//changer nom function
 {
-	// std::cout << "DEBUG == > BUFFER CLIENT:" << std::endl << this->getBuffer() << std::endl;
 	_message->createMessage();	
+
 	if (!_welcomeMsg && this->_nick.size() != 0 && this->_user.size() != 0)
 		welcome_msg();
 	if (!_buffer.empty())
@@ -138,7 +137,6 @@ void		Client::addMode(char newMode)
 
 	if (found != _modes.end() && found->second == false)
 		found->second = true;
-	std::cout << "DEBUG ===> mode[newMode] BIS: " << newMode << ": " << found->second << std::endl << std::endl;
 }
 
 void		Client::removeMode(char newMode)
@@ -147,26 +145,18 @@ void		Client::removeMode(char newMode)
 
 	if (found != _modes.end() && found->second == true)
 		found->second = false;
-	std::cout << "DEBUG ===> mode[newMode] BIS: " << newMode << ": " << found->second << std::endl << std::endl;
 }
 
 std::string	Client::getModesString()
 {
-	std::cout << "DEBUG ===> : getModesString() " << std::endl << std::endl;
-
 	std::string	ret;
 	std::map<char, bool>::iterator		it = _modes.begin();
 	std::map<char, bool>::iterator		ite = _modes.end();
-	for (; it != ite; it++)
-	{
-		std::cout << "DEBUG ===> :it " << it->first << " : " << it->second << std::endl << std::endl;
-
+	for (; it != ite; it++) {
 		if (it->second == true)
-		{
 			ret += it->first;
-		}
 	}
-	 return (ret); 
+	return (ret); 
 }
 
 
