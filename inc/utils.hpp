@@ -13,7 +13,7 @@
 //the maximum value is system-dependent (usually 5)
 # define MAX_USERS 20
 # define OPER_USER "admin"
-# define OPER_PASSWORD "pwd"
+# define OPER_PASSWORD "admin_pwd"
 # define PING 30
 # define TIMEOUT 5000
 
@@ -27,6 +27,7 @@
 /*** COMMAND ERRORS ***/
 
 # define RPL_UMODEIS			"221 "
+# define RPL_YOUREOPER          "381 "
 # define ERR_NOSUCHNICK			"401 "
 # define ERR_NONICKNAMEGIVEN	"431 "
 # define ERR_ERRONEUSNICKNAME	"432 "
@@ -36,6 +37,7 @@
 # define ERR_PASSWDMISMATCH		"464 "
 # define ERR_UMODEUNKNOWNFLAG	"501 "
 # define ERR_USERSDONTMATCH		"502 "
+
 
 /*** LIBRARY ***/
 
@@ -85,6 +87,8 @@ void	addomotd(Server *server, Client *client);
 void	chghost(Server *server, Client *client);
 void	chgname(Server *server, Client *client);
 void	globops(Server *server, Client *client);
+void	kick(Server *server, Client *client);
+void	ft_kill(Server *server, Client *client);
 void	join(Server *server, Client *client);
 void	list(Server *server, Client *client);
 void	mode(Server *server, Client *client);
@@ -92,6 +96,7 @@ void	motd(Server *server, Client *client);
 void	opermotd(Server *server, Client *client);
 void	names(Server *server, Client *client);
 void	nick(Server *server, Client *client);
+void	oper(Server *server, Client *client);
 void	ping(Server *server, Client *client);
 void	part(Server *server, Client *client);
 void	pass(Server *server, Client *client);

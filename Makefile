@@ -22,8 +22,11 @@ SRCS = 	main.cpp \
 		cmd/chgname.cpp \
 		cmd/globops.cpp \
 		cmd/join.cpp \
+		cmd/kick.cpp \
+		cmd/kill.cpp \
 		cmd/list.cpp \
 		cmd/motd.cpp \
+		cmd/oper.cpp \
 		cmd/opermotd.cpp \
 		cmd/names.cpp \
 		cmd/nick.cpp \
