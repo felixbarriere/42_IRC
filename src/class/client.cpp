@@ -67,48 +67,38 @@ Client::~Client()
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
-void	Client::sendMsg(std::string str)
-{
-	if (getAuthorized() == false)
+void	Client::sendMsg(std::string str) {
+	if (!getAuthorized())
 		return ;
-
-	ssize_t 		ret = 0;	//number of bytes sent
+	ssize_t 		ret = 0;
 	std::string		toSend;
-	if (this->_nick.size() != 0 && this->_user.size() != 0)
+	if (_nick.size() && _user.size())
 		toSend = ":" + _message->getPrefix() + str;
 	else
 		toSend = str;
-	
 	std::cout << "#" << _c_socket <<  " >> " << toSend << std::endl;
 	toSend += "\r\n";
-
 	ret = send(_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		std::cout << "send() failed " << std::endl;
-	// std::cout << "ret:  " << ret << std::endl;
-	
 	toSend.clear();
 }
 
-void	Client::welcome_msg()
-{
-	this->_welcomeMsg = true;
-
+void	Client::welcome_msg() {
+	_welcomeMsg = true;
 	std::string		str;
 
-	// str = "001 " + this->_nick +": Welcome to the Internet Relay Network " + this->_nick + "!" + this->_user + "@" + this->_hostname;
-	str = RPL_WELCOME + this->_nick + " : Welcome to the Internet Relay Network " + this->_message->getPrefix();
-	// std::cout << "DEBUG == > STR: " << str << std::endl;
-	this->sendMsg(str);
+	str = RPL_WELCOME + _nick + " : Welcome to the Internet Relay Network " + _message->getPrefix();
+	sendMsg(str);
 
-	str = RPL_YOURHOST + this->_nick + " : Your host is " + NAME + ", running version " + VERSION;
-	this->sendMsg(str);
+	str = RPL_YOURHOST + _nick + " : Your host is " + NAME + ", running version " + VERSION;
+	sendMsg(str);
 
-	str = RPL_CREATED + this->_nick +" : This server was create " + "now";	//ctime(&(time(0)))
-	this->sendMsg(str);
+	str = RPL_CREATED + _nick +" : This server was create " + "now";	//ctime(&(time(0)))
+	sendMsg(str);
 	
-	str = RPL_MYINFO + this->_nick + " " + NAME + " " + VERSION;
-	this->sendMsg(str);
+	str = RPL_MYINFO + _nick + " " + NAME + " " + VERSION;
+	sendMsg(str);
 
 	std::ifstream	ifs;
 	if (getModes().find('o')->second)
@@ -118,34 +108,28 @@ void	Client::welcome_msg()
 	std::stringstream	s;
 	s << ifs.rdbuf();
 	sendMsg(s.str());
-
 }
 
 void	Client::initMsg()  //changer nom function
 {
 	// std::cout << "DEBUG == > BUFFER CLIENT:" << std::endl << this->getBuffer() << std::endl;
 	_message->createMessage();	
-	if (!_welcomeMsg && this->_nick.size() != 0 && this->_user.size() != 0)
+	if (!_welcomeMsg && _nick.size() && _user.size())
 		welcome_msg();
 	if (!_buffer.empty())
 		_buffer.clear();
 }
 
-
-void		Client::addMode(char newMode)
-{
+void		Client::addMode(char newMode) {
 	std::map<char, bool>::iterator		found = _modes.find(newMode);
-
-	if (found != _modes.end() && found->second == false)
+	if (found != _modes.end() && !found->second)
 		found->second = true;
 	std::cout << "DEBUG ===> mode[newMode] BIS: " << newMode << ": " << found->second << std::endl << std::endl;
 }
 
-void		Client::removeMode(char newMode)
-{
+void		Client::removeMode(char newMode) {
 	std::map<char, bool>::iterator		found = _modes.find(newMode);
-
-	if (found != _modes.end() && found->second == true)
+	if (found != _modes.end() && found->second)
 		found->second = false;
 	std::cout << "DEBUG ===> mode[newMode] BIS: " << newMode << ": " << found->second << std::endl << std::endl;
 }

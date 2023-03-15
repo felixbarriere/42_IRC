@@ -1,7 +1,7 @@
 #include "../../inc/utils.hpp"
 
 void	join(Server *server, Client *client) {
-	if (client->getMessage()->getParams().size() == 0)
+	if (!client->getMessage()->getParams().size())
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ": err need more params");
 	else {
 		std::string	channel_name = client->getMessage()->getParams()[0];
@@ -14,6 +14,7 @@ void	join(Server *server, Client *client) {
 			client->setChannel(&channel);
 		}
 		else {
+			std::cout << " /////////// DEBUG JOIN NICK: " << client->getNick() << std::endl;
 			it->second.addMember(client);
 			client->setChannel(&(it->second));
 			it->second.broadcast(client, "JOIN " + it->first);

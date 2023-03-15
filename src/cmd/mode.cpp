@@ -7,8 +7,6 @@
 
 
 void	mode(Server *server, Client *client) {
-	(void)server;
-	(void)client;
 	std::cout << "DEBUG ===> MODE function called"  << std::endl << std::endl;
 
 	/* user Mode */
