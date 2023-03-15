@@ -2,7 +2,6 @@
 
 void	quit(Server *server, Client *client) {
 	(void) server;
-	(void) client;
 	std::cout << "DEBUG ===> QUIT function called from client #" << client->getC_socket()  << std::endl << std::endl;
 
 	// if (client->getChannel() == NULL) {
