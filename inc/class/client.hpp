@@ -42,6 +42,7 @@ class Client
 		std::string			 	getSockaddr_in() const;
 		std::string 			getBuffer() const ;
 		Channel*				getChannel();
+		const std::string		getChannelName() const;
 		Server*					getServer() const ;
 		std::string				getNick() const ;
 		std::string				getUser() const ;
@@ -56,6 +57,8 @@ class Client
 		/************ Setters ************/
 
 		void	setChannel(Channel *channel);
+		void	setChannelName(const std::string str);
+
 		void	setBuffer(const std::string str);
 		void	setNick(const std::string nick);
 		void	setUser(const std::string user);
@@ -83,6 +86,7 @@ class Client
 		std::map<char, bool>				_modes;
 		Message*							_message;
 		Channel*							_channel;	
+		std::string							_channelName;	
 		Server*								_server;
 
 };

@@ -1,6 +1,6 @@
 #include "../../inc/class/channel.hpp"
 
-Channel::Channel(Client* client):
+Channel::Channel(Client* client, const std::string channelName):
 	_creator(client),
 	_pwd(""),
 	_limit(0) {
@@ -12,10 +12,13 @@ Channel::Channel(Client* client):
 	_modes.insert(std::pair<char, bool>('s', false));
 	addMember(client);
 	client->setChannel(this);
+	client->setChannelName(channelName);
+
 }
 
 Channel::~Channel() {}
 
+// std::string				Channel::getName() const { return (_name); }
 Client*					Channel::getCreator() const { return (_creator); }
 std::vector<Client*>&	Channel::getMembers() { return (_members); }
 std::map<char, bool>&	Channel::getModes() { return (_modes); }
