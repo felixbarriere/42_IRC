@@ -91,4 +91,6 @@ class Client
 
 };
 
+std::ostream& operator<<(std::ostream& os, const std::map<char, bool>& m);
+
 #endif

@@ -174,3 +174,19 @@ void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
 void	Client::setAuthorized(bool isAuth) { _authorized = isAuth; }
 void	Client::setMessage(Message* message) { _message = message; }
+
+
+std::ostream& operator<<(std::ostream& os, const std::map<char, bool>& m) {
+    os << "{";
+    bool first = true;
+    std::map<char, bool>::const_iterator it;
+    for (it = m.begin(); it != m.end(); ++it) {
+        if (!first) {
+            os << ", ";
+        }
+        os << it->first << ": " << std::boolalpha << it->second;
+        first = false;
+    }
+    os << "}";
+    return os;
+}
