@@ -4,10 +4,8 @@
 /*                                                Constructors / Destructor                                                */
 /***************************************************************************************************************************/
 
-Client::Client(): _c_socket(-1)
-{	
-	// std::cout << "Default constructor CLIENT" << std::endl << std::endl;
-}
+Client::Client():
+	_c_socket(-1) {}
 
 Client::Client(int client_socket, struct sockaddr_in client_address, Server *server):
 	_welcomeMsg(false),
@@ -16,8 +14,7 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_nick(),
 	_c_socket(client_socket),
 	_channel(NULL),
-	_server(server)
-{
+	_server(server) {
 	// std::cout << "Constructor CLIENT" << std::endl << std::endl;
 
 	this->_c_address = inet_ntoa(client_address.sin_addr);
@@ -32,7 +29,7 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_hostname = host;
 
 	// instancier Message message;
-	this->_message = new Message(this);	//envoyer un pointeur de this
+	_message = new Message(this);	//envoyer un pointeur de this
 
 	_modes.insert(std::pair<char, bool>('d', false));
 	_modes.insert(std::pair<char, bool>('e', false));
@@ -51,16 +48,13 @@ Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le co
 	(void)src;
 }
 
-Client &Client::operator=(const Client &rhs)
-{
-	(void)rhs;
+Client &Client::operator=(const Client &rhs) {
+	(void) rhs;
 	return *this;
 }
 
-Client::~Client() 
-{	
+Client::~Client() {	
 	close(this->_c_socket);
-	// std::cout << "DEBUG ===> Destructor CLIENT" << std::endl << std::endl;
 }
 
 /**********************************************************************************************************/
@@ -134,30 +128,23 @@ void		Client::removeMode(char newMode) {
 	std::cout << "DEBUG ===> mode[newMode] BIS: " << newMode << ": " << found->second << std::endl << std::endl;
 }
 
-std::string	Client::getModesString()
-{
+std::string	Client::getModesString() {
 	std::cout << "DEBUG ===> : getModesString() " << std::endl << std::endl;
 
-	std::string	ret;
+	std::string							ret;
 	std::map<char, bool>::iterator		it = _modes.begin();
 	std::map<char, bool>::iterator		ite = _modes.end();
-	for (; it != ite; it++)
-	{
+	for (; it != ite; it++) {
 		std::cout << "DEBUG ===> :it " << it->first << " : " << it->second << std::endl << std::endl;
-
-		if (it->second == true)
-		{
+		if (it->second)
 			ret += it->first;
-		}
 	}
 	 return (ret); 
 }
 
-
 /*******************************************************************************************************************/
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
-
 
 /************ Getters ************/
 
@@ -165,25 +152,24 @@ std::string				Client::getPrefix() const {	return (getMessage()->getPrefix());	}
 int						Client::getC_socket() const { return (_c_socket); }
 std::string				Client::getSockaddr_in() const { return (_c_address); }
 std::string				Client::getBuffer() const { return (_buffer); }
-Channel					*Client::getChannel() { return (_channel); }
-Server					*Client::getServer() const { return (_server); }
+Channel*				Client::getChannel() { return (_channel); }
+Server*					Client::getServer() const { return (_server); }
 std::string				Client::getNick() const { return (_nick); }
 std::string				Client::getUser() const { return (_user); }
 std::string				Client::getRealName() const { return (_realName); }
 std::string 			Client::getHostname() const { return (_hostname); }
-std::map<char, bool>	&Client::getModes() { return (_modes); }
-Message					*Client::getMessage() const { return (_message); }
+std::map<char, bool>&	Client::getModes() { return (_modes); }
+Message*				Client::getMessage() const { return (_message); }
 bool					Client::getWelcome() const { return (_welcomeMsg); }
 bool					Client::getAuthorized() const { return (_authorized); }
-
 
 /************ Setters ************/
 
 void	Client::setBuffer(const std::string str) { _buffer = str; }
-void	Client::setChannel(Channel *channel) { _channel = channel; }
+void	Client::setChannel(Channel* channel) { _channel = channel; }
 void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
 void	Client::setAuthorized(bool isAuth) { _authorized = isAuth; }
-void	Client::setMessage(Message *message) { _message = message; }
+void	Client::setMessage(Message* message) { _message = message; }

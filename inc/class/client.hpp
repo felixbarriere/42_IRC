@@ -26,7 +26,6 @@ class Client
 		void		welcome_msg();
 		void		initMsg();
 		void		sendMsg(std::string str);
-		void		sendMsg2(std::string str);
 		std::string	getPrefix() const;
 		void		addMode(char newMode);
 		void		removeMode(char newMode);
@@ -42,15 +41,15 @@ class Client
 		int 					getC_socket() const ;
 		std::string			 	getSockaddr_in() const;
 		std::string 			getBuffer() const ;
-		Channel					*getChannel();
-		Server					*getServer() const ;
+		Channel*				getChannel();
+		Server*					getServer() const ;
 		std::string				getNick() const ;
 		std::string				getUser() const ;
 		std::string				getRealName() const ;
 		std::string		 		getHostname() const;
-		std::map<char, bool>	&getModes();
+		std::map<char, bool>&	getModes();
 		std::string				getModesString();
-		Message					*getMessage() const ;
+		Message*				getMessage() const ;
 		bool					getWelcome() const ;
 		bool					getAuthorized() const ;
 		
@@ -82,9 +81,9 @@ class Client
 		// std::map<std::string, std::string>	_infosClient;	//Supprimer. infos renvoyées par IRSSI lors de la connexion.
 		std::map<std::string, std::string>	_commands;
 		std::map<char, bool>				_modes;
-		Message								*_message;
-		Channel								*_channel;	
-		Server								*_server;
+		Message*							_message;
+		Channel*							_channel;	
+		Server*								_server;
 
 };
 

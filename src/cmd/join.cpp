@@ -8,13 +8,9 @@ void	join(Server *server, Client *client) {
 		if (channel_name[0] != '#')
 			channel_name = "#" + channel_name;
 		std::map<std::string, Channel>::iterator	it = server->getChannels().find(channel_name);
-		if (it == server->getChannels().end()) {
-			Channel	channel(client);
-			server->getChannels().insert(std::make_pair(channel_name, channel));
-			client->setChannel(&channel);
-		}
+		if (it == server->getChannels().end())
+			server->createChannel(client, channel_name);
 		else {
-			std::cout << " /////////// DEBUG JOIN NICK: " << client->getNick() << std::endl;
 			it->second.addMember(client);
 			client->setChannel(&(it->second));
 			it->second.broadcast(client, "JOIN " + it->first);

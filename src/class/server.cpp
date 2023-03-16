@@ -160,6 +160,10 @@ void	Server::usePoll(void)
 	}
 }
 
+void	Server::createChannel(Client* client, const std::string channel_name) {
+	_channels.insert(std::make_pair(channel_name, Channel(client)));
+}
+
 /*******************************************************************************************************************/
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
