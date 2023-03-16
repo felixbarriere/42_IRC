@@ -9,7 +9,7 @@ class	Channel {
 
 		/*** MEMBER FUNCTIONS ***/
 
-		Channel(Client*);
+		Channel(Client*, const std::string);
 		~Channel();
 
 		Client*					getCreator() const;

@@ -151,6 +151,7 @@ int						Client::getC_socket() const { return (_c_socket); }
 std::string				Client::getSockaddr_in() const { return (_c_address); }
 std::string				Client::getBuffer() const { return (_buffer); }
 Channel*				Client::getChannel() { return (_channel); }
+const std::string		Client::getChannelName() const {	return (_channelName); }
 Server*					Client::getServer() const { return (_server); }
 std::string				Client::getNick() const { return (_nick); }
 std::string				Client::getUser() const { return (_user); }
@@ -165,6 +166,8 @@ bool					Client::getAuthorized() const { return (_authorized); }
 
 void	Client::setBuffer(const std::string str) { _buffer = str; }
 void	Client::setChannel(Channel* channel) { _channel = channel; }
+void	Client::setChannelName(const std::string str) {	_channelName = str; }
+
 void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void	Client::setRealName(const std::string realName) { _realName = realName; }

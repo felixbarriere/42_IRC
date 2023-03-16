@@ -200,7 +200,7 @@ bool	Server::nickIsUsed(std::string str) const {
 }
 
 void	Server::createChannel(Client* client, const std::string channel_name) {
-	_channels.insert(std::make_pair(channel_name, Channel(client)));
+	_channels.insert(std::make_pair(channel_name, Channel(client, channel_name)));
 }
 
 /*******************************************************************************************************************/
