@@ -14,7 +14,6 @@ void	join(Server *server, Client *client) {
 			it->second.addMember(client);
 			client->setChannel(&(it->second));
 			client->setChannelName(channel_name);
-			
 			it->second.broadcast(client, "JOIN " + it->first);
 		}
 		client->sendMsg("JOIN " + channel_name);
