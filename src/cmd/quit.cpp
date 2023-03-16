@@ -14,6 +14,7 @@ void	quit(Server* server, Client* client) {
 		while (it != server->getChannels().end()) {
 			if ((it->first) == client->getChannelName()) {
 				it->second.broadcast(client, client->getNick() + str);
+				client->setChannelName("");
 				break ;
 			}
 			it++;
