@@ -54,8 +54,7 @@ Server::~Server()
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
-void	Server::removeClients(void)
-{
+void	Server::removeClients() {
 	// std::map<int, Client*>::iterator	it = this->_clients.begin();	
 	// std::map<int, Client*>::iterator	ite = this->_clients.end();
 
@@ -198,6 +197,10 @@ bool	Server::nickIsUsed(std::string str) const {
 			return (true);
 	}
 	return (false);
+}
+
+void	Server::createChannel(Client* client, const std::string channel_name) {
+	_channels.insert(std::make_pair(channel_name, Channel(client)));
 }
 
 /*******************************************************************************************************************/

@@ -4,10 +4,8 @@
 /*                                                Constructors / Destructor                                                */
 /***************************************************************************************************************************/
 
-Client::Client(): _c_socket(-1)
-{	
-	// std::cout << "Default constructor CLIENT" << std::endl << std::endl;
-}
+Client::Client():
+	_c_socket(-1) {}
 
 Client::Client(int client_socket, struct sockaddr_in client_address, Server *server):
 	_welcomeMsg(false),
@@ -16,8 +14,7 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_nick(),
 	_c_socket(client_socket),
 	_channel(NULL),
-	_server(server)
-{
+	_server(server) {
 	// std::cout << "Constructor CLIENT" << std::endl << std::endl;
 
 	this->_c_address = inet_ntoa(client_address.sin_addr);
@@ -32,7 +29,7 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_hostname = host;
 
 	// instancier Message message;
-	this->_message = new Message(this);	//envoyer un pointeur de this
+	_message = new Message(this);	//envoyer un pointeur de this
 
 	_modes.insert(std::pair<char, bool>('d', false));
 	_modes.insert(std::pair<char, bool>('e', false));
@@ -51,17 +48,15 @@ Client::Client(const Client &src): _c_socket(-1)	//a changer si on utilise le co
 	(void)src;
 }
 
-Client &Client::operator=(const Client &rhs)
-{
-	(void)rhs;
+Client &Client::operator=(const Client &rhs) {
+	(void) rhs;
 	return *this;
 }
 
-Client::~Client() 
-{	
-	close(this->_c_socket);
-	delete (this->_message);
-	delete (this->_channel);
+Client::~Client() {	
+	close(_c_socket);
+	delete (_message);
+	delete (_channel);
 	std::cout << "DEBUG ===> Destructor CLIENT" << std::endl << std::endl;
 }
 
@@ -69,21 +64,17 @@ Client::~Client()
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
-void	Client::sendMsg(std::string str)
-{
-	if (getAuthorized() == false)
+void	Client::sendMsg(std::string str) {
+	if (!getAuthorized())
 		return ;
-
-	ssize_t 		ret = 0;	//number of bytes sent
+	ssize_t 		ret = 0;
 	std::string		toSend;
-	if (this->_nick.size() != 0 && this->_user.size() != 0)
+	if (_nick.size() && _user.size())
 		toSend = ":" + _message->getPrefix() + str;
 	else
 		toSend = str;
-	
 	std::cout << "#" << _c_socket <<  " >> " << toSend << std::endl;
 	toSend += "\r\n";
-
 	ret = send(_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
 		SERVER_ERR("send() failed");
@@ -91,23 +82,21 @@ void	Client::sendMsg(std::string str)
 	toSend.clear();
 }
 
-void	Client::welcome_msg()
-{
-	this->_welcomeMsg = true;
-
+void	Client::welcome_msg() {
+	_welcomeMsg = true;
 	std::string		str;
 
-	str = RPL_WELCOME + this->_nick + " : Welcome to the Internet Relay Network " + this->_message->getPrefix();
-	this->sendMsg(str);
+	str = RPL_WELCOME + _nick + " : Welcome to the Internet Relay Network " + _message->getPrefix();
+	sendMsg(str);
 
-	str = RPL_YOURHOST + this->_nick + " : Your host is " + NAME + ", running version " + VERSION;
-	this->sendMsg(str);
+	str = RPL_YOURHOST + _nick + " : Your host is " + NAME + ", running version " + VERSION;
+	sendMsg(str);
 
-	str = RPL_CREATED + this->_nick +" : This server was create " + "now";	//ctime(&(time(0)))
-	this->sendMsg(str);
+	str = RPL_CREATED + _nick +" : This server was create " + "now";	//ctime(&(time(0)))
+	sendMsg(str);
 	
-	str = RPL_MYINFO + this->_nick + " " + NAME + " " + VERSION;
-	this->sendMsg(str);
+	str = RPL_MYINFO + _nick + " " + NAME + " " + VERSION;
+	sendMsg(str);
 
 	std::ifstream	ifs;
 	if (getModes().find('o')->second)
@@ -117,53 +106,43 @@ void	Client::welcome_msg()
 	std::stringstream	s;
 	s << ifs.rdbuf();
 	sendMsg(s.str());
-
 }
 
 void	Client::initMsg()  			//changer nom function
 {
 	_message->createMessage();	
-
-	if (!_welcomeMsg && this->_nick.size() != 0 && this->_user.size() != 0)
+	if (!_welcomeMsg && _nick.size() && _user.size())
 		welcome_msg();
 	if (!_buffer.empty())
 		_buffer.clear();
 }
 
-
-void		Client::addMode(char newMode)
-{
+void		Client::addMode(char newMode) {
 	std::map<char, bool>::iterator		found = _modes.find(newMode);
-
-	if (found != _modes.end() && found->second == false)
+	if (found != _modes.end() && !found->second)
 		found->second = true;
 }
 
-void		Client::removeMode(char newMode)
-{
+void		Client::removeMode(char newMode) {
 	std::map<char, bool>::iterator		found = _modes.find(newMode);
-
-	if (found != _modes.end() && found->second == true)
+	if (found != _modes.end() && found->second)
 		found->second = false;
 }
 
-std::string	Client::getModesString()
-{
-	std::string	ret;
-	std::map<char, bool>::iterator		it = _modes.begin();
-	std::map<char, bool>::iterator		ite = _modes.end();
+std::string	Client::getModesString() {
+	std::string						ret;
+	std::map<char, bool>::iterator	it = _modes.begin();
+	std::map<char, bool>::iterator	ite = _modes.end();
 	for (; it != ite; it++) {
-		if (it->second == true)
+		if (it->second)
 			ret += it->first;
 	}
 	return (ret); 
 }
 
-
 /*******************************************************************************************************************/
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
-
 
 /************ Getters ************/
 
@@ -171,25 +150,24 @@ std::string				Client::getPrefix() const {	return (getMessage()->getPrefix());	}
 int						Client::getC_socket() const { return (_c_socket); }
 std::string				Client::getSockaddr_in() const { return (_c_address); }
 std::string				Client::getBuffer() const { return (_buffer); }
-Channel					*Client::getChannel() { return (_channel); }
-Server					*Client::getServer() const { return (_server); }
+Channel*				Client::getChannel() { return (_channel); }
+Server*					Client::getServer() const { return (_server); }
 std::string				Client::getNick() const { return (_nick); }
 std::string				Client::getUser() const { return (_user); }
 std::string				Client::getRealName() const { return (_realName); }
 std::string 			Client::getHostname() const { return (_hostname); }
-std::map<char, bool>	&Client::getModes() { return (_modes); }
-Message					*Client::getMessage() const { return (_message); }
+std::map<char, bool>&	Client::getModes() { return (_modes); }
+Message*				Client::getMessage() const { return (_message); }
 bool					Client::getWelcome() const { return (_welcomeMsg); }
 bool					Client::getAuthorized() const { return (_authorized); }
-
 
 /************ Setters ************/
 
 void	Client::setBuffer(const std::string str) { _buffer = str; }
-void	Client::setChannel(Channel *channel) { _channel = channel; }
+void	Client::setChannel(Channel* channel) { _channel = channel; }
 void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
 void	Client::setAuthorized(bool isAuth) { _authorized = isAuth; }
-void	Client::setMessage(Message *message) { _message = message; }
+void	Client::setMessage(Message* message) { _message = message; }

@@ -11,6 +11,7 @@ INCS = 	class/server.hpp \
 
 SRCS = 	main.cpp \
 		class/server.cpp \
+		class/channel.cpp \
 		class/client.cpp \
 		class/message.cpp \
 		show_config.cpp \

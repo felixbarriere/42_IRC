@@ -14,12 +14,10 @@ typedef void (*fct_cmd)(Server *server, Client *client);
 	} while (0)
 // 		==> exit(1);
 
-
 class Client;
 class Channel;
 
-class Server
-{
+class Server {
 
 	public:
 
@@ -29,25 +27,26 @@ class Server
 		~Server();
 
 		/************ Méthodes ************/
-		void								init_pollfd_struct();
-		void								usePoll();
-		void								acceptClient();
-		void								removeClients(void);
-		void								receiveRequest(int	client_socket);
-		bool								nickIsUsed(std::string str) const;
+		void	init_pollfd_struct();
+		void	usePoll();
+		void	acceptClient();
+		void	receiveRequest(int);
+		bool	nickIsUsed(std::string) const;
+		void	createChannel(Client*, const std::string);
+		void	removeClients();
 
 		/************ Getters / Setters ************/
-		std::map<std::string, fct_cmd>		&getCommandList(); 
+		std::map<std::string, fct_cmd>&		getCommandList(); 
 		char*								getPortNumber() const ;
 		char*								getPassword() const ;
 		int									getTimeout() const ;
 		int									getServerSocket() const ;
 		struct sockaddr_in					getServerAddress() const ;
 		std::vector<struct pollfd>			getFds() const ;
-		std::map<int, Client*>				&getClients();
+		std::map<int, Client*>&				getClients();
 		Client*								getUser(int fd) const ;
-		std::map<std::string, Channel>		&getChannels();
-		std::map<std::string, std::string>	&getOper();
+		std::map<std::string, Channel>&		getChannels();
+		std::map<std::string, std::string>&	getOper();
 
 		void	setPortNumber(char *portNumber);
 		void	setCommandList();
