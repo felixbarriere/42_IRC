@@ -13,7 +13,6 @@ Channel::Channel(Client* client, const std::string channelName):
 	addMember(client);
 	client->setChannel(this);
 	client->setChannelName(channelName);
-
 }
 
 Channel::~Channel() {}
