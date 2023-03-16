@@ -8,5 +8,6 @@ void	part(Server *server, Client *client) {
 	while (it != server->getChannels().end() && &(it->second) != c) {
 			client->sendMsg("PART " + it->first);
 			it->second.broadcast(client, "PART " + it->first);
+			it++;
 	}
 }
