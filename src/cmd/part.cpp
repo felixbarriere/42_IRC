@@ -7,6 +7,7 @@ void	part(Server *server, Client *client) {
 			it->second.removeMember(client);
 			client->sendMsg("PART " + it->first);
 			it->second.broadcast(client, "PART " + it->first);
+			server->getChannels().erase(it);
 			break ;
 		}
 		it++;

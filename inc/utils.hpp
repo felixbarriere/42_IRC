@@ -29,6 +29,7 @@
 # define RPL_UMODEIS			"221 "
 # define RPL_YOUREOPER          "381 "
 # define ERR_NOSUCHNICK			"401 "
+# define ERR_NOORIGIN			"409 "
 # define ERR_NONICKNAMEGIVEN	"431 "
 # define ERR_ERRONEUSNICKNAME	"432 "
 # define ERR_NICKNAMEINUSE		"433 "
