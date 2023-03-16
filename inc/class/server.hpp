@@ -45,6 +45,7 @@ class Server {
 		std::vector<struct pollfd>			getFds() const ;
 		std::map<int, Client*>&				getClients();
 		Client*								getUser(int fd) const ;
+		Client*								getUserbyNick(std::string nick) const;
 		std::map<std::string, Channel>&		getChannels();
 		std::map<std::string, std::string>&	getOper();
 

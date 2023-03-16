@@ -232,6 +232,17 @@ Client*								Server::getUser(int fd) const {
 	return (ret->second);
 }
 
+Client*								Server::getUserbyNick(std::string nick) const {
+	std::map<int, Client*>::const_iterator    it = _clients.begin();
+    std::map<int, Client*>::const_iterator    ite = _clients.end();
+    
+    for (; it != ite; it++)
+    {
+        if (it->second->getNick() == nick)
+            return (it->second);
+    }
+    return (NULL);
+}
 
 
 void	Server::setPortNumber(char *portNumber) { this->portNumber = portNumber; }
@@ -245,10 +256,10 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("CHGNAME", chgname));
 	_commandList.insert(std::make_pair("JOIN", join));
 	_commandList.insert(std::make_pair("KICK", kick));
-	_commandList.insert(std::make_pair("KILL", ft_kill));
+	_commandList.insert(std::make_pair("kill", ft_kill));
 	_commandList.insert(std::make_pair("LIST", list));
 	_commandList.insert(std::make_pair("MODE", mode));
-	_commandList.insert(std::make_pair("MOTD", motd));
+	_commandList.insert(std::make_pair("motd", motd));
 	_commandList.insert(std::make_pair("OPERMOTD", opermotd));
 	_commandList.insert(std::make_pair("NAMES", names));
 	_commandList.insert(std::make_pair("NICK", nick));
