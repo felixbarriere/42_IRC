@@ -1,18 +1,23 @@
 #include "../../inc/utils.hpp"
 
-
-
-
-
-
-
 void	mode(Server *server, Client *client) {
 
 	/* user Mode */
 	if (client->getMessage()->getParams()[0].size() == 0)
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " MODE : Not enough parameters");
-	else if (client->getMessage()->getParams()[0][0] == '#')
-		std::cout << "DEBUG ===>  Channel mode command not supported"  << std::endl << std::endl;
+	else if (client->getMessage()->getParams()[0][0] == '#') {
+
+		std::cout << "DEBUG ===>  ChannelName: " << client->getMessage()->getParams()[0]  << std::endl << std::endl;
+
+		std::map<std::string, Channel>::iterator ret = server->getChannels().find(client->getMessage()->getParams()[0]);
+		if (ret == server->getChannels().end())
+			std::cout << "DEBUG ===>  No such channel "  << std::endl << std::endl;
+		else if (client->getMessage()->getParams()[0] != client->getChannelName())
+			std::cout << "DEBUG ===> You're not channel operator "  << std::endl << std::endl;
+		else
+			std::cout << "DEBUG ===> Bravo, vous etes operator de ce channel "  << std::endl << std::endl;
+
+	}
 	else if (client->getMessage()->getParams()[0] != client->getNick() && server->nickIsUsed(client->getMessage()->getParams()[0]) == true)
 		client->sendMsg(ERR_USERSDONTMATCH + client->getNick() + " Can't change mode for other users");
 	else if (server->nickIsUsed(client->getMessage()->getParams()[0]) == false)
@@ -34,7 +39,6 @@ void	mode(Server *server, Client *client) {
 		}
 	}
 
-	/* channel Mode  ==> a faire? */
 
 }
 
@@ -43,23 +47,3 @@ void	mode(Server *server, Client *client) {
 /* Command: MODE
   Parameters: <target> [<modestring> [<mode arguments>...]] */
 
-/* USER MODES :
-- a : away
-- i : invisible
-- w : wallops
-- r : restricted
-- o : operator
-
-CHANNEL MODES :
-for users :
-    - O : channel creator
-    - o : channel operator
-    - v : voice
-for channels :
-    - i : invite only
-    - m : moderated
-    - n : outside privmsg disabled
-    - p : private
-    - t : topic locked
-    - k : key locked
-    - l : user limit */
