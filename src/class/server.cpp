@@ -103,10 +103,6 @@ void	Server::receiveRequest(int client_socket) {
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
 
-
-
-
-
 	memset(buffer, 0, BUFFER_SIZE + 1);
 
 	res = recv(client_socket, buffer, BUFFER_SIZE, MSG_DONTWAIT);
@@ -126,9 +122,21 @@ void	Server::receiveRequest(int client_socket) {
 
 		// SERVER_ERR("Client is disconnected");
 	}
-	else {
-		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));	// strcat() works only for char *
+	else if (res > 0 && buffer_str[buffer_str.size() - 1] != '\n')
+	{
+		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));
+		std::cout << std::endl << "REceiving End of File, request not completed" << std::endl << std::endl;
+
+	}
+	else if (buffer_str[buffer_str.size() - 1] == '\n')
+	{
+		std::cout << std::endl << "Receiving Entree,  " << std::endl << std::endl;
+		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(" " + buffer_str));
+		// getUser(client_socket)->setBuffer(buffer_str);
+		std::cout << std::endl << "Sending request: " << getUser(client_socket)->getBuffer() << std::endl << std::endl;
+
 		getUser(client_socket)->initMsg();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
+		getUser(client_socket)->setBuffer("");
 	}
 	
 	buffer_str.clear();
