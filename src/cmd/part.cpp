@@ -7,7 +7,12 @@ void	part(Server *server, Client *client) {
 			it->second.removeMember(client);
 			client->sendMsg("PART " + it->first);
 			it->second.broadcast(client, "PART " + it->first);
-			server->getChannels().erase(it);
+			if (client->getNick() == it->second.getCreator()->getNick() || it->second.getMembers().size() == 0)
+			{
+				server->getChannels().erase(it);
+				std::cout << "Channel deleted" << std::endl << std::endl;
+			}
+
 			break ;
 		}
 		it++;
