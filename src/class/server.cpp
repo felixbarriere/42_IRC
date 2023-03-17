@@ -55,36 +55,21 @@ Server::~Server()
 /**********************************************************************************************************/
 
 void	Server::removeClients() {
-	// std::map<int, Client*>::iterator	it = this->_clients.begin();	
-	// std::map<int, Client*>::iterator	ite = this->_clients.end();
-
 	size_t clientsNb = _clients.size();
 
-	std::cout << std::endl << "removeClients(void)" << std::endl << std::endl;
-	std::cout << std::endl << "_clients.size(): " << _clients.size() << std::endl << std::endl;
-
+	// std::cout << std::endl << "removeClients(void)" << std::endl << std::endl;
+	// std::cout << std::endl << "_clients.size(): " << _clients.size() << std::endl << std::endl;
 
 	// for (; it != ite; it++) {
 		for (size_t i = 0; i < clientsNb; i++) {
-			// std::cout << std::endl << "it->second->getC_socket(): " << it->second->getC_socket() << std::endl << std::endl;
-			// close(fds[it->second->getC_socket()].fd);
-			std::cout << std::endl << "ICI" << std::endl << std::endl;
 			
 			Client	*tmp = _clients.begin()->second;
 
 			_clients.erase(tmp->getC_socket());
 
-			std::cout << std::endl << "ICI2" << std::endl << std::endl;
-			// std::cout << std::endl << "Deleting client #" << it->second->getC_socket() << std::endl << std::endl;
-
 			delete ((tmp));
-
-			std::cout << std::endl << "ICI 3" << std::endl << std::endl;
-
 	}	
-
-	std::cout << std::endl << "_clients.size() 2: " << _clients.size() << std::endl << std::endl;
-
+	// std::cout << std::endl << "_clients.size() 2: " << _clients.size() << std::endl << std::endl;
 }
 
 void	Server::acceptClient(void)

@@ -2,40 +2,46 @@
 
 void	mode(Server *server, Client *client) {
 
+	std::string	paramZero = client->getMessage()->getParams()[0];
+	std::string	paramUn = client->getMessage()->getParams()[1];
+
 	/* user Mode */
-	if (client->getMessage()->getParams()[0].size() == 0)
+	if (paramZero.size() == 0)
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " MODE : Not enough parameters");
-	else if (client->getMessage()->getParams()[0][0] == '#') {
+	else if (paramZero[0] == '#') {
 
-		std::cout << "DEBUG ===>  ChannelName: " << client->getMessage()->getParams()[0]  << std::endl << std::endl;
+		std::cout << "DEBUG ===>  ChannelName: " << paramZero  << std::endl << std::endl;
 
-		std::map<std::string, Channel>::iterator ret = server->getChannels().find(client->getMessage()->getParams()[0]);
+		std::map<std::string, Channel>::iterator ret = server->getChannels().find(paramZero);
 		if (ret == server->getChannels().end())
 			std::cout << "DEBUG ===>  No such channel "  << std::endl << std::endl;
-		else if (client->getMessage()->getParams()[0] != client->getChannelName())
+		else if (paramZero != client->getChannelName())
 			std::cout << "DEBUG ===> You're not channel operator "  << std::endl << std::endl;
 		else
 			std::cout << "DEBUG ===> Bravo, vous etes operator de ce channel "  << std::endl << std::endl;
 
 	}
-	else if (client->getMessage()->getParams()[0] != client->getNick() && server->nickIsUsed(client->getMessage()->getParams()[0]) == true)
+	else if (paramZero != client->getNick() && server->nickIsUsed(paramZero) == true) {
 		client->sendMsg(ERR_USERSDONTMATCH + client->getNick() + " Can't change mode for other users");
-	else if (server->nickIsUsed(client->getMessage()->getParams()[0]) == false)
-		client->sendMsg(ERR_NOSUCHNICK + client->getNick() + " " + client->getMessage()->getParams()[0]);
-	else if (client->getMessage()->getParams()[0] == client->getNick() && client->getMessage()->getParams().size() == 1)
+	}
+	else if (server->nickIsUsed(paramZero) == false) {
+		client->sendMsg(ERR_NOSUCHNICK + client->getNick() + " " + paramZero);
+	}
+	else if (paramZero == client->getNick() && client->getMessage()->getParams().size() == 1) {
 		client->sendMsg(RPL_UMODEIS + client->getNick() + " " + client->getModesString());
+	}
 	else if (client->getMessage()->getParams().size() > 1) {
-		for (size_t i = 1; i < client->getMessage()->getParams()[1].size(); i++) {
-			if (client->getModes().find(client->getMessage()->getParams()[1][i]) == client->getModes().end())
-				client->sendMsg(ERR_UMODEUNKNOWNFLAG + client->getNick() + " " + client->getMessage()->getParams()[1][i] + " is not implemented, or does not exists");
+		for (size_t i = 1; i < paramUn.size(); i++) {
+			if (client->getModes().find(paramUn[i]) == client->getModes().end())
+				client->sendMsg(ERR_UMODEUNKNOWNFLAG + client->getNick() + " " + paramUn[i] + " is not implemented, or does not exists");
 		}
-		if (client->getMessage()->getParams()[1][0] == '+') {
-			for (size_t i = 1; i < client->getMessage()->getParams()[1].size(); i++)
-				client->addMode(client->getMessage()->getParams()[1][i]);
+		if (paramUn[0] == '+') {
+			for (size_t i = 1; i < paramUn.size(); i++)
+				client->addMode(paramUn[i]);
 		}
-		else if (client->getMessage()->getParams()[1][0] == '-') {
-			for (size_t i = 1; i < client->getMessage()->getParams()[1].size(); i++)
-				client->removeMode(client->getMessage()->getParams()[1][i]);
+		else if (paramUn[0] == '-') {
+			for (size_t i = 1; i < paramUn.size(); i++)
+				client->removeMode(paramUn[i]);
 		}
 	}
 
