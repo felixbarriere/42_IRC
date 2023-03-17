@@ -103,6 +103,10 @@ void	Server::receiveRequest(int client_socket) {
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
 
+
+
+
+
 	memset(buffer, 0, BUFFER_SIZE + 1);
 
 	res = recv(client_socket, buffer, BUFFER_SIZE, MSG_DONTWAIT);

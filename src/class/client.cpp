@@ -110,6 +110,14 @@ void	Client::welcome_msg() {
 
 void	Client::initMsg()  			//changer nom function
 {
+	std::cout << "DEBUG ===> TEST" << std::endl << std::endl;
+
+	std::map<std::string, Channel>::iterator	it = getServer()->getChannels().begin();	
+	std::map<std::string, Channel>::iterator	ite = getServer()->getChannels().end();
+	for (; it != ite; it++)
+    	std::cout << "DEBUG ===>channels existants:" << it->first  << std::endl << std::endl;
+
+
 	_message->createMessage();	
 	if (!_welcomeMsg && _nick.size() && _user.size())
 		welcome_msg();
