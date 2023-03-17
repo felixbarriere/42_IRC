@@ -9,18 +9,19 @@ void	mode(Server *server, Client *client) {
 	if (paramZero.size() == 0)
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " MODE : Not enough parameters");
 	else if (paramZero[0] == '#') {
-
 		std::cout << "DEBUG ===>  ChannelName: " << paramZero  << std::endl << std::endl;
 
 		std::map<std::string, Channel>::iterator ret = server->getChannels().find(paramZero);
-		if (ret == server->getChannels().end())
-			std::cout << "DEBUG ===>  No such channel "  << std::endl << std::endl;
-		else if (paramZero != client->getChannelName())
-			std::cout << "DEBUG ===> You're not channel operator "  << std::endl << std::endl;
-		else
-			std::cout << "DEBUG ===> Bravo, vous etes operator de ce channel "  << std::endl << std::endl;
-
-	}
+		if (ret == server->getChannels().end()) {
+			client->sendMsg("No such channel");
+		}
+		else if (paramZero != client->getChannelName()) {
+			client->sendMsg("You're not channel operator");
+		}
+		else {
+			client->sendMsg("Sorry, MODE command is not implemented for channels.");
+		}
+	}	/* channel Mode */
 	else if (paramZero != client->getNick() && server->nickIsUsed(paramZero) == true) {
 		client->sendMsg(ERR_USERSDONTMATCH + client->getNick() + " Can't change mode for other users");
 	}
@@ -31,18 +32,23 @@ void	mode(Server *server, Client *client) {
 		client->sendMsg(RPL_UMODEIS + client->getNick() + " " + client->getModesString());
 	}
 	else if (client->getMessage()->getParams().size() > 1) {
-		for (size_t i = 1; i < paramUn.size(); i++) {
-			if (client->getModes().find(paramUn[i]) == client->getModes().end())
-				client->sendMsg(ERR_UMODEUNKNOWNFLAG + client->getNick() + " " + paramUn[i] + " is not implemented, or does not exists");
+		if (paramUn[0] == '+' || paramUn[0] == '-') {
+			for (size_t i = 1; i < paramUn.size(); i++) {
+				if (client->getModes().find(paramUn[i]) == client->getModes().end())
+					client->sendMsg(ERR_UMODEUNKNOWNFLAG + client->getNick() + " " + paramUn[i] + " is not implemented, or does not exists");
+			}
+			if (paramUn[0] == '+') {
+				for (size_t i = 1; i < paramUn.size(); i++)
+					client->addMode(paramUn[i]);
+			}
+			else if (paramUn[0] == '-') {
+				for (size_t i = 1; i < paramUn.size(); i++)
+					client->removeMode(paramUn[i]);
+			}
 		}
-		if (paramUn[0] == '+') {
-			for (size_t i = 1; i < paramUn.size(); i++)
-				client->addMode(paramUn[i]);
-		}
-		else if (paramUn[0] == '-') {
-			for (size_t i = 1; i < paramUn.size(); i++)
-				client->removeMode(paramUn[i]);
-		}
+		else 
+			client->sendMsg(ERR_UMODEUNKNOWNFLAG + client->getNick() + " modestring should start with '-' or '+'");
+
 	}
 
 
