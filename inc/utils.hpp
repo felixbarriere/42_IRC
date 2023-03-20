@@ -29,14 +29,17 @@
 # define RPL_UMODEIS			"221 "
 # define RPL_YOUREOPER          "381 "
 # define ERR_NOSUCHNICK			"401 "
+# define ERR_NOSUCHCHANNEL      "403 "
 # define ERR_NOORIGIN			"409 "
 # define ERR_NONICKNAMEGIVEN	"431 "
 # define ERR_ERRONEUSNICKNAME	"432 "
 # define ERR_NICKNAMEINUSE		"433 "
+# define ERR_USERNOTINCHANNEL   "441 "
 # define ERR_NEEDMOREPARAMS 	"461 "
 # define ERR_ALREADYREGISTERED	"462 "
 # define ERR_PASSWDMISMATCH		"464 "
 # define ERR_NOPRIVILEGES       "481 "
+# define ERR_CHANOPRIVSNEEDED   "482 "
 # define ERR_UMODEUNKNOWNFLAG	"501 "
 # define ERR_USERSDONTMATCH		"502 "
 
@@ -82,6 +85,7 @@ std::vector<std::string>	ft_split(const std::string &str, const std::string &sep
 void 						showConfig(void);
 bool						checkCommand(std::string str);
 std::string					ft_trim(std::string	str, char toTrim);
+bool                        checkMode(Client *client);
 
 class Server;
 void	addmotd(Server *server, Client *client);

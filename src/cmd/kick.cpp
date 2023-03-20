@@ -13,6 +13,9 @@ This is necessary to maintain backward compatibility with existing client softwa
 Servers MAY limit the number of target users per KICK command via the TARGMAX parameter of RPL_ISUPPORT,
 and silently drop targets if the number of targets exceeds the limit.
 
+!!!Some server software allows you to specify multiple channels or nicknames by separating them with commas (e.g. KICK #v3 tom,jerry).
+However, this is not universally supported so stick to one channel and nick per kick command.
+
 Numeric Replies:
 ERR_NEEDMOREPARAMS (461)
 ERR_NOSUCHCHANNEL (403)
@@ -28,4 +31,30 @@ void	kick(Server *server, Client *client)
     if (client->getMessage()->getParams().size() == 0)
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ":Not enough parameters");
 
+    std::vector<std::string> channels = ft_split(client->getMessage()->getParams()[0], ",");
+	std::vector<std::string> users = ft_split(client->getMessage()->getParams()[1], ",");
+
+    // for (std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it)
+	// {
+    //     if (!client->getChannel()does not exist)
+    //             client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " " + *it + " :No such channel");
+    //     else if(checkMode(client) == false)
+    //             client->sendMsg(ERR_CHANOPRIVSNEEDED + client->getNick() + " " + *it  + " :You're not channel operator");
+    //     else
+    //         {
+    //             for (std::vector<std::string>::iterator it2 = users.begin(); it2 != users.end(); ++it2)
+    //             {
+    //                 if (//does not exist)
+    //                     client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + *it + " " + *it2  + " :They aren't on that channel");
+    //                 else
+    //                 {
+    //                     std::string str =  "KICK " + *it + " " + *it2 + " :" + client->getMessage()->getParams()[2]);
+    //                     broadcast a message to the concerned user
+    //                     send message to all users of the channel
+    //                     client->getChannel()->broadcast(server->getUserbyNick(client->getMessage()->getParams()[1], str)
+    //                     client->getChannel().removeMember(//what client?);
+    //                 }
+    //             }
+	//         }
+    // }
 }
