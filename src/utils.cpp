@@ -26,3 +26,11 @@ bool	checkCommand(std::string	str)
 	}
 	return (true);
 }
+
+bool checkMode(Client *client)
+{
+    std::map<char, bool>::iterator ret = client->getModes().find('o');
+    if (ret->second == true)
+      return true;
+    return false;
+}
