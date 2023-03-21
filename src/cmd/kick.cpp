@@ -23,38 +23,53 @@ ERR_CHANOPRIVSNEEDED (482)
 ERR_USERNOTINCHANNEL (441)
 ERR_NOTONCHANNEL (442)*/
 
+std::ostream& operator<<(std::ostream& out, const std::vector<std::string>& vec) {
+    out << "[ ";
+    for (std::vector<std::string>::const_iterator it = vec.begin(); it != vec.end(); ++it) {
+        out << *it << " ";
+    }
+    out << "]";
+    return out;
+}
+
+
 void	kick(Server *server, Client *client)
 {
     if (server == NULL)
         return ;
-    
-    if (client->getMessage()->getParams().size() == 0)
+    std::cout << "DEBUG ===> KICK called"  << std::endl << std::endl;
+    if (client->getMessage()->getParams().size() < 3)
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ":Not enough parameters");
 
     std::vector<std::string> channels = ft_split(client->getMessage()->getParams()[0], ",");
 	std::vector<std::string> users = ft_split(client->getMessage()->getParams()[1], ",");
 
-    // for (std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it)
-	// {
-    //     if (!client->getChannel()does not exist)
-    //             client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " " + *it + " :No such channel");
-    //     else if(checkMode(client) == false)
-    //             client->sendMsg(ERR_CHANOPRIVSNEEDED + client->getNick() + " " + *it  + " :You're not channel operator");
-    //     else
-    //         {
-    //             for (std::vector<std::string>::iterator it2 = users.begin(); it2 != users.end(); ++it2)
-    //             {
-    //                 if (//does not exist)
-    //                     client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + *it + " " + *it2  + " :They aren't on that channel");
-    //                 else
-    //                 {
-    //                     std::string str =  "KICK " + *it + " " + *it2 + " :" + client->getMessage()->getParams()[2]);
-    //                     broadcast a message to the concerned user
-    //                     send message to all users of the channel
-    //                     client->getChannel()->broadcast(server->getUserbyNick(client->getMessage()->getParams()[1], str)
-    //                     client->getChannel().removeMember(//what client?);
-    //                 }
-    //             }
-	//         }
-    // }
+    std::cout << " channels vector: " << channels << std::endl;
+    std::cout << " users vector: " << users << std::endl;
+
+    for (std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it)
+	{
+        if (client->getChannelName() != *it)
+                client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " " + *it + " :No such channel");
+        else if(checkMode(client) == false)
+                client->sendMsg(ERR_CHANOPRIVSNEEDED + client->getNick() + " " + *it  + " :You're not channel operator");
+        else
+            {
+                std::cout << "check existant users and kick then " << std::endl;
+                for (std::vector<std::string>::iterator it2 = users.begin(); it2 != users.end(); ++it2)
+                {
+                    if (client->getChannel()->getMemberName(*it2) != *it2)
+                        client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + *it + " " + *it2  + " :They aren't on that channel");
+                    else
+                    {
+                            std::string str =  "KICK " + *it + " " + *it2 + " :" + client->getMessage()->getParams()[2];
+                            std::cout << str << std::endl;  
+                            //broadcast a message to the concerned user
+                            //send message to all users of the channel
+                            //client->getChannel()->broadcast(client, str);
+                            //client->getChannel()->removeMember(server->getUserbyNick(*it2));
+                    }
+                }
+	        }
+    }
 }
