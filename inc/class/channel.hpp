@@ -24,6 +24,7 @@ class	Channel {
 		void	addMember(Client*);
 		void	removeMember(Client*);
 		void	broadcast(Client*, std::string);
+		std::string	getMemberName(std::string targetNick);
 
 	private:
 
