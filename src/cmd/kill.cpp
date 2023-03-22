@@ -32,8 +32,6 @@ ERR_NOPRIVS (723) */
 
 #include "../../inc/utils.hpp"
 
-bool checkMode(Client *client);
-
 void ft_kill(Server *server, Client *client)
 {
     if (server == NULL)
@@ -56,18 +54,23 @@ void ft_kill(Server *server, Client *client)
     {
         std::string comment = client->getMessage()->getParams()[1];
         std::cout << " KILL THE USER " << std::endl;
+
+        std::cout << " comment =  " << comment << std::endl;
+        std::string str = "Killed ( " + client->getNick() + " " + comment + " )";
+        client->sendMsg(str);
         //send the KILL message to user killed
         //send the QUIT msg to everyone in the channel
-        client->sendMsg( "Killed " + client->getNick() + " " + comment);
-        //quit(server, client);
+        //client->getChannel()->broadcast(server->getUserbyNick(client->getMessage()->getParams()[0]), str); - segfault
+        quit(server, client);
     }
        
 }
 
-bool checkMode(Client *client)
-{std::map<char, bool>::iterator ret = client->getModes().find('o');
-    if (ret->second == true)
-      return true;
-    return false;
-}
+// bool checkMode(Client *client)
+// {
+//     std::map<char, bool>::iterator ret = client->getModes().find('o');
+//     if (ret->second == true)
+//       return true;
+//     return false;
+// }
     

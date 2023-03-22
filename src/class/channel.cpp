@@ -42,6 +42,18 @@ void	Channel::removeMember(Client* client) {
 	}
 }
 
+std::string Channel::getMemberName(std::string targetNick)
+{
+	std::string result = "";
+	for (std::vector<Client*>::iterator it = _members.begin(); it != _members.end(); ++it) {
+		if ((*it)->getNick() == targetNick) {
+			result = (*it)->getNick();
+			break;
+		}
+	}
+  	return result;
+}
+
 void	Channel::broadcast(Client* client, std::string msg) {
 	for (long unsigned int i = 0; i < _members.size(); i++) {
 		if (_members[i] != client)
