@@ -175,14 +175,12 @@ bool					Client::getAuthorized() const { return (_authorized); }
 void	Client::setBuffer(const std::string str) { _buffer = str; }
 void	Client::setChannel(Channel* channel) { _channel = channel; }
 void	Client::setChannelName(const std::string str) {	_channelName = str; }
-
 void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
 void	Client::setAuthorized(bool isAuth) { _authorized = isAuth; }
 void	Client::setMessage(Message* message) { _message = message; }
-
 
 std::ostream& operator<<(std::ostream& os, const std::map<char, bool>& m) {
     os << "{";
