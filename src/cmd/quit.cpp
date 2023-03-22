@@ -1,11 +1,6 @@
 #include "../../inc/utils.hpp"
 
 void	quit(Server* server, Client* client) {
-	// std::cout << "DEBUG ===> QUIT function called from client #" << client->getC_socket()  << std::endl << std::endl;
-	// if (client->getChannel() == NULL) {
-	// 	std::cout << "DEBUG ===> no channel" << std::endl << std::endl;
-	// 	client->sendMsg(" QUIT : Bye for now! " );
-	// }
 	if (client->getMessage()->getParams().size()) {
 		std::string	str;
 		for (size_t i = 0; i < client->getMessage()->getParams().size(); i++)
@@ -20,5 +15,8 @@ void	quit(Server* server, Client* client) {
 			it++;
 		}
 		client->sendMsg("QUIT " + str);
+		client->setNick("");
+		// server->getClients().erase(client->getC_socket());
+		// delete (client);
 	}
 }
