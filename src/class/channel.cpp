@@ -11,8 +11,10 @@ Channel::Channel(Client* client, const std::string channelName):
 	_modes.insert(std::pair<char, bool>('p', false));
 	_modes.insert(std::pair<char, bool>('s', false));
 	addMember(client);
-	client->setChannel(this);
-	client->setChannelName(channelName);
+	// client->setChannel(this);
+	// client->setChannelName(channelName); //plus de sens
+	client->getChannelsNames().push_back(channelName);
+
 }
 
 Channel::~Channel() {}
@@ -32,6 +34,9 @@ void	Channel::addMember(Client* client) {
 }
 
 void	Channel::removeMember(Client* client) {
+	if (client == NULL)
+		return ; 
+
 	std::vector<Client*>::iterator	it = _members.begin();
 	while (it != _members.end()){
 		if (*it == client) {

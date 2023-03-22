@@ -29,6 +29,10 @@ class Client
 		std::string	getPrefix() const;
 		void		addMode(char newMode);
 		void		removeMode(char newMode);
+		bool		checkChannelName(const std::string str);
+		void		removeChannelName(std::string channelName);
+
+
 
 
 
@@ -42,7 +46,8 @@ class Client
 		std::string			 	getSockaddr_in() const;
 		std::string 			getBuffer() const ;
 		Channel*				getChannel();
-		const std::string		getChannelName() const;
+		const std::string		getChannelName() const;  //plus de sens
+		std::vector<std::string>&	getChannelsNames();  //plus de sens
 		Server*					getServer() const ;
 		std::string				getNick() const ;
 		std::string				getUser() const ;
@@ -56,8 +61,8 @@ class Client
 		
 		/************ Setters ************/
 
-		void	setChannel(Channel *channel);
-		void	setChannelName(const std::string str);
+		// void	setChannel(Channel *channel);
+		// void	setChannelName(const std::string str); //plus de sens
 
 		void	setBuffer(const std::string str);
 		void	setNick(const std::string nick);
@@ -87,6 +92,7 @@ class Client
 		Message*							_message;
 		Channel*							_channel;	
 		std::string							_channelName;	
+		std::vector<std::string>			_channelsNames;	
 		Server*								_server;
 
 };
