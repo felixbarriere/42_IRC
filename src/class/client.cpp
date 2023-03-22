@@ -148,6 +148,17 @@ std::string	Client::getModesString() {
 	return (ret); 
 }
 
+void	Client::removeChannelName(std::string channelName) {
+	std::vector<std::string>::iterator	it = _channelsNames.begin();
+	while (it != _channelsNames.end()){
+		if (*it == channelName) {
+			_channelsNames.erase(it);
+			return ;
+		}
+		it++;
+	}
+}
+
 /*******************************************************************************************************************/
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
@@ -160,6 +171,7 @@ std::string				Client::getSockaddr_in() const { return (_c_address); }
 std::string				Client::getBuffer() const { return (_buffer); }
 Channel*				Client::getChannel() { return (_channel); }
 const std::string		Client::getChannelName() const {	return (_channelName); }
+std::vector<std::string>&	Client::getChannelsNames() {	return (_channelsNames); }
 Server*					Client::getServer() const { return (_server); }
 std::string				Client::getNick() const { return (_nick); }
 std::string				Client::getUser() const { return (_user); }
@@ -173,14 +185,28 @@ bool					Client::getAuthorized() const { return (_authorized); }
 /************ Setters ************/
 
 void	Client::setBuffer(const std::string str) { _buffer = str; }
-void	Client::setChannel(Channel* channel) { _channel = channel; }
-void	Client::setChannelName(const std::string str) {	_channelName = str; }
+// void	Client::setChannel(Channel* channel) { _channel = channel; }
+// void	Client::setChannelName(const std::string str) {	_channelName = str; } //plus de sens
 void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
 void	Client::setAuthorized(bool isAuth) { _authorized = isAuth; }
 void	Client::setMessage(Message* message) { _message = message; }
+
+bool		Client::checkChannelName(const std::string str)
+{	
+	std::vector<std::string>::iterator	it = _channelsNames.begin(); 
+	std::vector<std::string>::iterator	ite = _channelsNames.end();
+	for (; it != ite; it++)
+	{
+		if ((*it) == str)
+			return (true);
+	}
+
+	return (false);
+} 
+
 
 std::ostream& operator<<(std::ostream& os, const std::map<char, bool>& m) {
     os << "{";

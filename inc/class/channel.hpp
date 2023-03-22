@@ -18,12 +18,12 @@ class	Channel {
 		std::string				getPwd() const;
 		int						getLimit() const;
 
-		void	setPwd(const std::string);
-		void	setLimit(int);
+		void		setPwd(const std::string);
+		void		setLimit(int);
 
-		void	addMember(Client*);
-		void	removeMember(Client*);
-		void	broadcast(Client*, std::string);
+		void		addMember(Client*);
+		void		removeMember(Client*);
+		void		broadcast(Client*, std::string);
 		std::string	getMemberName(std::string targetNick);
 
 	private:
