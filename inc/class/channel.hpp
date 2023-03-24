@@ -25,6 +25,7 @@ class	Channel {
 		void		removeMember(Client*);
 		void		broadcast(Client*, std::string);
 		std::string	getMemberName(std::string);
+		bool		ifMemberbyNick(std::string);
 
 	private:
 

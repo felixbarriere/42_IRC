@@ -48,6 +48,7 @@ class Server {
 		Client*								getUserbyNick(std::string) const;
 		std::map<std::string, Channel>&		getChannels();
 		std::map<std::string, std::string>&	getOper();
+		//void getChannelbyName(std::string chan);
 
 		void	setPortNumber(char *portNumber);
 		void	setCommandList();
