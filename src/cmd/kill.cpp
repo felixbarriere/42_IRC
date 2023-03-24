@@ -48,29 +48,24 @@ void ft_kill(Server *server, Client *client)
         std::cout << "DEBUG ===> KILL check the nickname "  << std::endl << std::endl;
         client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " " + client->getMessage()->getParams()[0] + " :No such nickname");
     }
-    else if(checkMode(client) == false)
-        client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator");
+    //else if(checkMode(client) == false)
+    else if (!client->getModes().find('o')->second)
+	    client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator");
     else
     {
         std::string comment = client->getMessage()->getParams()[1];
-        std::cout << " KILL THE USER " << std::endl;
+        std::cout << "CHECK===> comment =  " << comment << std::endl;
 
-        std::cout << " comment =  " << comment << std::endl;
-        std::string str = "Killed ( " + client->getNick() + " " + comment + " )";
-        client->sendMsg(str);
-        //send the KILL message to user killed
-        //send the QUIT msg to everyone in the channel
-        //client->getChannel()->broadcast(server->getUserbyNick(client->getMessage()->getParams()[0]), str); - segfault
-        quit(server, client);
+        std::string str_to_all = "Killed ( " + client->getNick() + " " + comment + " )";
+        std::string str_to_user = "Closing Link: " +  client->getHostname() + " (Killed ( " + client->getNick() + " " + comment + " )";
+		
+		//send the KILL message to user killed
+		server->getUserbyNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user);
+        //send the QUIT msg to everyone in the channel - in cmd quit->broadcast
+        quit(server, server->getUserbyNick(client->getMessage()->getParams()[0]));
+		//kick(server, server->getUserbyNick(client->getMessage()->getParams()[0]));
     }
        
 }
 
-// bool checkMode(Client *client)
-// {
-//     std::map<char, bool>::iterator ret = client->getModes().find('o');
-//     if (ret->second == true)
-//       return true;
-//     return false;
-// }
     
