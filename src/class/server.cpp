@@ -6,8 +6,10 @@
 
 Server::Server() {}
 
-Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain), _password(password), timeout(TIMEOUT)
-{
+Server::Server(char* portNumberMain, char *password):
+	portNumber(portNumberMain),
+	_password(password),
+	timeout(TIMEOUT) {
 	showConfig();
 	int yes = 1;
 
@@ -42,12 +44,10 @@ Server::Server(char* portNumberMain, char *password) : portNumber(portNumberMain
 	_oper.insert(std::pair<std::string, std::string>("admin", "pwd"));
 }
 
-Server::~Server()
-{
+Server::~Server() {
 	removeClients();
-	close (this->s_socket);
+	close (s_socket);
 	std::cout << std::endl << "Server closing, see you next time." << std::endl << std::endl;
-	// close(this->s_socket);
 }
 
 /**********************************************************************************************************/
@@ -102,48 +102,38 @@ void	Server::acceptClient(void)
 void	Server::receiveRequest(int client_socket) {
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
-
 	memset(buffer, 0, BUFFER_SIZE + 1);
-
 	res = recv(client_socket, buffer, BUFFER_SIZE, MSG_DONTWAIT);
-
 	std::string buffer_str(buffer);
-
 	if (buffer_str.size() != 0)
 		std::cout << "#" << client_socket << " << " << buffer_str << std::endl;
-
-	if (res == -1) {
+	if (res == -1)
         SERVER_ERR("Error during receipt");
-	}
-	else if (res == 0) {
+	// else if (res == 0) {
 		// close(fds[client_socket].fd);
 		// delete(_clients[client_socket]);
 		// this->_clients.erase(client_socket);
 
 		// SERVER_ERR("Client is disconnected");
-	}
+	// }
 	else if (res > 0 && buffer_str[buffer_str.size() - 1] != '\n')
-	{
+	// {
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));
-		std::cout << std::endl << "REceiving End of File, request not completed" << std::endl << std::endl;
+		// std::cout << std::endl << "Receiving End of File, request not completed" << std::endl << std::endl;
 
-	}
-	else if (buffer_str[buffer_str.size() - 1] == '\n')
-	{
-		std::cout << std::endl << "Receiving Entree,  " << std::endl << std::endl;
+	// }
+	else if (buffer_str[buffer_str.size() - 1] == '\n') {
+		// std::cout << std::endl << "Receiving Entree,  " << std::endl << std::endl;
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(" " + buffer_str));
 		// getUser(client_socket)->setBuffer(buffer_str);
-		std::cout << std::endl << "Sending request: " << getUser(client_socket)->getBuffer() << std::endl << std::endl;
-
-		getUser(client_socket)->initMsg();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
+		// std::cout << std::endl << "Sending request: " << getUser(client_socket)->getBuffer() << std::endl << std::endl;
+		getUser(client_socket)->initMsg();
 		getUser(client_socket)->setBuffer("");
 	}
-	
 	buffer_str.clear();
 }
 
-void Server::init_pollfd_struct(void)
-{
+void Server::init_pollfd_struct() {
 	fds.clear();
 	fds.push_back(pollfd());	
 	fds.back().fd = s_socket;
@@ -152,8 +142,7 @@ void Server::init_pollfd_struct(void)
 
 }
 
-void	Server::usePoll(void)
-{
+void	Server::usePoll() {
 	init_pollfd_struct();
 	while(!serv_run)
 	{ 
@@ -204,12 +193,12 @@ void	Server::createChannel(Client* client, const std::string channel_name) {
 /*                                                Getters / Setters                                                */
 /*******************************************************************************************************************/
 
-char*								Server::getPortNumber() const { return (this->portNumber); }
-char*								Server::getPassword() const { return (this->_password); }
-int									Server::getTimeout() const { return (this->timeout); }
-int									Server::getServerSocket() const { return (this->s_socket); }
-struct sockaddr_in					Server::getServerAddress() const { return (this->s_address); }
-std::vector<struct pollfd>			Server::getFds() const { return (this->fds); }
+char*								Server::getPortNumber() const { return (portNumber); }
+char*								Server::getPassword() const { return (_password); }
+int									Server::getTimeout() const { return (timeout); }
+int									Server::getServerSocket() const { return (s_socket); }
+struct sockaddr_in					Server::getServerAddress() const { return (s_address); }
+std::vector<struct pollfd>			Server::getFds() const { return (fds); }
 std::map<int, Client*>				&Server::getClients() { return (_clients); }
 std::map<std::string, Channel>		&Server::getChannels() { return (_channels); }
 std::map<std::string, fct_cmd>		&Server::getCommandList() { return (_commandList); }
@@ -228,15 +217,12 @@ Client*								Server::getUser(int fd) const {
 Client*								Server::getUserbyNick(std::string nick) const {
 	std::map<int, Client*>::const_iterator    it = _clients.begin();
     std::map<int, Client*>::const_iterator    ite = _clients.end();
-    
-    for (; it != ite; it++)
-    {
+    for (; it != ite; it++) {
         if (it->second->getNick() == nick)
             return (it->second);
     }
     return (NULL);
 }
-
 
 void	Server::setPortNumber(char *portNumber) { this->portNumber = portNumber; }
 

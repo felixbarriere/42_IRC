@@ -63,17 +63,14 @@ Peut retourner 0 si la connexion a été terminée. Retourne -1 en cas d'erreur.
 
 int  serv_run = 0;
 
-void ft_handler(int smth)
-{
-	(void)smth;
+void ft_handler(int smth) {
+	(void) smth;
 	serv_run = 1;
 }
 
-int	main (int ac, char **av)
-{
+int	main (int ac, char **av) {
 	signal(SIGINT, ft_handler);
-	if (ac != 3)
-	{
+	if (ac != 3) {
 		std::cerr << "Error " << std::endl << "Syntax: ./IRC PORT PASSWORD" << std::endl ;
 		return (1);
 	}
