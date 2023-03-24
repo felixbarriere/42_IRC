@@ -23,7 +23,7 @@ class Server {
 
 		/************ Constructors / Destructor ************/
 		Server();
-		Server(char* portNumber, char* password);
+		Server(char*, char*);
 		~Server();
 
 		/************ Méthodes ************/
@@ -44,8 +44,8 @@ class Server {
 		struct sockaddr_in					getServerAddress() const ;
 		std::vector<struct pollfd>			getFds() const ;
 		std::map<int, Client*>&				getClients();
-		Client*								getUser(int fd) const ;
-		Client*								getUserbyNick(std::string nick) const;
+		Client*								getUser(int) const ;
+		Client*								getUserbyNick(std::string) const;
 		std::map<std::string, Channel>&		getChannels();
 		std::map<std::string, std::string>&	getOper();
 
@@ -56,13 +56,13 @@ class Server {
 	private:
 
 		std::map<std::string, fct_cmd>		_commandList; 
-		char*								portNumber;		// a mettre dans une classe config?
-		char*								_password;		// a mettre dans une classe config?
+		char*								portNumber;
+		char*								_password;
 		int									timeout;	
 		int									s_socket;
 		struct sockaddr_in		 			s_address;
 		std::vector<struct pollfd>		 	fds;
-		std::map<int, Client*>				_clients;		//key: fd, value: client
+		std::map<int, Client*>				_clients;
 		std::map<std::string, Channel>		_channels;
 		std::map<std::string, std::string>	_oper;
 

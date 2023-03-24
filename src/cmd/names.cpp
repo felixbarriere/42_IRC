@@ -1,6 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	names(Server *server, Client *client) {
+void	names(Server* server, Client* client) {
 	if (!(client->getMessage()->getParams().size())) {
 		std::map<int, Client*>::iterator	it = server->getClients().begin();
 		while (it != server->getClients().end()) {

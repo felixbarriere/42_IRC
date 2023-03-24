@@ -1,6 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	list(Server *server, Client *client) {
+void	list(Server* server, Client* client) {
 	std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
 	while (it != server->getChannels().end()) {
 		std::map<char, bool>::iterator	m = it->second.getModes().find('s');

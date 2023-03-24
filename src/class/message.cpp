@@ -45,24 +45,18 @@ Message::~Message() {}
 /**********************************************************************************************************/
 
 void	Message::tokenizer(std::string line) {
-
 	if (line.size() == 0)
 		return ;
-
 	_cmd.clear();
 	_params.clear();
-
 	std::vector<std::string>	temp = ft_split(line, " ");
 	if (temp.size() == 2) {
-
 		_cmd = temp[0];
 		_params.push_back(temp[1]);
 	}
 	else {	
-
 		// la value est constituée de plusieurs strings (ex: USER)
 		_cmd = temp[0];
-
 		std::vector<std::string>::iterator	it = temp.begin() + 1;
 		for (; it != temp.end(); it++)
 			_params.push_back(*it);
@@ -72,7 +66,6 @@ void	Message::tokenizer(std::string line) {
 void Message::createMessage() {
 	std::vector<std::string>	lines(ft_split(_client->getBuffer(), "\n\r"));
 	for (unsigned long i = 0; i < lines.size() ; i++) {
-		// répartir la ligne en _cmd et _params
 		tokenizer(lines[i]);
 		// if (tokenizer(lines[i]))
 		// {
@@ -101,11 +94,11 @@ void	Message::setParams(std::vector<std::string> params) { _params = params; }
 
 std::string					Message::getMessage() const { return (_message); }
 std::string					Message::getCmd() const { return (_cmd); }
-std::vector<std::string>	&Message::getParams() { return (_params); }
-
-std::string		Message::getPrefix() const {
+std::vector<std::string>&	Message::getParams() { return (_params); }
+std::string					Message::getPrefix() const {
 	return (_client->getNick() + "!" + _client->getUser() + "@" + _client->getHostname() + " ");
 }
+
 std::ostream	&operator<<(std::ostream &out, Message &data) {
 	out << "Prefix : "<< data.getPrefix() << "CMD : " << data.getCmd();
 	return (out);

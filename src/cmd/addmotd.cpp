@@ -1,6 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	addmotd(Server *server, Client *client) {
+void	addmotd(Server* server, Client* client) {
 	(void) server;
 	if (!(client->getModes().find('o')->second))
 		return ;

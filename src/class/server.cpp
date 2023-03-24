@@ -12,34 +12,28 @@ Server::Server(char* portNumberMain, char *password):
 	timeout(TIMEOUT) {
 	showConfig();
 	int yes = 1;
-
-	/* Initialiser le socket du serveur (a mettre dans la class server) */
-	this->s_socket = socket(AF_INET, SOCK_STREAM, 0);//AF_INET - IPv4
-    if (this->s_socket < 0)
+	// Initialiser le socket du serveur (a mettre dans la class server)
+	s_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (s_socket < 0)
 		SERVER_ERR("Error during socket creation");
-
-	/* Rendre le socket non-bloquant */
+	// Rendre le socket non-bloquant
 	if (setsockopt(s_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
 		SERVER_ERR("setsockopt failed");
 	if (fcntl(s_socket, F_SETFL, O_NONBLOCK) == 1)
 		SERVER_ERR("Error while rendering the socket non-blocking");
-
- 	/* Configurer l'adresse et le port du serveur */
-	memset(&this->s_address, 0, sizeof(this->s_address));
-    this->s_address.sin_family = AF_INET;
-    this->s_address.sin_port = htons(atoi(this->portNumber));   // convert short integer value for port must be converted into network byte order
-    this->s_address.sin_addr.s_addr = INADDR_ANY; //=inet_pton(AF_INET, "0.0.0.0", &s_address.sin_addr);
-
-	/* Lier l'adresse au socket du serveur */
-	if (bind(this->s_socket, (struct sockaddr *) &this->s_address, sizeof(this->s_address)) < 0) {
-	    SERVER_ERR("Error during bind");   // try above 1024: the first 1024 ports are 'special' and usually need super user privileges to use them
+ 	// Configurer l'adresse et le port du serveur
+	memset(&s_address, 0, sizeof(s_address));
+    s_address.sin_family = AF_INET;
+    s_address.sin_port = htons(atoi(portNumber));
+    s_address.sin_addr.s_addr = INADDR_ANY;
+	// Lier l'adresse au socket du serveur
+	if (bind(s_socket, (struct sockaddr *) &s_address, sizeof(s_address)) < 0) {
+	    SERVER_ERR("Error during bind");
 		exit(1);
 	}
-
-	/* Écouter les connexions entrantes */
-	if (listen(this->s_socket, 5) < 0) //SOMAXCONN (4096 on school machine)   5: backlog définit une longueur maximale jusqu'à laquelle la file des connexions en attente pour sockfd peut croître.
+	// Écouter les connexions entrantes
+	if (listen(s_socket, 5) < 0)
         SERVER_ERR("Error while listening");
-
 	setCommandList();
 	_oper.insert(std::pair<std::string, std::string>("admin", "pwd"));
 }
@@ -56,46 +50,35 @@ Server::~Server() {
 
 void	Server::removeClients() {
 	size_t clientsNb = _clients.size();
-
 	// std::cout << std::endl << "removeClients(void)" << std::endl << std::endl;
 	// std::cout << std::endl << "_clients.size(): " << _clients.size() << std::endl << std::endl;
-
-	// for (; it != ite; it++) {
-		for (size_t i = 0; i < clientsNb; i++) {
-			
-			Client	*tmp = _clients.begin()->second;
-
-			_clients.erase(tmp->getC_socket());
-
-			delete ((tmp));
+	for (size_t i = 0; i < clientsNb; i++) {
+		Client*	tmp = _clients.begin()->second;
+		_clients.erase(tmp->getC_socket());
+		delete (tmp);
 	}	
 	// std::cout << std::endl << "_clients.size() 2: " << _clients.size() << std::endl << std::endl;
 }
 
-void	Server::acceptClient(void)
-{
+void	Server::acceptClient() {
 	int					client_socket;
 	struct sockaddr_in	client_address;
 	socklen_t			client_len;
 	int					yes = 1;
-
-	/* Accepter la connexion entrante du client	 */
+	// Accepter la connexion entrante du client
 	client_len = sizeof(client_address);	
-    client_socket = accept(getServerSocket(), (struct sockaddr *) &client_address, &client_len);  //passe de 5 connexions possibles à 4
-    
+    client_socket = accept(getServerSocket(), (struct sockaddr *) &client_address, &client_len);
 	if (client_socket == -1)
         SERVER_ERR("Error while accepting connexion");
 	if (setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
 		SERVER_ERR("setsockopt failed");
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 		SERVER_ERR("Error while rendering the socket non blocking");
-
 	_clients[client_socket] = new Client(client_socket, client_address, this);
-
-	/* Ajouter le socket client à notre tableau de fds */
-	fds.push_back(pollfd());			// fds argument, which is a vector of structures pollfd()
+	// Ajouter le socket client à notre tableau de fds
+	fds.push_back(pollfd());
 	fds.back().fd = client_socket;
-	fds.back().events = POLLIN;			// données en attente de lecture.
+	fds.back().events = POLLIN;
 	fds.back().revents = POLLIN;
 }
 
@@ -116,18 +99,14 @@ void	Server::receiveRequest(int client_socket) {
 
 		// SERVER_ERR("Client is disconnected");
 	// }
-	else if (res > 0 && buffer_str[buffer_str.size() - 1] != '\n')
-	// {
+	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] != '\n') {
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));
 		// std::cout << std::endl << "Receiving End of File, request not completed" << std::endl << std::endl;
-
-	// }
-	else if (buffer_str[buffer_str.size() - 1] == '\n') {
-		// std::cout << std::endl << "Receiving Entree,  " << std::endl << std::endl;
+	}
+	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] == '\n') {
+		// std::cout << std::endl << "Receiving Entrée" << std::endl << std::endl;
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(" " + buffer_str));
-		// getUser(client_socket)->setBuffer(buffer_str);
-		// std::cout << std::endl << "Sending request: " << getUser(client_socket)->getBuffer() << std::endl << std::endl;
-		getUser(client_socket)->initMsg();
+		getUser(client_socket)->initMsg();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 		getUser(client_socket)->setBuffer("");
 	}
 	buffer_str.clear();
@@ -144,24 +123,21 @@ void Server::init_pollfd_struct() {
 
 void	Server::usePoll() {
 	init_pollfd_struct();
-	while(!serv_run)
-	{ 
-		/* Préparer le vector de fd pour poll() */
+	while(!serv_run) { 
+		// Préparer le vector de fd pour poll()
 		if (poll(fds.data(), fds.size(), timeout) < 0)
-	    {
 		    // SERVER_ERR("Error Poll()");
 			break ;
-		}
-		for (size_t i = 0; i < fds.size(); i++)
-		{
-			if (fds[i].revents) 					//revent == 1 : on a recu une requete de irssi
-			{
-				if (fds[i].revents & POLLIN)		// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
-				{
+		for (size_t i = 0; i < fds.size(); i++) {
+			if (fds[i].revents) {
+				// revent == 1 : on a recu une requete de irssi
+				if (fds[i].revents & POLLIN) {
+					// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
 					if (i == 0)
 						acceptClient();
 					else
-						receiveRequest(fds[i].fd);  //	on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
+						// on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
+						receiveRequest(fds[i].fd);
 				}
 				else if (fds[i].revents & POLLRDHUP || fds[i].revents & POLLERR)
 	        		SERVER_ERR("Error Poll() in FDS");
@@ -171,14 +147,11 @@ void	Server::usePoll() {
 }
 
 bool	Server::nickIsUsed(std::string str) const {
-	std::cout << "DEBUG ===> nickIsUsed test"   << std::endl;
-
+	// std::cout << "DEBUG ===> nickIsUsed test"   << std::endl;
 	std::map<int, Client*>::const_iterator	it = _clients.begin();
 	std::map<int, Client*>::const_iterator	ite = _clients.end();
-	for (; it != ite ; it++)
-	{
-		std::cout << "DEBUG ===> existing nicknames: " << (it->second->getNick()) << std::endl;
-
+	for (; it != ite ; it++) {
+		// std::cout << "DEBUG ===> existing nicknames: " << (it->second->getNick()) << std::endl;
 		if (str == it->second->getNick())
 			return (true);
 	}
@@ -199,21 +172,17 @@ int									Server::getTimeout() const { return (timeout); }
 int									Server::getServerSocket() const { return (s_socket); }
 struct sockaddr_in					Server::getServerAddress() const { return (s_address); }
 std::vector<struct pollfd>			Server::getFds() const { return (fds); }
-std::map<int, Client*>				&Server::getClients() { return (_clients); }
-std::map<std::string, Channel>		&Server::getChannels() { return (_channels); }
-std::map<std::string, fct_cmd>		&Server::getCommandList() { return (_commandList); }
-std::map<std::string, std::string>	&Server::getOper() { return (_oper); }
-
+std::map<int, Client*>&				Server::getClients() { return (_clients); }
+std::map<std::string, Channel>&		Server::getChannels() { return (_channels); }
+std::map<std::string, fct_cmd>&		Server::getCommandList() { return (_commandList); }
+std::map<std::string, std::string>&	Server::getOper() { return (_oper); }
 Client*								Server::getUser(int fd) const {
 	std::map<int, Client*>::const_iterator	ret;
 	ret = _clients.find(fd);
-	
 	if (ret == _clients.end())
 		return (NULL);
-
 	return (ret->second);
 }
-
 Client*								Server::getUserbyNick(std::string nick) const {
 	std::map<int, Client*>::const_iterator    it = _clients.begin();
     std::map<int, Client*>::const_iterator    ite = _clients.end();
@@ -224,31 +193,30 @@ Client*								Server::getUserbyNick(std::string nick) const {
     return (NULL);
 }
 
-void	Server::setPortNumber(char *portNumber) { this->portNumber = portNumber; }
+void	Server::setPortNumber(char* number) { portNumber = number; }
 
 void Server::setCommandList() {
 	_commandList.insert(std::make_pair("ADDMOTD", addmotd));
 	_commandList.insert(std::make_pair("ADDOMOTD", addomotd));
-	_commandList.insert(std::make_pair("CHGNAME", chgname));
-	_commandList.insert(std::make_pair("GLOBOPS", globops));
 	_commandList.insert(std::make_pair("CHGHOST", chgname));
 	_commandList.insert(std::make_pair("CHGNAME", chgname));
+	_commandList.insert(std::make_pair("GLOBOPS", globops));
 	_commandList.insert(std::make_pair("JOIN", join));
 	_commandList.insert(std::make_pair("KICK", kick));
 	_commandList.insert(std::make_pair("kill", ft_kill));
 	_commandList.insert(std::make_pair("LIST", list));
 	_commandList.insert(std::make_pair("MODE", mode));
 	_commandList.insert(std::make_pair("motd", motd));
-	_commandList.insert(std::make_pair("OPERMOTD", opermotd));
 	_commandList.insert(std::make_pair("NAMES", names));
 	_commandList.insert(std::make_pair("NICK", nick));
 	_commandList.insert(std::make_pair("OPER", oper));
+	_commandList.insert(std::make_pair("OPERMOTD", opermotd));
+	_commandList.insert(std::make_pair("PART", part));
+	_commandList.insert(std::make_pair("PASS", pass));
 	_commandList.insert(std::make_pair("PING", ping));
+	_commandList.insert(std::make_pair("PRIVMSG", privmsg));
+	_commandList.insert(std::make_pair("QUIT", quit));
 	_commandList.insert(std::make_pair("USER", user));
 	_commandList.insert(std::make_pair("WALLOPS", wallops));
 	_commandList.insert(std::make_pair("WHOIS", whoIs));
-	_commandList.insert(std::make_pair("PASS", pass));
-	_commandList.insert(std::make_pair("PART", part));
-	_commandList.insert(std::make_pair("PRIVMSG", privmsg));
-	_commandList.insert(std::make_pair("QUIT", quit));
 }

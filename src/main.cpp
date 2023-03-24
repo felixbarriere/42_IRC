@@ -68,7 +68,7 @@ void ft_handler(int smth) {
 	serv_run = 1;
 }
 
-int	main (int ac, char **av) {
+int	main (int ac, char** av) {
 	signal(SIGINT, ft_handler);
 	if (ac != 3) {
 		std::cerr << "Error " << std::endl << "Syntax: ./IRC PORT PASSWORD" << std::endl ;

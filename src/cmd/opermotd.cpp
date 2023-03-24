@@ -1,6 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	opermotd(Server *server, Client *client) {
+void	opermotd(Server* server, Client* client) {
 	(void) server;
 	if (!(client->getModes().find('o')->second))
 		return ;

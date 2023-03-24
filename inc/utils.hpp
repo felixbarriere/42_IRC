@@ -3,7 +3,7 @@
 
 /*** MACRO ***/
 
-# define BUFFER_SIZE 512 // max size?
+# define BUFFER_SIZE 512
 
 //*****  Configs  *****
 # define NAME "irc" 
@@ -29,14 +29,17 @@
 # define RPL_UMODEIS			"221 "
 # define RPL_YOUREOPER          "381 "
 # define ERR_NOSUCHNICK			"401 "
+# define ERR_NOSUCHCHANNEL      "403 "
 # define ERR_NOORIGIN			"409 "
 # define ERR_NONICKNAMEGIVEN	"431 "
 # define ERR_ERRONEUSNICKNAME	"432 "
 # define ERR_NICKNAMEINUSE		"433 "
+# define ERR_USERNOTINCHANNEL   "441 "
 # define ERR_NEEDMOREPARAMS 	"461 "
 # define ERR_ALREADYREGISTERED	"462 "
 # define ERR_PASSWDMISMATCH		"464 "
 # define ERR_NOPRIVILEGES       "481 "
+# define ERR_CHANOPRIVSNEEDED   "482 "
 # define ERR_UMODEUNKNOWNFLAG	"501 "
 # define ERR_USERSDONTMATCH		"502 "
 
@@ -77,35 +80,36 @@ extern int serv_run;
 
 /*** PROTOTYPE ***/
 
-void						ft_handler(int smth);
-std::vector<std::string>	ft_split(const std::string &str, const std::string &sep);
-void 						showConfig(void);
-bool						checkCommand(std::string str);
-std::string					ft_trim(std::string	str, char toTrim);
+void						ft_handler(int);
+std::vector<std::string>	ft_split(const std::string&, const std::string&);
+void 						showConfig();
+bool						checkCommand(std::string);
+std::string					ft_trim(std::string, char);
+bool                        checkMode(Client*);
 
 class Server;
-void	addmotd(Server *server, Client *client);
-void	addomotd(Server *server, Client *client);
-void	chghost(Server *server, Client *client);
-void	chgname(Server *server, Client *client);
-void	globops(Server *server, Client *client);
-void	kick(Server *server, Client *client);
-void	ft_kill(Server *server, Client *client);
-void	join(Server *server, Client *client);
-void	list(Server *server, Client *client);
-void	mode(Server *server, Client *client);
-void	motd(Server *server, Client *client);
-void	opermotd(Server *server, Client *client);
-void	names(Server *server, Client *client);
-void	nick(Server *server, Client *client);
-void	oper(Server *server, Client *client);
-void	ping(Server *server, Client *client);
-void	part(Server *server, Client *client);
-void	pass(Server *server, Client *client);
-void	privmsg(Server *server, Client *client);
-void	user(Server *server, Client *client);
-void	wallops(Server *server, Client *client);
-void	whoIs(Server *server, Client *client);
-void	quit(Server *server, Client *client);
+void	addmotd(Server*, Client*);
+void	addomotd(Server*, Client*);
+void	chghost(Server*, Client*);
+void	chgname(Server*, Client*);
+void	globops(Server*, Client*);
+void	kick(Server*, Client*);
+void	ft_kill(Server*, Client*);
+void	join(Server*, Client*);
+void	list(Server*, Client*);
+void	mode(Server*, Client*);
+void	motd(Server*, Client*);
+void	opermotd(Server*, Client*);
+void	names(Server*, Client*);
+void	nick(Server*, Client*);
+void	oper(Server*, Client*);
+void	ping(Server*, Client*);
+void	part(Server*, Client*);
+void	pass(Server*, Client*);
+void	privmsg(Server*, Client*);
+void	user(Server*, Client*);
+void	wallops(Server*, Client*);
+void	whoIs(Server*, Client*);
+void	quit(Server*, Client*);
 
 #endif

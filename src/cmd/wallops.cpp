@@ -1,6 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	wallops(Server *server, Client *client) {
+void	wallops(Server* server, Client* client) {
 	if (!(client->getModes().find('o')->second))
 		return ;
 	std::map<int, Client*>::iterator	it = server->getClients().begin();

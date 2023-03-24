@@ -1,6 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	join(Server *server, Client *client) {
+void	join(Server* server, Client* client) {
 	if (!client->getMessage()->getParams().size())
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ": err need more params");
 	else {
@@ -12,8 +12,9 @@ void	join(Server *server, Client *client) {
 			server->createChannel(client, channel_name);
 		else {
 			it->second.addMember(client);
-			client->setChannel(&(it->second));
-			client->setChannelName(channel_name);
+			// client->setChannel(&(it->second));
+			// client->setChannelName(channel_name);
+			client->getChannelsNames().push_back(channel_name);
 			it->second.broadcast(client, "JOIN " + it->first);
 		}
 		client->sendMsg("JOIN " + channel_name);

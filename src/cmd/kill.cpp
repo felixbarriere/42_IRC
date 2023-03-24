@@ -32,42 +32,38 @@ ERR_NOPRIVS (723) */
 
 #include "../../inc/utils.hpp"
 
-bool checkMode(Client *client);
-
-void ft_kill(Server *server, Client *client)
-{
-    if (server == NULL)
+void ft_kill(Server* server, Client* client) {
+    if (!server)
         return ;
-
-    std::cout << "DEBUG ===> KILL called"  << std::endl << std::endl;
-    std::cout << "DEBUG ===> nickname to kill " << client->getMessage()->getParams()[0] << std::endl << std::endl;
-    std::cout << "DEBUG ===> killer's modes are : " << client->getModes() << std::endl << std::endl;
-
+    // std::cout << "DEBUG ===> KILL called"  << std::endl << std::endl;
+    // std::cout << "DEBUG ===> nickname to kill " << client->getMessage()->getParams()[0] << std::endl << std::endl;
+    // std::cout << "DEBUG ===> killer's modes are : " << client->getModes() << std::endl << std::endl;
     if (client->getMessage()->getParams().size() < 2)
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters");
-    else if(server->getUserbyNick(client->getMessage()->getParams()[0]) == NULL)
-    {
-        std::cout << "DEBUG ===> KILL check the nickname "  << std::endl << std::endl;
+    else if (!server->getUserbyNick(client->getMessage()->getParams()[0])) {
+        // std::cout << "DEBUG ===> KILL check the nickname "  << std::endl << std::endl;
         client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " " + client->getMessage()->getParams()[0] + " :No such nickname");
     }
-    else if(checkMode(client) == false)
+    else if (!checkMode(client))
         client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator");
-    else
-    {
+    else {
         std::string comment = client->getMessage()->getParams()[1];
         std::cout << " KILL THE USER " << std::endl;
+        std::cout << " comment =  " << comment << std::endl;
+        std::string str = "Killed ( " + client->getNick() + " " + comment + " )";
+        client->sendMsg(str);
         //send the KILL message to user killed
         //send the QUIT msg to everyone in the channel
-        client->sendMsg( "Killed " + client->getNick() + " " + comment);
-        //quit(server, client);
+        //client->getChannel()->broadcast(server->getUserbyNick(client->getMessage()->getParams()[0]), str); - segfault
+        quit(server, client);
     }
-       
 }
 
-bool checkMode(Client *client)
-{std::map<char, bool>::iterator ret = client->getModes().find('o');
-    if (ret->second == true)
-      return true;
-    return false;
-}
+// bool checkMode(Client *client)
+// {
+//     std::map<char, bool>::iterator ret = client->getModes().find('o');
+//     if (ret->second == true)
+//       return true;
+//     return false;
+// }
     
