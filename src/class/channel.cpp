@@ -65,3 +65,15 @@ void	Channel::broadcast(Client* client, std::string msg) {
 			_members[i]->sendMsg(msg);
 	}
 }
+
+bool	Channel::ifMemberbyNick(std::string nick) {
+	std::vector<Client*>::iterator    it = _members.begin();
+    std::vector<Client*>::iterator    ite = _members.end();
+    
+    for (; it != ite; it++)
+    {
+        if ((*it)->getNick() == nick)
+            return true;
+    }
+    return false;
+}

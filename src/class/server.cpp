@@ -235,6 +235,20 @@ Client*								Server::getUserbyNick(std::string nick) const {
     return (NULL);
 }
 
+// void Server::getChannelbyName(std::string chan)
+// {
+// 	// std::map<std::string, Channel>::iterator it = _channels.begin();
+// 	// std::map<std::string, Channel>::iterator ite = _channels.end();
+// 	Channel *result;
+// 	std::map<std::string, Channel>::const_iterator it = _channels.find(chan);
+//     if (it != _channels.end()) {
+//         // Channel found, update the result pointer with the address of the associated Channel object
+//         *result = &(it->second);
+//     } else {
+//         // Channel not found, set the result pointer to NULL
+//         *result = NULL;
+//     }
+// }
 
 void	Server::setPortNumber(char *portNumber) { this->portNumber = portNumber; }
 
