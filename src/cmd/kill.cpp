@@ -35,28 +35,30 @@ ERR_NOPRIVS (723) */
 void ft_kill(Server* server, Client* client) {
     if (!server)
         return ;
-    // std::cout << "DEBUG ===> KILL called"  << std::endl << std::endl;
+    std::cout << "DEBUG ===> KILL called"  << std::endl << std::endl;
     // std::cout << "DEBUG ===> nickname to kill " << client->getMessage()->getParams()[0] << std::endl << std::endl;
     // std::cout << "DEBUG ===> killer's modes are : " << client->getModes() << std::endl << std::endl;
     if (client->getMessage()->getParams().size() < 2)
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters");
-    else if (!server->getUserbyNick(client->getMessage()->getParams()[0])) {
-        // std::cout << "DEBUG ===> KILL check the nickname "  << std::endl << std::endl;
+    else if (!server->getUserbyNick(client->getMessage()->getParams()[0]))
         client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " " + client->getMessage()->getParams()[0] + " :No such nickname");
-    }
     //else if(checkMode(client) == false)
     else if (!client->getModes().find('o')->second)
-	    client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator");
-    else {
-        std::string comment = client->getMessage()->getParams()[1];
+            client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator");
+    else
+    {
+        size_t i = client->getMessage()->getParams()[1].find(":");
+        std::string     comment = "";
+        if (i != std::string::npos)
+            comment = client->getMessage()->getParams()[1].substr(i);
+        //std::string comment = client->getMessage()->getParams()[1];
         std::cout << "CHECK===> comment =  " << comment << std::endl;
         std::string str_to_all = "Killed ( " + client->getNick() + " " + comment + " )";
         std::string str_to_user = "Closing Link: " +  client->getHostname() + " (Killed ( " + client->getNick() + " " + comment + " )";
-		//send the KILL message to user killed
-		server->getUserbyNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user);
+                //send the KILL message to user killed
+                server->getUserbyNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user);
         //send the QUIT msg to everyone in the channel - in cmd quit->broadcast
         quit(server, server->getUserbyNick(client->getMessage()->getParams()[0]));
-		//kick(server, server->getUserbyNick(client->getMessage()->getParams()[0]));
+                //kick(server, server->getUserbyNick(client->getMessage()->getParams()[0]));
     }
 }
-    
