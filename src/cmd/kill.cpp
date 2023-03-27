@@ -50,15 +50,15 @@ void ft_kill(Server* server, Client* client) {
         size_t i = client->getMessage()->getParams()[1].find(":");
         std::string     comment = "";
         if (i != std::string::npos)
-            comment = client->getMessage()->getParams()[1].substr(i);
+            comment = client->getMessage()->getParams()[1].substr(i + 1);
         //std::string comment = client->getMessage()->getParams()[1];
         std::cout << "CHECK===> comment =  " << comment << std::endl;
         std::string str_to_all = "Killed ( " + client->getNick() + " " + comment + " )";
         std::string str_to_user = "Closing Link: " +  client->getHostname() + " (Killed ( " + client->getNick() + " " + comment + " )";
-                //send the KILL message to user killed
-                server->getUserbyNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user);
+		//send the KILL message to user killed
+		server->getUserbyNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user);
         //send the QUIT msg to everyone in the channel - in cmd quit->broadcast
         quit(server, server->getUserbyNick(client->getMessage()->getParams()[0]));
-                //kick(server, server->getUserbyNick(client->getMessage()->getParams()[0]));
+        //kick(server, server->getUserbyNick(client->getMessage()->getParams()[0]));
     }
 }

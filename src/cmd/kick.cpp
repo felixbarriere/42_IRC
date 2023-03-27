@@ -70,17 +70,18 @@ void    kick(Server* server, Client* client) {
                         else
                         {
                                 size_t i = client->getMessage()->getParams()[2].find(":");
-                                std::string     msg = "";
-                                if (i != std::string::npos)
-                                        msg = client->getMessage()->getParams()[2].substr(i + 1);
-                                std::cout << "COMMENT is : " << msg << std::endl;
-                                std::string str =  "KICK " + chan + " " + *it + " :" + msg;
-                                std::cout<< "SHOW str to send : " << str << std::endl;
-                                //a message to the concerned user
-                                //server->getUserbyNick(client->getMessage()->getParams()[1])->sendMsg(str);
-                                server->getUserbyNick(*it)->sendMsg(str);
-                                //send message to all users of the channel - broadcast
-                                //server->getChannels()[chan].removeMember(server->getUserbyNick(*it));
+							std::string     msg = "";
+							if (i != std::string::npos)
+									msg = client->getMessage()->getParams()[2].substr(i + 1);
+							std::cout << "COMMENT is : " << msg << std::endl;
+							std::string str =  "KICK " + chan + " " + *it + " :" + msg;
+							std::cout<< "SHOW str to send : " << str << std::endl;
+							//a message to the concerned user
+							//server->getUserbyNick(client->getMessage()->getParams()[1])->sendMsg(str);
+							server->getUserbyNick(*it)->sendMsg(str);
+							//send message to all users of the channel - broadcast
+							// server->getChannels()[chan].broadcast(client,str);
+							// server->getChannels()[chan].removeMember(server->getUserbyNick(client->getMessage()->getParams()[1]));
                         }
                 }
         }
