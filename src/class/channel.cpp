@@ -57,10 +57,10 @@ std::string Channel::getMemberName(std::string targetNick) {
   	return (result);
 }
 
-void	Channel::broadcast(Client* client, std::string msg) {
+void	Channel::broadcast(Client* sender, std::string msg) {
 	for (long unsigned int i = 0; i < _members.size(); i++) {
-		if (_members[i] != client)
-			_members[i]->sendMsg(msg);
+		if (_members[i] != sender)
+			_members[i]->sendMsg(msg, sender);
 	}
 }
 

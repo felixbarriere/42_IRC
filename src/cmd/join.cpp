@@ -2,7 +2,7 @@
 
 void	join(Server* server, Client* client) {
 	if (!client->getMessage()->getParams().size())
-		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ": err need more params");
+		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ": err need more params", client);
 	else {
 		std::string	channel_name = client->getMessage()->getParams()[0];
 		if (channel_name[0] != '#')
@@ -17,7 +17,7 @@ void	join(Server* server, Client* client) {
 			client->getChannelsNames().push_back(channel_name);
 			it->second.broadcast(client, "JOIN " + it->first);
 		}
-		client->sendMsg("JOIN " + channel_name);
+		client->sendMsg("JOIN " + channel_name, client);
 	}
 }
 

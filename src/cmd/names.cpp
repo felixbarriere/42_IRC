@@ -4,7 +4,7 @@ void	names(Server* server, Client* client) {
 	if (!(client->getMessage()->getParams().size())) {
 		std::map<int, Client*>::iterator	it = server->getClients().begin();
 		while (it != server->getClients().end()) {
-			client->sendMsg(it->second->getNick());
+			client->sendMsg(it->second->getNick(), client);
 			it++;
 		}
 		return ;
@@ -14,7 +14,7 @@ void	names(Server* server, Client* client) {
 		if (it->first == client->getMessage()->getParams()[0]) {
 			std::vector<Client*>::iterator	itt = it->second.getMembers().begin();
 			while (itt != it->second.getMembers().end()) {
-				client->sendMsg((*itt)->getNick());
+				client->sendMsg((*itt)->getNick(), client);
 				itt++;
 			}
 			return ;

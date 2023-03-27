@@ -8,6 +8,6 @@ void	motd(Server* server, Client* client) {
 	ifs.open("src/motd/motd.txt");
 	std::stringstream	s;
 	s << ifs.rdbuf();
-	client->sendMsg(s.str());
+	client->sendMsg(s.str(), client);
 // must send RPL_MOTD RFC1459 :- <string>
 }

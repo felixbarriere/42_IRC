@@ -39,7 +39,7 @@ void    kick(Server* server, Client* client) {
         std::cout << "The whole msg is : " << client->getMessage()->getMessage() << std::endl;
 
     if (client->getMessage()->getParams().size() < 3) {
-        client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ":Not enough parameters");}
+        client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ":Not enough parameters", client);}
 
         std::cout << "All the parameters: " << std::endl;
         std::cout << "param 0 " << client->getMessage()->getParams()[0] << std::endl;
@@ -57,14 +57,14 @@ void    kick(Server* server, Client* client) {
         std::cout << "count = " << server->getChannels().count(chan) << std::endl;
 
         if (server->getChannels().count(chan) == 0)
-                client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " " + chan + " :No such channel");
+                client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " " + chan + " :No such channel", client);
         else if (!client->getModes().find('o')->second)
-            client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator");
+            client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator", client);
         else {
                 std::cout << "check existant users and kick then " << std::endl;
                 for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); ++it) {
                     if (server->getClientByNick(*it) == NULL)// || server->getChannels()[chan].ifMemberbyNick(*it) == false)
-                            client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + chan + " " + *it  + " :They aren't on that channel");
+                            client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + chan + " " + *it  + " :They aren't on that channel", client);
                     else {
                         size_t i = client->getMessage()->getParams()[2].find(":");
                         std::string     msg = "";
@@ -75,12 +75,12 @@ void    kick(Server* server, Client* client) {
                         std::cout<< "SHOW str to send : " << str << std::endl;
                         //a message to the concerned user
                         //server->getUserbyNick(client->getMessage()->getParams()[1])->sendMsg(str);
-                        server->getClientByNick(*it)->sendMsg(str);
+                        server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
                         //send message to all users of the channel - broadcast
                         //server->getChannels()[chan].removeMember(server->getUserbyNick(*it));
                         Channel*	channel = server->getChannelByName(chan);
-																								channel->removeMember(server->getClientByNick(*it));
-																								channel->broadcast(client, str);
+						channel->removeMember(server->getClientByNick(*it));
+						channel->broadcast(client, str);
                     }
                 }
         }
