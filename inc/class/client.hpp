@@ -23,7 +23,7 @@ class Client {
 
 		void		welcome_msg();
 		void		initMsg();
-		void		sendMsg(std::string);
+		void		sendMsg(std::string, Client*);
 		std::string	getPrefix() const;
 		void		addMode(char);
 		void		removeMode(char);

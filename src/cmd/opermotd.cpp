@@ -8,5 +8,5 @@ void	opermotd(Server* server, Client* client) {
 	ifs.open("src/motd/omotd.txt");
 	std::stringstream	s;
 	s << ifs.rdbuf();
-	client->sendMsg(s.str());
+	client->sendMsg(s.str(), client);
 }

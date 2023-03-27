@@ -57,13 +57,13 @@ Client::~Client() {
 /*                                                Méthodes                                                */
 /**********************************************************************************************************/
 
-void	Client::sendMsg(std::string str) {
+void	Client::sendMsg(std::string str, Client* prefix) {
 	if (!getAuthorized())
 		return ;
 	ssize_t 		ret = 0;
 	std::string		toSend;
-	if (_nick.size() && _user.size())
-		toSend = ":" + _message->getPrefix() + str;
+	if (prefix->getNick().size() && prefix->getUser().size())
+		toSend = ":" + prefix->getMessage()->getPrefix() + str;
 	else
 		toSend = str;
 	std::cout << "#" << _c_socket <<  " >> " << toSend << std::endl;
@@ -78,13 +78,13 @@ void	Client::welcome_msg() {
 	_welcomeMsg = true;
 	std::string		str;
 	str = RPL_WELCOME + _nick + " : Welcome to the Internet Relay Network " + _message->getPrefix();
-	sendMsg(str);
+	sendMsg(str, this);
 	str = RPL_YOURHOST + _nick + " : Your host is " + NAME + ", running version " + VERSION;
-	sendMsg(str);
+	sendMsg(str, this);
 	str = RPL_CREATED + _nick +" : This server was create " + "now";	//ctime(&(time(0)))
-	sendMsg(str);
+	sendMsg(str, this);
 	str = RPL_MYINFO + _nick + " " + NAME + " " + VERSION;
-	sendMsg(str);
+	sendMsg(str, this);
 	std::ifstream	ifs;
 	if (getModes().find('o')->second)
 		ifs.open("src/motd/omotd.txt");
@@ -92,7 +92,7 @@ void	Client::welcome_msg() {
 		ifs.open("src/motd/motd.txt");
 	std::stringstream	s;
 	s << ifs.rdbuf();
-	sendMsg(s.str());
+	sendMsg(s.str(), this);
 }
 
 // changer nom function

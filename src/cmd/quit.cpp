@@ -23,7 +23,7 @@ void	quit(Server* server, Client* client) {
 			}
 			it++;
 		}
-		client->sendMsg("QUIT " + str);
+		client->sendMsg("QUIT " + str, client);
 		client->setNick("");
 		// server->getClients().erase(client->getC_socket());
 		// delete (client);
