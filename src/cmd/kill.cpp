@@ -50,7 +50,7 @@ void ft_kill(Server* server, Client* client) {
         size_t i = client->getMessage()->getParams()[1].find(":");
         std::string     comment = "";
         if (i != std::string::npos)
-            comment = client->getMessage()->getParams()[1].substr(i);
+            comment = client->getMessage()->getParams()[1].substr(i + 1);
         //std::string comment = client->getMessage()->getParams()[1];
         std::cout << "CHECK===> comment =  " << comment << std::endl;
         std::string str_to_all = "Killed ( " + client->getNick() + " " + comment + " )";
