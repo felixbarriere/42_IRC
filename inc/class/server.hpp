@@ -45,12 +45,12 @@ class Server {
 		std::vector<struct pollfd>			getFds() const ;
 		std::map<int, Client*>&				getClients();
 		Client*								getUser(int) const ;
-		Client*								getUserbyNick(std::string) const;
+		Client*								getClientByNick(std::string) const;
 		std::map<std::string, Channel>&		getChannels();
 		std::map<std::string, std::string>&	getOper();
-		//void getChannelbyName(std::string chan);
+		Channel*							getChannelByName(const std::string);
 
-		void	setPortNumber(char *portNumber);
+		void	setPortNumber(char*);
 		void	setCommandList();
 
 		/************ Attributs ************/

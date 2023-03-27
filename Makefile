@@ -26,20 +26,21 @@ SRCS = 	main.cpp \
 		cmd/kick.cpp \
 		cmd/kill.cpp \
 		cmd/list.cpp \
+		cmd/mode.cpp \
 		cmd/motd.cpp \
-		cmd/oper.cpp \
-		cmd/opermotd.cpp \
 		cmd/names.cpp \
 		cmd/nick.cpp \
-		cmd/user.cpp \
-		cmd/mode.cpp \
-		cmd/ping.cpp \
-		cmd/wallops.cpp \
-		cmd/whois.cpp \
-		cmd/pass.cpp \
+		cmd/notice.cpp \
+		cmd/oper.cpp \
+		cmd/opermotd.cpp \
 		cmd/part.cpp \
+		cmd/pass.cpp \
+		cmd/ping.cpp \
 		cmd/privmsg.cpp \
 		cmd/quit.cpp \
+		cmd/user.cpp \
+		cmd/wallops.cpp \
+		cmd/whois.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
 

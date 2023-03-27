@@ -99,11 +99,12 @@ void	Server::receiveRequest(int client_socket) {
 
 		// SERVER_ERR("Client is disconnected");
 	// }
-	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] != '\n') {
+	else if (getUser(client_socket) && res > 0 && buffer_str[buffer_str.size() - 1] != '\n') {
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));
 		// std::cout << std::endl << "Receiving End of File, request not completed" << std::endl << std::endl;
 	}
-	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] == '\n') {
+	// else if (getUser(client_socket) && res > 0 && buffer_str[buffer_str.size() - 1] == '\n') {
+	else if (getUser(client_socket) && res > 0 && buffer_str[buffer_str.size() - 1] == '\n' && buffer_str.size() != 1) {
 		// std::cout << std::endl << "Receiving Entrée" << std::endl << std::endl;
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(" " + buffer_str));
 		getUser(client_socket)->initMsg();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
@@ -133,7 +134,7 @@ void	Server::usePoll() {
 				// revent == 1 : on a recu une requete de irssi
 				if (fds[i].revents & POLLIN) {
 					// find the descriptors that returned POLLIN and determine whether it's the listening or the active connection.
-					if (i == 0)
+					if (!i)
 						acceptClient();
 					else
 						// on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
@@ -183,7 +184,7 @@ Client*								Server::getUser(int fd) const {
 		return (NULL);
 	return (ret->second);
 }
-Client*								Server::getUserbyNick(std::string nick) const {
+Client*								Server::getClientByNick(std::string nick) const {
 	std::map<int, Client*>::const_iterator    it = _clients.begin();
     std::map<int, Client*>::const_iterator    ite = _clients.end();
     for (; it != ite; it++) {
@@ -193,20 +194,15 @@ Client*								Server::getUserbyNick(std::string nick) const {
     return (NULL);
 }
 
-// void Server::getChannelbyName(std::string chan)
-// {
-// 	// std::map<std::string, Channel>::iterator it = _channels.begin();
-// 	// std::map<std::string, Channel>::iterator ite = _channels.end();
-// 	Channel *result;
-// 	std::map<std::string, Channel>::const_iterator it = _channels.find(chan);
-//     if (it != _channels.end()) {
-//         // Channel found, update the result pointer with the address of the associated Channel object
-//         *result = &(it->second);
-//     } else {
-//         // Channel not found, set the result pointer to NULL
-//         *result = NULL;
-//     }
-// }
+Channel*	Server::getChannelByName(const std::string name) {
+	std::map<std::string, Channel>::iterator it = _channels.begin();
+	while (it != _channels.end()) {
+		if (it->first == name)
+			return (&(it->second));
+		it++;
+	}
+	return (NULL);
+}
 
 void	Server::setPortNumber(char* number) { portNumber = number; }
 
@@ -224,6 +220,7 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("motd", motd));
 	_commandList.insert(std::make_pair("NAMES", names));
 	_commandList.insert(std::make_pair("NICK", nick));
+	_commandList.insert(std::make_pair("NOTICE", notice));
 	_commandList.insert(std::make_pair("OPER", oper));
 	_commandList.insert(std::make_pair("OPERMOTD", opermotd));
 	_commandList.insert(std::make_pair("PART", part));

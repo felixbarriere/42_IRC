@@ -93,23 +93,24 @@ void	addomotd(Server*, Client*);
 void	chghost(Server*, Client*);
 void	chgname(Server*, Client*);
 void	globops(Server*, Client*);
+void	join(Server*, Client*);
 void	kick(Server*, Client*);
 void	ft_kill(Server*, Client*);
-void	join(Server*, Client*);
 void	list(Server*, Client*);
 void	mode(Server*, Client*);
 void	motd(Server*, Client*);
-void	opermotd(Server*, Client*);
 void	names(Server*, Client*);
 void	nick(Server*, Client*);
+void	notice(Server*, Client*);
 void	oper(Server*, Client*);
-void	ping(Server*, Client*);
+void	opermotd(Server*, Client*);
 void	part(Server*, Client*);
 void	pass(Server*, Client*);
+void	ping(Server*, Client*);
 void	privmsg(Server*, Client*);
+void	quit(Server*, Client*);
 void	user(Server*, Client*);
 void	wallops(Server*, Client*);
 void	whoIs(Server*, Client*);
-void	quit(Server*, Client*);
 
 #endif

@@ -25,10 +25,10 @@ class Message {
 		void setCmd(std::string);
 		void setParams(std::vector<std::string>);
 
-		std::string 				getMessage(void) const;
-		std::string 				getPrefix(void) const;
-		std::string 				getCmd(void) const;
-		std::vector<std::string>&	getParams(void);
+		std::string 				getMessage() const;
+		std::string 				getPrefix() const;
+		std::string 				getCmd() const;
+		std::vector<std::string>&	getParams();
 
 	private:
 

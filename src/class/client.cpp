@@ -153,8 +153,8 @@ int							Client::getC_socket() const { return (_c_socket); }
 std::string					Client::getSockaddr_in() const { return (_c_address); }
 std::string					Client::getBuffer() const { return (_buffer); }
 Channel*					Client::getChannel() { return (_channel); }
-const std::string			Client::getChannelName() const {	return (_channelName); }
-std::vector<std::string>&	Client::getChannelsNames() {	return (_channelsNames); }
+const std::string			Client::getChannelName() const { return (_channelName); }
+std::vector<std::string>&	Client::getChannelsNames() { return (_channelsNames); }
 Server*						Client::getServer() const { return (_server); }
 std::string					Client::getNick() const { return (_nick); }
 std::string					Client::getUser() const { return (_user); }
