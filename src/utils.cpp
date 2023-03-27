@@ -1,6 +1,5 @@
 #include "utils.hpp"
 
-
 std::string	ft_trim(std::string	str, char toTrim) {	// useless, irssi le fait tout seul
 	std::string	temp;
 	if (str[str.size() - 1] == toTrim )

@@ -4,20 +4,28 @@ void	join(Server* server, Client* client) {
 	if (!client->getMessage()->getParams().size())
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ": err need more params", client);
 	else {
-		std::string	channel_name = client->getMessage()->getParams()[0];
-		if (channel_name[0] != '#')
-			channel_name = "#" + channel_name;
-		std::map<std::string, Channel>::iterator	it = server->getChannels().find(channel_name);
-		if (it == server->getChannels().end())
-			server->createChannel(client, channel_name);
-		else {
-			it->second.addMember(client);
-			// client->setChannel(&(it->second));
-			// client->setChannelName(channel_name);
-			client->getChannelsNames().push_back(channel_name);
-			it->second.broadcast(client, "JOIN " + it->first);
+		const char*	channels = client->getMessage()->getParams()[0].c_str();
+		char*		ptr = strtok((char*)channels, ",");
+		std::vector<std::string>	channel_names;
+		while (ptr) {
+			channel_names.push_back(std::string(ptr));
+			ptr = strtok(NULL, ",");
 		}
-		client->sendMsg("JOIN " + channel_name, client);
+		for (unsigned int i = 0; i < channel_names.size(); i++) {
+			if (channel_names[i][0] != '#')
+				channel_names[i] = "#" + channel_names[i];
+			std::map<std::string, Channel>::iterator	it = server->getChannels().find(channel_names[i]);
+			if (it == server->getChannels().end())
+				server->createChannel(client, channel_names[i]);
+			else {
+				it->second.addMember(client);
+				// client->setChannel(&(it->second));
+				// client->setChannelName(channel_name);
+				client->getChannelsNames().push_back(channel_names[i]);
+				it->second.broadcast(client, "JOIN " + it->first);
+			}
+			client->sendMsg("JOIN " + channel_names[i], client);
+		}
 	}
 }
 
