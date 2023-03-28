@@ -34,6 +34,8 @@ class Server {
 		bool	nickIsUsed(std::string) const;
 		void	createChannel(Client*, const std::string);
 		void	removeClients();
+		void	removeClient(Client* client, int client_socket);
+
 
 		/************ Getters / Setters ************/
 		std::map<std::string, fct_cmd>&		getCommandList(); 

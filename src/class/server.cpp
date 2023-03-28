@@ -60,6 +60,24 @@ void	Server::removeClients() {
 	// std::cout << std::endl << "_clients.size() 2: " << _clients.size() << std::endl << std::endl;
 }
 
+void	Server::removeClient(Client* client, int client_socket) {
+
+
+	std::cout << std::endl << "deleting client #" << client_socket << std::endl << std::endl;
+	std::cout << "/////////// DEBUG NB OF CLIENTS before : " << this->getClients().size() << std::endl;
+
+	std::map<int, Client*>::iterator	itt = this->getClients().begin();	
+	std::map<int, Client*>::iterator	ite = this->getClients().end();
+	for (; itt != ite; itt++) {
+		if (itt->first == client_socket) {
+			delete(client);
+			_clients.erase(itt);
+			break ;
+		}
+	}
+	std::cout << "/////////// DEBUG NB OF CLIENTS after : " << this->getClients().size() << std::endl;
+}
+
 void	Server::acceptClient() {
 	int					client_socket;
 	struct sockaddr_in	client_address;
@@ -75,12 +93,26 @@ void	Server::acceptClient() {
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 		SERVER_ERR("Error while rendering the socket non blocking");
 	_clients[client_socket] = new Client(client_socket, client_address, this);
+
+	if (this->getClients().size() > MAX_USERS) {
+		_clients[client_socket]->setConnected(false);
+		fds.push_back(pollfd());
+		fds.back().fd = client_socket;
+		fds.back().events = 0;
+		fds.back().revents = 0;
+		std::cout << std::endl << "Sorry, too many users are already connected" << std::endl << std::endl;
+		removeClient(getUser(client_socket), client_socket);
+
+		return ;
+	}
+
 	// Ajouter le socket client à notre tableau de fds
 	fds.push_back(pollfd());
 	fds.back().fd = client_socket;
 	fds.back().events = POLLIN;
 	fds.back().revents = POLLIN;
 }
+
 
 void	Server::receiveRequest(int client_socket) {
 
@@ -97,25 +129,9 @@ void	Server::receiveRequest(int client_socket) {
 	if (res == -1)
         SERVER_ERR("Error during receipt");
 	else if (res == 0) {
-		if (getUser(client_socket)->getConnected() == false) {
-			std::cout << std::endl << "deleting client #" << client_socket << std::endl << std::endl;
-			std::cout << "/////////// DEBUG NB OF CLIENTS before : " << this->getClients().size() << std::endl;
-
-			std::map<int, Client*>::iterator	itt = this->getClients().begin();	
-			std::map<int, Client*>::iterator	ite = this->getClients().end();
-			for (; itt != ite; itt++) {
-				if (itt->first == client_socket) {
-					std::cout << "///////////  before delete: " << getUser(client_socket)->getNick() << std::endl;
-
-					delete(getUser(client_socket));
-					
-					_clients.erase(itt);
-
-					break ;
-				}
-			}
-			std::cout << "/////////// DEBUG NB OF CLIENTS after : " << this->getClients().size() << std::endl;
-		}
+		if (getUser(client_socket)->getConnected() == false)
+			removeClient(getUser(client_socket), client_socket);
+			
 		// SERVER_ERR("Client is disconnected");
 	}
 	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] != '\n') {
