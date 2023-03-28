@@ -71,7 +71,7 @@ bool	Channel::ifMemberbyNick(std::string nick) {
     for (; it != ite; it++)
     {
         if ((*it)->getNick() == nick)
-            return true;
+            return (true);
     }
-    return false;
+    return (false);
 }

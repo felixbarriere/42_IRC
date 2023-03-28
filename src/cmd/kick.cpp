@@ -60,10 +60,12 @@ void    kick(Server* server, Client* client) {
         else if (!client->getModes().find('o')->second)
             client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator", client);
         else {
+				Channel*	channel = server->getChannelByName(chan);
                 std::cout << "check existant users and kick then " << std::endl;
                 for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); ++it) {
-                    if (server->getClientByNick(*it) == NULL)// || server->getChannels()[chan].ifMemberbyNick(*it) == false)
-                            client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + chan + " " + *it  + " :They aren't on that channel", client);
+                    // if (server->getClientByNick(*it) == NULL)// || server->getChannels()[chan].ifMemberbyNick(*it) == false)
+                    if (server->getClientByNick(*it) == NULL || !channel->ifMemberbyNick(*it))
+                            client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + " " + chan + " " + *it  + " :They aren't on that channel", client);
                     else {
                         size_t i = client->getMessage()->getParams()[2].find(":");
                         std::string     msg = "";
@@ -77,7 +79,7 @@ void    kick(Server* server, Client* client) {
                         server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
                         //send message to all users of the channel - broadcast
                         //server->getChannels()[chan].removeMember(server->getUserbyNick(*it));
-                        Channel*	channel = server->getChannelByName(chan);
+                        // Channel*	channel = server->getChannelByName(chan);
 						channel->removeMember(server->getClientByNick(*it));
 						channel->broadcast(client, str);
                     }

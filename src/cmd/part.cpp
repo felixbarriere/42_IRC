@@ -7,12 +7,10 @@ void	part(Server *server, Client *client) {
 	std::cout << "params[0]: " << client->getMessage()->getParams()[0] << std::endl;
 	std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
 	while (it != server->getChannels().end()) {
-		// std::cout << "test" << std::endl;
 		if (client->checkChannelName(it->first)) {
-			// std::cout << "test2" << std::endl;
 			client->sendMsg("PART " + it->first, client);
 			it->second.removeMember(client);
-			if (client->getNick() == it->second.getCreator()->getNick() || it->second.getMembers().size() == 0) {
+			if (it->second.getMembers().size() == 0) {
 				server->getChannels().erase(it);
 				// std::cout << "Channel deleted" << std::endl << std::endl;
 			}
