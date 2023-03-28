@@ -101,6 +101,7 @@ void	ft_kill(Server*, Client*);
 void	list(Server*, Client*);
 void	mode(Server*, Client*);
 void	motd(Server*, Client*);
+void	msg(Server*, Client*);
 void	names(Server*, Client*);
 void	nick(Server*, Client*);
 void	notice(Server*, Client*);

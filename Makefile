@@ -28,6 +28,7 @@ SRCS = 	main.cpp \
 		cmd/list.cpp \
 		cmd/mode.cpp \
 		cmd/motd.cpp \
+		cmd/msg.cpp \
 		cmd/names.cpp \
 		cmd/nick.cpp \
 		cmd/notice.cpp \
