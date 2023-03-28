@@ -56,9 +56,6 @@ Peut retourner 0 si la connexion a été terminée. Retourne -1 en cas d'erreur.
 
 --------------------------------------------------------------*/
 
-
-
-
 #include "../inc/utils.hpp"
 
 int  serv_run = 0;
@@ -70,7 +67,7 @@ void ft_handler(int smth) {
 
 int	main (int ac, char** av) {
 	signal(SIGINT, ft_handler);
-	if (ac != 3) {
+	if (ac != 3 || checkPort(av[1])) {
 		std::cerr << "Error " << std::endl << "Syntax: ./IRC PORT PASSWORD" << std::endl ;
 		return (1);
 	}

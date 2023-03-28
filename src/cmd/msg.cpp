@@ -1,6 +1,6 @@
 #include "../../inc/utils.hpp"
 
-void	privmsg(Server* server, Client* client) {
+void	msg(Server* server, Client* client) {
 	if (client->getMessage()->getParams().size() == 0 || client->getMessage()->getParams().size() == 1)
 		return ;
 	if (client->getMessage()->getParams()[0][0] == '#') {
@@ -12,7 +12,7 @@ void	privmsg(Server* server, Client* client) {
 				if (i < client->getMessage()->getParams().size())
 					params.append(" ");
 			}
-			it->second.broadcast(client, "PRIVMSG " + params);
+			it->second.broadcast(client, "MSG " + params);
 		}
 	}
 	else {
@@ -24,7 +24,7 @@ void	privmsg(Server* server, Client* client) {
 				if (i < client->getMessage()->getParams().size())
 					params.append(" ");
 			}
-			receiver->sendMsg("PRIVMSG " + params, client);
+			receiver->sendMsg("MSG " + params, client);
 		}
 	}
 }
