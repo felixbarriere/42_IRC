@@ -34,7 +34,7 @@ void ft_kill(Server* server, Client* client) {
         if (i != std::string::npos)
             comment = client->getMessage()->getParams()[1].substr(i + 1);
         std::cout << "CHECK===> comment =  " << comment << std::endl;
-        std::string str_to_all = "Killed ( " + client->getNick() + " " + comment + " )";
+        std::string str_to_all = client->getNick() + "KILL :" + comment;
         std::string str_to_user = "Closing Link: " +  client->getHostname() + " (Killed (" + client->getNick() + " (" + comment + ")))";
 		//send the KILL message to user killed
 		server->getClientByNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user, server->getClientByNick(client->getMessage()->getParams()[0]));
