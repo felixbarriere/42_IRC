@@ -14,7 +14,8 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_nick(),
 	_c_socket(client_socket),
 	_channel(NULL),
-	_server(server) {
+	_server(server),
+	_connected(true) {
 	_c_address = inet_ntoa(client_address.sin_addr);
 	// http://manpagesfr.free.fr/man/man3/getnameinfo.3.html
 	// int getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host, size_t hostlen, char *serv, size_t servlen, int flags);
@@ -47,10 +48,10 @@ Client&	Client::operator=(const Client &rhs) {
 }
 
 Client::~Client() {	
+	std::cout << "DEBUG ===> Destructor CLIENT #" << this->getC_socket() << std::endl << std::endl;
 	close(_c_socket);
 	delete (_message);
 	// delete (_channel);
-	// std::cout << "DEBUG ===> Destructor CLIENT" << std::endl << std::endl;
 }
 
 /**********************************************************************************************************/
@@ -101,6 +102,15 @@ void	Client::initMsg() {
 	// std::map<std::string, Channel>::iterator	ite = getServer()->getChannels().end();
 	// for (; it != ite; it++)
     // 	std::cout << "DEBUG ===>channels existants:" << it->first  << std::endl << std::endl;
+
+	// if (getServer()->getClients().size() > MAX_USERS) {
+	// 	SERVER_ERR("Sorry, you've reached max users");
+	// 	// this->setConnected(false);
+	// 	this->sendMsg("Sorry, too many users are already connected", this);  //possible d'envoyer un msg sans etre co? quel commmande?
+	// 	quit(getServer(), this);
+	// 	return ;
+	// }
+
 	_message->createMessage();	
 	if (!_welcomeMsg && _nick.size() && _user.size())
 		welcome_msg();
@@ -164,6 +174,8 @@ std::map<char, bool>&		Client::getModes() { return (_modes); }
 Message*					Client::getMessage() const { return (_message); }
 bool						Client::getWelcome() const { return (_welcomeMsg); }
 bool						Client::getAuthorized() const { return (_authorized); }
+bool						Client::getConnected() const { return (_connected); }
+
 
 /************ Setters ************/
 
@@ -176,6 +188,11 @@ void	Client::setRealName(const std::string realName) { _realName = realName; }
 void 	Client::setHostname(std::string str) { _hostname = str; }
 void	Client::setAuthorized(bool isAuth) { _authorized = isAuth; }
 void	Client::setMessage(Message* message) { _message = message; }
+
+void	Client::setConnected(bool str) { 
+	if (str == false)
+		_connected = false;
+}
 
 bool		Client::checkChannelName(const std::string str) {	
 	std::vector<std::string>::iterator	it = _channelsNames.begin(); 

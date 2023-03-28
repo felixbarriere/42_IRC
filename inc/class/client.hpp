@@ -52,6 +52,7 @@ class Client {
 		Message*				getMessage() const ;
 		bool					getWelcome() const ;
 		bool					getAuthorized() const ;
+		bool					getConnected() const ;
 		
 		/************ Setters ************/
 
@@ -65,6 +66,8 @@ class Client {
 		void	setHostname(std::string);	//utile?
 		void	setAuthorized(bool);
 		void	setMessage(Message*);
+		void	setConnected(bool str);
+
 
 	private:
 
@@ -86,6 +89,7 @@ class Client {
 		std::string							_channelName;	
 		std::vector<std::string>			_channelsNames;	
 		Server*								_server;
+		bool								_connected;
 
 };
 
