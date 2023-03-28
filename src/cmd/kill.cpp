@@ -16,8 +16,11 @@ ERR_NOPRIVS (723) */
 #include "../../inc/utils.hpp"
 
 void ft_kill(Server* server, Client* client) {
-    if (!server)
+    if (!server){
         return ;
+	}
+
+	std::string str_to_all;
     std::cout << "DEBUG ===> KILL called"  << std::endl << std::endl;
     // std::cout << "DEBUG ===> nickname to kill " << client->getMessage()->getParams()[0] << std::endl << std::endl;
     // std::cout << "DEBUG ===> killer's modes are : " << client->getModes() << std::endl << std::endl;
@@ -34,21 +37,26 @@ void ft_kill(Server* server, Client* client) {
         if (i != std::string::npos)
             comment = client->getMessage()->getParams()[1].substr(i + 1);
         std::cout << "CHECK===> comment =  " << comment << std::endl;
-        std::string str_to_all = client->getNick() + "KILL :" + comment;
-        std::string str_to_user = "Closing Link: " +  client->getHostname() + " (Killed (" + client->getNick() + " (" + comment + ")))";
+        std::string str_to_all = " KILL :" + comment;
+        std::string str_to_user = " :Killed by " + client->getNick() + " because " + comment;
+
+		/* on delete les parametres du client qui se fait kill, puis on lui passe str_to_user */
+		server->getClientByNick(client->getMessage()->getParams()[0])->getMessage()->getParams().clear();
+		server->getClientByNick(client->getMessage()->getParams()[0])->getMessage()->getParams().push_back(str_to_all);
+		
+
 		//send the KILL message to user killed
 		server->getClientByNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user, server->getClientByNick(client->getMessage()->getParams()[0]));
         //send the QUIT msg to everyone in the channel - in cmd quit->broadcast
         quit(server, server->getClientByNick(client->getMessage()->getParams()[0]));
-		std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
-		while (it != server->getChannels().end()) {
-			if (client->checkChannelName(it->first)) {
-				it->second.broadcast(client, str_to_all);
-			}
-			++it;
-		}
-
-		//server->(client, str_to_all);
+		// std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
+		// while (it != server->getChannels().end()) {
+		// 	if (client->checkChannelName(it->first)) {
+		// 		it->second.broadcast(client, str_to_all);
+		// 	}
+		// 	++it;
+		// }
 		server->removeClient(server->getClientByNick(client->getMessage()->getParams()[0]), server->getClientByNick(client->getMessage()->getParams()[0])->getC_socket());
     }
+	client->sendMsg(str_to_all, client);
 }
