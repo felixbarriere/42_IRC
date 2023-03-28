@@ -11,7 +11,7 @@
 # define VERSION "1.0"
 # define MAX_BACKLOGS 5
 //the maximum value is system-dependent (usually 5)
-# define MAX_USERS 20
+# define MAX_USERS 5
 # define OPER_USER "admin"
 # define OPER_PASSWORD "admin_pwd"
 # define PING 30

@@ -40,7 +40,7 @@ Server::Server(char* portNumberMain, char *password):
 
 Server::~Server() {
 	removeClients();
-	close (s_socket);
+	close(s_socket);
 	std::cout << std::endl << "Server closing, see you next time." << std::endl << std::endl;
 }
 
@@ -83,6 +83,10 @@ void	Server::acceptClient() {
 }
 
 void	Server::receiveRequest(int client_socket) {
+
+	if (getUser(client_socket) == NULL)
+		return ;
+
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
 	memset(buffer, 0, BUFFER_SIZE + 1);
@@ -92,20 +96,35 @@ void	Server::receiveRequest(int client_socket) {
 		std::cout << "#" << client_socket << " << " << buffer_str << std::endl;
 	if (res == -1)
         SERVER_ERR("Error during receipt");
-	// else if (res == 0) {
-		// close(fds[client_socket].fd);
-		// delete(_clients[client_socket]);
-		// this->_clients.erase(client_socket);
+	else if (res == 0) {
+		if (getUser(client_socket)->getConnected() == false) {
+			std::cout << std::endl << "deleting client #" << client_socket << std::endl << std::endl;
+			std::cout << "/////////// DEBUG NB OF CLIENTS before : " << this->getClients().size() << std::endl;
 
+			std::map<int, Client*>::iterator	itt = this->getClients().begin();	
+			std::map<int, Client*>::iterator	ite = this->getClients().end();
+			for (; itt != ite; itt++) {
+				if (itt->first == client_socket) {
+					std::cout << "///////////  before delete: " << getUser(client_socket)->getNick() << std::endl;
+
+					delete(getUser(client_socket));
+					
+					_clients.erase(itt);
+
+					break ;
+				}
+			}
+			std::cout << "/////////// DEBUG NB OF CLIENTS after : " << this->getClients().size() << std::endl;
+		}
 		// SERVER_ERR("Client is disconnected");
-	// }
-	else if (getUser(client_socket) && res > 0 && buffer_str[buffer_str.size() - 1] != '\n') {
+	}
+	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] != '\n') {
+		std::cout << std::endl << "Receiving End of File, request not completed" << std::endl << std::endl;
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));
-		// std::cout << std::endl << "Receiving End of File, request not completed" << std::endl << std::endl;
 	}
 	// else if (getUser(client_socket) && res > 0 && buffer_str[buffer_str.size() - 1] == '\n') {
-	else if (getUser(client_socket) && res > 0 && buffer_str[buffer_str.size() - 1] == '\n' && buffer_str.size() != 1) {
-		// std::cout << std::endl << "Receiving Entrée" << std::endl << std::endl;
+	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] == '\n' && buffer_str.size() != 1) {
+		std::cout << std::endl << "Receiving Entrée" << std::endl << std::endl;
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(" " + buffer_str));
 		getUser(client_socket)->initMsg();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 		getUser(client_socket)->setBuffer("");
@@ -137,8 +156,10 @@ void	Server::usePoll() {
 					if (!i)
 						acceptClient();
 					else
+					{
 						// on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
 						receiveRequest(fds[i].fd);
+					}
 				}
 				else if (fds[i].revents & POLLRDHUP || fds[i].revents & POLLERR)
 	        		SERVER_ERR("Error Poll() in FDS");
