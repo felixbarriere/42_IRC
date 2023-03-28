@@ -60,6 +60,7 @@
 # include <signal.h>
 # include <sstream>
 # include <stdlib.h>
+# include <string>
 # include <string.h>
 # include <sys/socket.h>
 # include <sys/types.h>
@@ -86,6 +87,7 @@ void 						showConfig();
 bool						checkCommand(std::string);
 std::string					ft_trim(std::string, char);
 bool                        checkMode(Client*);
+int							checkPort(char*);
 
 class Server;
 void	addmotd(Server*, Client*);

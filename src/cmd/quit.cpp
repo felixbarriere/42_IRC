@@ -15,8 +15,8 @@ void	quit(Server* server, Client* client) {
 				// client->setChannelName("");
 				client->removeChannelName(it->first);
 				it->second.removeMember(client);  // a bien tester
-				std::cout << "Creator:" << it->second.getCreator()->getNick() << std::endl;
-				std::cout << "Client Nick:" << client->getNick() << std::endl;
+				// std::cout << "Creator:" << it->second.getCreator()->getNick() << std::endl;
+				// std::cout << "Client Nick:" << client->getNick() << std::endl;
 				// if (it->second.getCreator()->getNick() == client->getNick() || it->second.getMembers().size() == 1) {
 				if (it->second.getMembers().size() == 0)
 					// std::cout << "Client is creator of this channel" << std::endl;
@@ -27,13 +27,8 @@ void	quit(Server* server, Client* client) {
 			}
 		}
 		client->sendMsg("QUIT " + str, client);
-
-		std::cout << "/////////// DEBUG client before disconnect: " << client->getConnected() << std::endl;
-
+		// std::cout << "/////////// DEBUG client before disconnect: " << client->getConnected() << std::endl;
 		client->setConnected(false);
-
-		std::cout << "/////////// DEBUG client after disconnect: " << client->getConnected() << std::endl;
-
-
+		// std::cout << "/////////// DEBUG client after disconnect: " << client->getConnected() << std::endl;
 	// }
 }

@@ -4,8 +4,8 @@ void	join(Server* server, Client* client) {
 	if (!client->getMessage()->getParams().size())
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ": err need more params", client);
 	else {
-		const char*	channels = client->getMessage()->getParams()[0].c_str();
-		char*		ptr = strtok((char*)channels, ",");
+		const char*					channels = client->getMessage()->getParams()[0].c_str();
+		char*						ptr = strtok((char*)channels, ",");
 		std::vector<std::string>	channel_names;
 		while (ptr) {
 			channel_names.push_back(std::string(ptr));
@@ -30,5 +30,3 @@ void	join(Server* server, Client* client) {
 }
 
 // lancer NAMES
-// check pwd
-// check limit

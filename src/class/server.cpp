@@ -63,8 +63,8 @@ void	Server::removeClients() {
 void	Server::removeClient(Client* client, int client_socket) {
 
 
-	std::cout << std::endl << "deleting client #" << client_socket << std::endl << std::endl;
-	std::cout << "/////////// DEBUG NB OF CLIENTS before : " << this->getClients().size() << std::endl;
+	// std::cout << std::endl << "deleting client #" << client_socket << std::endl << std::endl;
+	// std::cout << "/////////// DEBUG NB OF CLIENTS before : " << this->getClients().size() << std::endl;
 
 	std::map<int, Client*>::iterator	itt = this->getClients().begin();	
 	std::map<int, Client*>::iterator	ite = this->getClients().end();
@@ -75,7 +75,7 @@ void	Server::removeClient(Client* client, int client_socket) {
 			break ;
 		}
 	}
-	std::cout << "/////////// DEBUG NB OF CLIENTS after : " << this->getClients().size() << std::endl;
+	// std::cout << "/////////// DEBUG NB OF CLIENTS after : " << this->getClients().size() << std::endl;
 }
 
 void	Server::acceptClient() {
@@ -112,7 +112,6 @@ void	Server::acceptClient() {
 	fds.back().events = POLLIN;
 	fds.back().revents = POLLIN;
 }
-
 
 void	Server::receiveRequest(int client_socket) {
 
