@@ -36,22 +36,21 @@ void    kick(Server* server, Client* client) {
         return ;
 
     std::cout << "DEBUG ===> KICK called"  << std::endl << std::endl;
-        std::cout << "The whole msg is : " << client->getMessage()->getMessage() << std::endl;
-
+    
     if (client->getMessage()->getParams().size() < 3) {
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ":Not enough parameters", client);}
 
-        std::cout << "All the parameters: " << std::endl;
-        std::cout << "param 0 " << client->getMessage()->getParams()[0] << std::endl;
-        std::cout << "param 1 " << client->getMessage()->getParams()[1] << std::endl;
-        std::cout << "param 2 " << client->getMessage()->getParams()[2] << std::endl;
+	std::cout << "All the parameters: " << std::endl;
+	std::cout << "param 0 " << client->getMessage()->getParams()[0] << std::endl;
+	std::cout << "param 1 " << client->getMessage()->getParams()[1] << std::endl;
+	std::cout << "param 2 " << client->getMessage()->getParams()[2] << std::endl;
 
-        //std::string   msg = client->getMessage()->getParams()[2];
-        //std::cout << "COMMENT is : " << msg << std::endl;
-        std::string chan = client->getMessage()->getParams()[0];
-    // std::cout << " Channel to kick from : " << client->getMessage()->getParams()[0] << std::endl;
-        // std::cout << " Users to kick : " << chan << std::endl;
-        std::vector<std::string> users = ft_split(client->getMessage()->getParams()[1], ",");
+	//std::string   msg = client->getMessage()->getParams()[2];
+	//std::cout << "COMMENT is : " << msg << std::endl;
+	std::string chan = client->getMessage()->getParams()[0];
+	// std::cout << " Channel to kick from : " << client->getMessage()->getParams()[0] << std::endl;
+	// std::cout << " Users to kick : " << chan << std::endl;
+	std::vector<std::string> users = ft_split(client->getMessage()->getParams()[1], ",");
 
     std::cout << " users vector: " << users << std::endl;
         std::cout << "count = " << server->getChannels().count(chan) << std::endl;
@@ -85,6 +84,3 @@ void    kick(Server* server, Client* client) {
                 }
         }
 }
-
-// if (server->getChannels()[chan]->getUser(nickname) == false)
-//      no user nickname in channel chan;
