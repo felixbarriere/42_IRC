@@ -18,6 +18,7 @@ void	part(Server* server, Client* client) {
 						if (*itt == channel_names[i]) {
 							client->sendMsg("PART " + it->first, client);
 							it->second.removeMember(client);
+							client->removeChannelName(it->first);
 							it->second.broadcast(client, "PART " + it->first);
 							break ;
 						}
