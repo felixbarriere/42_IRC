@@ -1,9 +1,11 @@
 #include "../../inc/utils.hpp"
 
 void	privmsg(Server* server, Client* client) {
-	if (client->getMessage()->getParams().size() == 0 || client->getMessage()->getParams().size() == 1)
-		return ;
-	if (client->getMessage()->getParams()[0][0] == '#') {
+	if (client->getMessage()->getParams().size() == 0)
+		client->sendMsg(ERR_NORECIPIENT + client->getNick() + " Error: no recipient given.", client);
+	else if (client->getMessage()->getParams().size() == 1)
+		client->sendMsg(ERR_NOTEXTTOSEND + client->getNick() + " Error: no text to send.", client);
+	else if (client->getMessage()->getParams()[0][0] == '#') {
 		std::map<std::string, Channel>::iterator	it = server->getChannels().find(client->getMessage()->getParams()[0]);
 		if (it != server->getChannels().end()) {
 			std::string	params = "";
@@ -14,6 +16,8 @@ void	privmsg(Server* server, Client* client) {
 			}
 			it->second.broadcast(client, "PRIVMSG " + params);
 		}
+		else
+			client->sendMsg(ERR_NOSUCHCHANNEL + (std::string)" Error: no such channel.", client);
 	}
 	else {
 		Client*	receiver = server->getClientByNick(client->getMessage()->getParams()[0]);
@@ -26,5 +30,7 @@ void	privmsg(Server* server, Client* client) {
 			}
 			receiver->sendMsg("PRIVMSG " + params, client);
 		}
+		else
+			client->sendMsg(ERR_NOSUCHNICK + (std::string)" Error: no such nick.", client);
 	}
 }

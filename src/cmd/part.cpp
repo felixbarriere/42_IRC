@@ -11,7 +11,7 @@ void	part(Server* server, Client* client) {
 			channel_names.push_back(std::string(ptr));
 			ptr = strtok(NULL, ",");
 		}
-		for (unsigned int i = 0; i < channel_names.size(); i++) {
+		for (unsigned int i = 1; i < channel_names.size(); i++) {
 			bool	found = false;
 			for (std::map<std::string, Channel>::iterator it = server->getChannels().begin(); it != server->getChannels().end(); it++) {
 				if (it->first == channel_names[i]) {

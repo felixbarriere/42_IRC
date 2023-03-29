@@ -36,6 +36,8 @@
 # define ERR_NOSUCHNICK			"401 "
 # define ERR_NOSUCHCHANNEL      "403 "
 # define ERR_NOORIGIN			"409 "
+# define ERR_NORECIPIENT		"411 "
+# define ERR_NOTEXTTOSEND		"412 "
 # define ERR_NOMOTD				"422 "
 # define ERR_NONICKNAMEGIVEN	"431 "
 # define ERR_ERRONEUSNICKNAME	"432 "
