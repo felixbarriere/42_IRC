@@ -60,34 +60,34 @@ void    kick(Server* server, Client* client) {
         else if (!client->getModes().find('o')->second)
             client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator", client);
         else {
-				Channel*	channel = server->getChannelByName(chan);
-                std::cout << "check existant users and kick then " << std::endl;
-                for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); ++it) {
-                    // if (server->getClientByNick(*it) == NULL)// || server->getChannels()[chan].ifMemberbyNick(*it) == false)
-                    if (server->getClientByNick(*it) == NULL || !channel->ifMemberbyNick(*it))
-                            client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + " " + chan + " " + *it  + " :They aren't on that channel", client);
-                    else {
-                        size_t i = client->getMessage()->getParams()[2].find(":");
-                        std::string     msg = "";
-                        if (i != std::string::npos)
-                                msg = client->getMessage()->getParams()[2].substr(i + 1);
-                        std::cout << "COMMENT is : " << msg << std::endl;
-                        std::string str =  "KICK " + chan + " " + *it + " :" + msg;
-                        std::cout<< "SHOW str to send : " << str << std::endl;
-                        //a message to the concerned user
-                        //server->getUserbyNick(client->getMessage()->getParams()[1])->sendMsg(str);
-                        server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
-                        //send message to all users of the channel - broadcast
-                        //server->getChannels()[chan].removeMember(server->getUserbyNick(*it));
-                        // Channel*	channel = server->getChannelByName(chan);
-						channel->removeMember(server->getClientByNick(*it));
-						channel->broadcast(client, str);
+            Channel*	channel = server->getChannelByName(chan);
+            std::cout << "check existant users and kick then " << std::endl;
+            for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); ++it) {
+                // if (server->getClientByNick(*it) == NULL)// || server->getChannels()[chan].ifMemberbyNick(*it) == false)
+                if (server->getClientByNick(*it) == NULL || !channel->ifMemberbyNick(*it))
+                        client->sendMsg(ERR_USERNOTINCHANNEL + client->getNick() + " " + chan + " " + *it  + " :They aren't on that channel", client);
+                else {
+                    size_t i = client->getMessage()->getParams()[2].find(":");
+                    std::string     msg = "";
+                    if (i != std::string::npos)
+                            msg = client->getMessage()->getParams()[2].substr(i + 1);
+                    std::cout << "COMMENT is : " << msg << std::endl;
+                    std::string str =  "KICK " + chan + " " + *it + " :" + msg;
+                    std::cout<< "SHOW str to send : " << str << std::endl;
+                    //a message to the concerned user
+                    //server->getUserbyNick(client->getMessage()->getParams()[1])->sendMsg(str);
+                    server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
+                    //send message to all users of the channel - broadcast
+                    //server->getChannels()[chan].removeMember(server->getUserbyNick(*it));
+                    // Channel*	channel = server->getChannelByName(chan);
+                    channel->removeMember(server->getClientByNick(*it));
+                    channel->broadcast(client, str);
 
-						server->getClientByNick(*it)->getMessage()->getParams().clear();
-						server->getClientByNick(*it)->getMessage()->getParams().push_back(chan);
+                    server->getClientByNick(*it)->getMessage()->getParams().clear();
+                    server->getClientByNick(*it)->getMessage()->getParams().push_back(chan);
 
-						part(server, server->getClientByNick(*it));
-                    }
+                    part(server, server->getClientByNick(*it));
                 }
+            }
         }
 }
