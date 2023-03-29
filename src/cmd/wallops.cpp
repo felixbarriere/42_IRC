@@ -26,8 +26,8 @@ void	wallops(Server* server, Client* client) {
 		while (it != server->getClients().end()) {
 			if (it->second->getModes().find('w')->second && it->second->getModes().find('o')->second) 
 					it->second->sendMsg(msg, client);
-			else
-				client->sendMsg(client->getNick() +  " :Permission Denied - receiver is not +o or +w", client);
+			// else
+			// 	client->sendMsg(client->getNick() +  " :Permission Denied - receiver is not +o or +w", client);
 			it++;
 		}
 	}

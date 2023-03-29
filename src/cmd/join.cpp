@@ -19,12 +19,14 @@ void	join(Server* server, Client* client) {
 				server->createChannel(client, channel_names[i]);
 			else {
 				it->second.addMember(client);
-				// client->setChannel(&(it->second));
-				// client->setChannelName(channel_name);
 				client->getChannelsNames().push_back(channel_names[i]);
 				it->second.broadcast(client, "JOIN " + it->first);
 			}
 			client->sendMsg("JOIN " + channel_names[i], client);
+			
+			std::cout << "channel size: " << it->second.getMembers().size() << std::endl;
+			// names(server, client);
+
 		}
 	}
 }

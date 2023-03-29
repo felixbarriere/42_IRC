@@ -14,6 +14,7 @@ Channel::Channel(Client* client, const std::string channelName):
 	// client->setChannel(this);
 	// client->setChannelName(channelName); //plus de sens
 	client->getChannelsNames().push_back(channelName);
+	client->sendMsg("JOIN ", client);
 
 }
 

@@ -26,8 +26,8 @@ void	names(Server* server, Client* client) {
 				}
 				itt++;
 			}
-			client->sendMsg(   RPL_NAMREPLY + str , client);
-			client->sendMsg(   RPL_ENDOFNAMES " End of NAMES list" , client);
+			client->sendMsg(RPL_NAMREPLY + str , client);
+			client->sendMsg(RPL_ENDOFNAMES " End of NAMES list" , client);
 			return ;
 		}
 		it++;
