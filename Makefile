@@ -33,7 +33,6 @@ SRCS = 	main.cpp \
 		cmd/nick.cpp \
 		cmd/notice.cpp \
 		cmd/oper.cpp \
-		cmd/opermotd.cpp \
 		cmd/part.cpp \
 		cmd/pass.cpp \
 		cmd/ping.cpp \

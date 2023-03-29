@@ -5,7 +5,8 @@ void	list(Server* server, Client* client) {
 	while (it != server->getChannels().end()) {
 		std::map<char, bool>::iterator	m = it->second.getModes().find('s');
 		if ((!(m->second) || (m->second && client->getModes().find('o')->second)) && it->second.getMembers().size())
-			client->sendMsg(it->first, client);
+			client->sendMsg(RPL_LIST + client->getNick() + " " + it->first, client);
 		it++;
 	}
+	client->sendMsg(RPL_LISTEND + (std::string)": End of LIST.", client);
 }

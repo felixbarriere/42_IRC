@@ -12,8 +12,10 @@ void	part(Server* server, Client* client) {
 			ptr = strtok(NULL, ",");
 		}
 		for (unsigned int i = 0; i < channel_names.size(); i++) {
+			bool	found = false;
 			for (std::map<std::string, Channel>::iterator it = server->getChannels().begin(); it != server->getChannels().end(); it++) {
 				if (it->first == channel_names[i]) {
+					found = true;
 					for (std::vector<std::string>::iterator itt = client->getChannelsNames().begin(); itt != client->getChannelsNames().end(); itt++) {
 						if (*itt == channel_names[i]) {
 							client->sendMsg("PART " + it->first, client);
@@ -25,6 +27,8 @@ void	part(Server* server, Client* client) {
 					}
 				}
 			}
+			if (!found)
+				client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " : No such channel -> " + channel_names[i], client);
 		}
 	}
 }

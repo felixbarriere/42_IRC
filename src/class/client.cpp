@@ -82,7 +82,7 @@ void	Client::welcome_msg() {
 	sendMsg(str, this);
 	str = RPL_YOURHOST + _nick + " : Your host is " + NAME + ", running version " + VERSION;
 	sendMsg(str, this);
-	str = RPL_CREATED + _nick +" : This server was create " + "now";	//ctime(&(time(0)))
+	str = RPL_CREATED + _nick +" : This server was created now";	//ctime(&(time(0)))
 	sendMsg(str, this);
 	str = RPL_MYINFO + _nick + " " + NAME + " " + VERSION;
 	sendMsg(str, this);
