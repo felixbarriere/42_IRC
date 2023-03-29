@@ -82,6 +82,11 @@ void    kick(Server* server, Client* client) {
                         // Channel*	channel = server->getChannelByName(chan);
 						channel->removeMember(server->getClientByNick(*it));
 						channel->broadcast(client, str);
+
+						server->getClientByNick(*it)->getMessage()->getParams().clear();
+						server->getClientByNick(*it)->getMessage()->getParams().push_back(chan);
+
+						part(server, server->getClientByNick(*it));
                     }
                 }
         }
