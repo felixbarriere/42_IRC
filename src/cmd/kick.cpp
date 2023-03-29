@@ -58,6 +58,7 @@ void    kick(Server* server, Client* client) {
         else if (!client->getModes().find('o')->second)
             client->sendMsg(ERR_CHANOPRIVSNEEDED + client->getNick() +  " :You're not channel operator", client);
         else {
+
 				Channel*	channel = server->getChannelByName(chan);
                 std::cout << "check existant users and kick then " << std::endl;
                 for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); ++it) {
@@ -80,6 +81,8 @@ void    kick(Server* server, Client* client) {
 						server->getClientByNick(*it)->getMessage()->getParams().push_back(chan);
 						part(server, server->getClientByNick(*it));
                     }
+       
                 }
+            }
         }
 }

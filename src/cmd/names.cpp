@@ -18,11 +18,16 @@ void	names(Server* server, Client* client) {
 	std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
 	while (it != server->getChannels().end()) {
 		if (it->first == client->getMessage()->getParams()[0]) {
+			std::string	str;
 			std::vector<Client*>::iterator	itt = it->second.getMembers().begin();
 			while (itt != it->second.getMembers().end()) {
-				client->sendMsg((*itt)->getNick(), client);
+				if ((*itt)->getModes().find('i')->second == false) {
+					str += (*itt)->getNick() + " ";
+				}
 				itt++;
 			}
+			client->sendMsg(   RPL_NAMREPLY + str , client);
+			client->sendMsg(   RPL_ENDOFNAMES " End of NAMES list" , client);
 			return ;
 		}
 		it++;

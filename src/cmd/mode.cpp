@@ -23,7 +23,11 @@ void	mode(Server* server, Client* client) {
 	else if (client->getMessage()->getParams().size() > 1) {
 		if (paramUn[0] == '+' || paramUn[0] == '-') {
 			for (size_t i = 1; i < paramUn.size(); i++) {
-				if (client->getModes().find(paramUn[i]) == client->getModes().end())
+				if (paramUn[i] == 'o') {
+					client->sendMsg(client->getNick() + " " + paramUn[i] + " : please use OPER command", client);
+					return ;
+				}
+				else if (client->getModes().find(paramUn[i]) == client->getModes().end())
 					client->sendMsg(ERR_UMODEUNKNOWNFLAG + client->getNick() + " " + paramUn[i] + " is not implemented, or does not exists", client);
 			}
 			if (paramUn[0] == '+') {
