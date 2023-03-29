@@ -15,12 +15,12 @@ Server::Server(char* portNumberMain, char *password):
 	// Initialiser le socket du serveur (a mettre dans la class server)
 	s_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (s_socket < 0)
-		SERVER_ERR("Error during socket creation");
+		SERVER_ERR("Socket creation");
 	// Rendre le socket non-bloquant
 	if (setsockopt(s_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
-		SERVER_ERR("setsockopt failed");
+		SERVER_ERR("setsockopt()");
 	if (fcntl(s_socket, F_SETFL, O_NONBLOCK) == 1)
-		SERVER_ERR("Error while rendering the socket non-blocking");
+		SERVER_ERR("Rendering the socket non-blocking");
  	// Configurer l'adresse et le port du serveur
 	memset(&s_address, 0, sizeof(s_address));
     s_address.sin_family = AF_INET;
@@ -28,14 +28,14 @@ Server::Server(char* portNumberMain, char *password):
     s_address.sin_addr.s_addr = INADDR_ANY;
 	// Lier l'adresse au socket du serveur
 	if (bind(s_socket, (struct sockaddr *) &s_address, sizeof(s_address)) < 0) {
-	    SERVER_ERR("Error during bind");
+	    SERVER_ERR("bind()");
 		exit(1);
 	}
 	// Écouter les connexions entrantes
 	if (listen(s_socket, 5) < 0)
-        SERVER_ERR("Error while listening");
+        SERVER_ERR("listen()");
 	setCommandList();
-	_oper.insert(std::pair<std::string, std::string>("admin", "pwd"));
+	_oper.insert(std::pair<std::string, std::string>("admin", "admin_pwd"));
 }
 
 Server::~Server() {
@@ -50,14 +50,11 @@ Server::~Server() {
 
 void	Server::removeClients() {
 	size_t clientsNb = _clients.size();
-	// std::cout << std::endl << "removeClients(void)" << std::endl << std::endl;
-	// std::cout << std::endl << "_clients.size(): " << _clients.size() << std::endl << std::endl;
 	for (size_t i = 0; i < clientsNb; i++) {
 		Client*	tmp = _clients.begin()->second;
 		_clients.erase(tmp->getC_socket());
 		delete (tmp);
 	}	
-	// std::cout << std::endl << "_clients.size() 2: " << _clients.size() << std::endl << std::endl;
 }
 
 void	Server::removeClient(Client* client, int client_socket) {
@@ -87,11 +84,11 @@ void	Server::acceptClient() {
 	client_len = sizeof(client_address);	
     client_socket = accept(getServerSocket(), (struct sockaddr *) &client_address, &client_len);
 	if (client_socket == -1)
-        SERVER_ERR("Error while accepting connexion");
+        SERVER_ERR("Accepting connexion");
 	if (setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes))== -1)
-		SERVER_ERR("setsockopt failed");
+		SERVER_ERR("setsockopt() ");
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
-		SERVER_ERR("Error while rendering the socket non blocking");
+		SERVER_ERR("Rendering the socket non blocking");
 	_clients[client_socket] = new Client(client_socket, client_address, this);
 
 	if (this->getClients().size() > MAX_USERS) {
@@ -126,20 +123,17 @@ void	Server::receiveRequest(int client_socket) {
 	if (buffer_str.size() != 0)
 		std::cout << "#" << client_socket << " << " << buffer_str << std::endl;
 	if (res == -1)
-        SERVER_ERR("Error during receipt");
+        SERVER_ERR("recv");
 	else if (res == 0) {
 		if (getUser(client_socket)->getConnected() == false)
 			removeClient(getUser(client_socket), client_socket);
-			
-		// SERVER_ERR("Client is disconnected");
 	}
 	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] != '\n') {
-		std::cout << std::endl << "Receiving End of File, request not completed" << std::endl << std::endl;
+		// std::cout << std::endl << "Receiving End of File, request not completed" << std::endl << std::endl;
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));
 	}
-	// else if (getUser(client_socket) && res > 0 && buffer_str[buffer_str.size() - 1] == '\n') {
 	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] == '\n' && buffer_str.size() != 1) {
-		std::cout << std::endl << "Receiving Entrée" << std::endl << std::endl;
+		// std::cout << std::endl << "Receiving Entrée" << std::endl << std::endl;
 		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(" " + buffer_str));
 		getUser(client_socket)->initMsg();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 		getUser(client_socket)->setBuffer("");
@@ -160,9 +154,10 @@ void	Server::usePoll() {
 	init_pollfd_struct();
 	while(!serv_run) { 
 		// Préparer le vector de fd pour poll()
-		if (poll(fds.data(), fds.size(), timeout) < 0)
-		    // SERVER_ERR("Error Poll()");
+		if (poll(fds.data(), fds.size(), timeout) < 0) {
+		    SERVER_ERR("Poll()");
 			break ;
+		}
 		for (size_t i = 0; i < fds.size(); i++) {
 			if (fds[i].revents) {
 				// revent == 1 : on a recu une requete de irssi
@@ -177,18 +172,16 @@ void	Server::usePoll() {
 					}
 				}
 				else if (fds[i].revents & POLLRDHUP || fds[i].revents & POLLERR)
-	        		SERVER_ERR("Error Poll() in FDS");
+	        		SERVER_ERR("Poll()");
 			}
 		}
 	}
 }
 
 bool	Server::nickIsUsed(std::string str) const {
-	// std::cout << "DEBUG ===> nickIsUsed test"   << std::endl;
 	std::map<int, Client*>::const_iterator	it = _clients.begin();
 	std::map<int, Client*>::const_iterator	ite = _clients.end();
 	for (; it != ite ; it++) {
-		// std::cout << "DEBUG ===> existing nicknames: " << (it->second->getNick()) << std::endl;
 		if (str == it->second->getNick())
 			return (true);
 	}
@@ -255,7 +248,7 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("MODE", mode));
 	_commandList.insert(std::make_pair("motd", motd));
 	_commandList.insert(std::make_pair("MSG", msg));
-	_commandList.insert(std::make_pair("NAMES", names));
+	_commandList.insert(std::make_pair("names", names));
 	_commandList.insert(std::make_pair("NICK", nick));
 	_commandList.insert(std::make_pair("NOTICE", notice));
 	_commandList.insert(std::make_pair("OPER", oper));
@@ -266,6 +259,6 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("PRIVMSG", privmsg));
 	_commandList.insert(std::make_pair("QUIT", quit));
 	_commandList.insert(std::make_pair("USER", user));
-	_commandList.insert(std::make_pair("WALLOPS", wallops));
+	_commandList.insert(std::make_pair("wallops", wallops));
 	_commandList.insert(std::make_pair("WHOIS", whoIs));
 }

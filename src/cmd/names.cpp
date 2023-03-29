@@ -1,6 +1,10 @@
 #include "../../inc/utils.hpp"
 
 void	names(Server* server, Client* client) {
+
+	std::cout << "debug =====> fonction names" << std::endl;
+
+
 	if (!(client->getMessage()->getParams().size())) {
 		std::map<int, Client*>::iterator	it = server->getClients().begin();
 		while (it != server->getClients().end()) {
@@ -9,6 +13,8 @@ void	names(Server* server, Client* client) {
 		}
 		return ;
 	}
+	std::cout << "debug =====> test" << std::endl;
+
 	std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
 	while (it != server->getChannels().end()) {
 		if (it->first == client->getMessage()->getParams()[0]) {

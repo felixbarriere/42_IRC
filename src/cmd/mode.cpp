@@ -11,8 +11,6 @@ void	mode(Server* server, Client* client) {
 		std::map<std::string, Channel>::iterator ret = server->getChannels().find(paramZero);
 		if (ret == server->getChannels().end())
 			client->sendMsg("No such channel", client);
-		else if (paramZero != client->getChannelName())
-			client->sendMsg("You're not channel operator", client);
 		else
 			client->sendMsg("Sorry, MODE command is not implemented for channels.", client);
 	}	// channel Mode

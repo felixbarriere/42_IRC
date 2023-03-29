@@ -17,12 +17,11 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_server(server),
 	_connected(true) {
 	_c_address = inet_ntoa(client_address.sin_addr);
-	// http://manpagesfr.free.fr/man/man3/getnameinfo.3.html
-	// int getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host, size_t hostlen, char *serv, size_t servlen, int flags);
 	char	host[NI_MAXHOST];
 	memset(host, 0, NI_MAXHOST);
+
 	if (getnameinfo((const struct sockaddr *)&client_address, sizeof(client_address), host, NI_MAXHOST, NULL, 0, 0) != 0)
-		SERVER_ERR("Error getnameinfo()");
+		SERVER_ERR("getnameinfo()");
 	_hostname = host;
 	_message = new Message(this);	//envoyer un pointeur de this
 	_modes.insert(std::pair<char, bool>('d', false));
@@ -36,7 +35,6 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	_modes.insert(std::pair<char, bool>('w', false));
 }
 
-//a changer si on utilise le const par copy
 Client::Client(const Client &src):
 	_c_socket(-1) {
 	(void) src;
@@ -48,7 +46,7 @@ Client&	Client::operator=(const Client &rhs) {
 }
 
 Client::~Client() {	
-	// std::cout << "DEBUG ===> Destructor CLIENT #" << this->getC_socket() << std::endl << std::endl;
+	std::cout << "DEBUG ===> Destructor CLIENT #" << this->getC_socket() << std::endl << std::endl;
 	close(_c_socket);
 	delete (_message);
 	// delete (_channel);
@@ -71,7 +69,7 @@ void	Client::sendMsg(std::string str, Client* prefix) {
 	toSend += "\r\n";
 	ret = send(_c_socket, toSend.c_str(), toSend.length(), MSG_NOSIGNAL);
 	if (ret == -1)
-		SERVER_ERR("send() failed");
+		SERVER_ERR("send()");
 	toSend.clear();
 }
 
