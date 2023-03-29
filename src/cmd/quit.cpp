@@ -22,7 +22,7 @@ void	quit(Server* server, Client* client) {
 
 			part(server, client);
 
-			it->second.broadcast(client, "QUIT " + it->first + " " + str);
+			it->second.broadcast(client, "QUIT " + str);
 
 			client->removeChannelName(it->first);
 			it->second.removeMember(client);  // a bien tester
