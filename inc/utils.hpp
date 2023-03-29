@@ -24,10 +24,18 @@
 # define RPL_CREATED "003 "
 # define RPL_MYINFO "004 "
 
+
 /*** COMMAND ERRORS ***/
+
+
+
 
 # define RPL_UMODEIS			"221 "
 # define RPL_YOUREOPER          "381 "
+# define RPL_NAMREPLY          	"353 "
+# define RPL_ENDOFNAMES 		"366 "
+
+
 # define ERR_NOSUCHNICK			"401 "
 # define ERR_NOSUCHCHANNEL      "403 "
 # define ERR_NOORIGIN			"409 "
