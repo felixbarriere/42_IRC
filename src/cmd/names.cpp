@@ -3,8 +3,7 @@
 void	names(Server* server, Client* client) {
 
 	std::cout << "debug =====> fonction names" << std::endl;
-
-
+	
 	if (!(client->getMessage()->getParams().size())) {
 		std::map<int, Client*>::iterator	it = server->getClients().begin();
 		while (it != server->getClients().end()) {
@@ -26,8 +25,11 @@ void	names(Server* server, Client* client) {
 				}
 				itt++;
 			}
+			std::string chan = it->first;
+			std::cout << "channel name is " << chan << std::endl;
+			std::string msg = RPL_ENDOFNAMES + chan + " :End of NAMES list";
 			client->sendMsg(RPL_NAMREPLY + str , client);
-			client->sendMsg(RPL_ENDOFNAMES " End of NAMES list" , client);
+			client->sendMsg(msg, client);
 			return ;
 		}
 		it++;

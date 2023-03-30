@@ -49,13 +49,6 @@ void ft_kill(Server* server, Client* client) {
 		server->getClientByNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user, server->getClientByNick(client->getMessage()->getParams()[0]));
         //send the QUIT msg to everyone in the channel - in cmd quit->broadcast
         quit(server, server->getClientByNick(client->getMessage()->getParams()[0]));
-		// std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
-		// while (it != server->getChannels().end()) {
-		// 	if (client->checkChannelName(it->first)) {
-		// 		it->second.broadcast(client, str_to_all);
-		// 	}
-		// 	++it;
-		// }
 		server->removeClient(server->getClientByNick(client->getMessage()->getParams()[0]), server->getClientByNick(client->getMessage()->getParams()[0])->getC_socket());
     }
 	client->sendMsg(str_to_all, client);
