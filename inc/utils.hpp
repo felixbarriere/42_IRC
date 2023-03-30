@@ -36,9 +36,11 @@
 
 
 # define RPL_UMODEIS			"221 "
-# define RPL_YOUREOPER          "381 "
+# define RPL_ENDOFWHO 			"315 "
+# define RPL_WHOREPLY          	"352 "
 # define RPL_NAMREPLY          	"353 "
 # define RPL_ENDOFNAMES 		"366 "
+# define RPL_YOUREOPER          "381 "
 
 
 # define ERR_NOSUCHNICK			"401 "
@@ -130,5 +132,6 @@ void	quit(Server*, Client*);
 void	user(Server*, Client*);
 void	wallops(Server*, Client*);
 void	whoIs(Server*, Client*);
+void	who(Server*, Client*);
 
 #endif
