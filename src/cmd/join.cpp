@@ -25,7 +25,7 @@ void	join(Server* server, Client* client) {
 			client->sendMsg("JOIN " + channel_names[i], client);
 			
 			std::cout << "channel size: " << it->second.getMembers().size() << std::endl;
-			// names(server, client);
+			//names(server, client);
 
 		}
 	}
