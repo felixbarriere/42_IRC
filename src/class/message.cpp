@@ -67,11 +67,6 @@ void Message::createMessage() {
 	std::vector<std::string>	lines(ft_split(_client->getBuffer(), "\n\r"));
 	for (unsigned long i = 0; i < lines.size() ; i++) {
 		tokenizer(lines[i]);
-		// if (tokenizer(lines[i]))
-		// {
-		// 	std::cout << "Error tokenizer" << std::endl;
-		// 	break ;		// delete le message?
-		// }
 		// check cmd then call command function
 		std::map<std::string, fct_cmd>::iterator	ite;
 		ite = _client->getServer()->getCommandList().end();

@@ -260,4 +260,5 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("USER", user));
 	_commandList.insert(std::make_pair("wallops", wallops));
 	_commandList.insert(std::make_pair("WHOIS", whoIs));
+	_commandList.insert(std::make_pair("WHO", who));
 }

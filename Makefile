@@ -41,6 +41,7 @@ SRCS = 	main.cpp \
 		cmd/user.cpp \
 		cmd/wallops.cpp \
 		cmd/whois.cpp \
+		cmd/who.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
 
