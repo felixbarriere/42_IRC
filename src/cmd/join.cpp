@@ -8,7 +8,8 @@ void	join(Server* server, Client* client) {
 		char*						ptr = strtok((char*)channels, ",");
 		std::vector<std::string>	channel_names;
 		while (ptr) {
-			channel_names.push_back(std::string(ptr));
+			if ((std::string)ptr != "")
+				channel_names.push_back(std::string(ptr));
 			ptr = strtok(NULL, ",");
 		}
 		for (unsigned int i = 0; i < channel_names.size(); i++) {
@@ -23,10 +24,8 @@ void	join(Server* server, Client* client) {
 				it->second.broadcast(client, "JOIN " + it->first);
 			}
 			client->sendMsg("JOIN " + channel_names[i], client);
-			
 			std::cout << "channel size: " << it->second.getMembers().size() << std::endl;
 			// names(server, client);
-
 		}
 	}
 }
