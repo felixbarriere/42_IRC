@@ -30,7 +30,7 @@ void	who(Server* server, Client* client) {
 
 	std::cout << std::endl << "Function WHO" << std::endl << std::endl;
 
-	if (client->getMessage()->getParams()[0].size() == 0) {		/* no arg */
+	if (client->getMessage()->getParams().size() == 0) {		/* no arg */
 		std::cout << "debug =====>no param: list user with nc" << std::endl;
 		
 		std::map<int, Client*>::iterator	it = server->getClients().begin();	
