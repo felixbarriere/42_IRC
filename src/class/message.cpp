@@ -74,6 +74,11 @@ void Message::createMessage() {
 			if (_client->getWelcome() || getCmd() == "PASS" || getCmd() == "NICK" || getCmd() == "USER")
 				_client->getServer()->getCommandList()[_cmd](_client->getServer(), _client);
 		}
+		std::cout << "DEBUG ===>  cleaning param : " << std::endl << std::endl;
+		std::cout << "DEBUG ===>  param[0] : " << _params[0] << std::endl << std::endl;
+		_params.clear();
+		std::cout << "DEBUG ===>  param[0] : " << _params[0] << std::endl << std::endl;
+
 		// else
 		// 	std::cout << "CMD " << _cmd << " doesn't EXISTS :(" << std::endl;
 	}
