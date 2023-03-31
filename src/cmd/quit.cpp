@@ -35,6 +35,8 @@ void	quit(Server* server, Client* client) {
 			else
 				it++;
 		}
+		else
+			it++;
 	}
 	client->sendMsg("QUIT " + str, client);
 	client->setConnected(false);
