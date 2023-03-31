@@ -2,7 +2,7 @@
 
 void	part(Server* server, Client* client) {
 	if (client->getMessage()->getParams().size() == 0)
-		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Error need more params.", client);
+		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);
 	else {
 		const char*					channels = client->getMessage()->getParams()[0].c_str();
 		char*						ptr = strtok((char*)channels, ",");
@@ -28,7 +28,7 @@ void	part(Server* server, Client* client) {
 				}
 			}
 			if (!found)
-				client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " : No such channel -> " + channel_names[i], client);
+				client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " :No such channel" + channel_names[i], client);
 		}
 	}
 }

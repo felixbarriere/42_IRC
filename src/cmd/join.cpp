@@ -2,7 +2,7 @@
 
 void	join(Server* server, Client* client) {
 	if (!client->getMessage()->getParams().size())
-		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ": err need more params", client);
+		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);
 	else {
 		const char*					channels = client->getMessage()->getParams()[0].c_str();
 		char*						ptr = strtok((char*)channels, ",");

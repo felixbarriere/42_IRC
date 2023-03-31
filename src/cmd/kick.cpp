@@ -38,7 +38,7 @@ void    kick(Server* server, Client* client) {
     std::cout << "DEBUG ===> KICK called"  << std::endl << std::endl;
     std::string msg;
     if (client->getMessage()->getParams().size() < 3) {
-        client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + ":Not enough parameters", client);}
+        client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);}
 
 	std::cout << "All the parameters: " << std::endl;
 	std::cout << "param 0 " << client->getMessage()->getParams()[0] << std::endl;

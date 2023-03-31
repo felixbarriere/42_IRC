@@ -6,7 +6,7 @@ void	nick(Server* server, Client* client) {
 	// && checkCommand(client->getMessage()->getParams()[0]) == true
 	if (!client->getWelcome()) {
 		if (!checkCommand(client->getMessage()->getParams()[0]))
-			client->sendMsg(ERR_ERRONEUSNICKNAME " Erroneous nickname", client);
+			client->sendMsg(ERR_ERRONEUSNICKNAME " :Erroneous nickname", client);
 		else if (server->nickIsUsed(client->getMessage()->getParams()[0])) {
 			// std::cout << "DEBUG ===> nickname already used"   << std::endl;
 			client->sendMsg(ERR_NICKNAMEINUSE + client->getMessage()->getParams()[0] + " " + client->getMessage()->getParams()[0], client);
@@ -16,9 +16,9 @@ void	nick(Server* server, Client* client) {
 		return ;
 	}
 	if (client->getMessage()->getParams().size() == 0)
-		client->sendMsg(ERR_NONICKNAMEGIVEN " : No nickname given", client);  // normalement irssi n'envoie rien dans ce cas
+		client->sendMsg(ERR_NONICKNAMEGIVEN " :No nickname given", client);  // normalement irssi n'envoie rien dans ce cas
 	else if (!checkCommand(client->getMessage()->getParams()[0]))
-		client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " : Erroneous nickname", client);
+		client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " :Erroneous nickname", client);
 	else if (server->nickIsUsed(client->getMessage()->getParams()[0]))
 		client->sendMsg(ERR_NICKNAMEINUSE + client->getMessage()->getParams()[0] + " " + client->getMessage()->getParams()[0], client);
 	else if (client->getAuthorized()) {

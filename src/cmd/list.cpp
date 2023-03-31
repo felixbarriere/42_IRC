@@ -8,5 +8,5 @@ void	list(Server* server, Client* client) {
 			client->sendMsg(RPL_LIST + client->getNick() + " " + it->first, client);
 		it++;
 	}
-	client->sendMsg(RPL_LISTEND + (std::string)": End of LIST.", client);
+	client->sendMsg(RPL_LISTEND + (std::string)" :End of /LIST", client);
 }
