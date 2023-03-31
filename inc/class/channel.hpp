@@ -14,6 +14,7 @@ class	Channel {
 
 		Client*					getCreator() const;
 		std::vector<Client*>&	getMembers();
+		//on utilise ?
 		std::map<char, bool>&	getModes();
 		std::string				getPwd() const;
 		int						getLimit() const;

@@ -22,8 +22,6 @@ void ft_kill(Server* server, Client* client) {
 
 	std::string str_to_all;
     std::cout << "DEBUG ===> KILL called"  << std::endl << std::endl;
-    // std::cout << "DEBUG ===> nickname to kill " << client->getMessage()->getParams()[0] << std::endl << std::endl;
-    // std::cout << "DEBUG ===> killer's modes are : " << client->getModes() << std::endl << std::endl;
     if (client->getMessage()->getParams().size() < 2)
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);
     else if (!server->getClientByNick(client->getMessage()->getParams()[0]))
@@ -44,7 +42,6 @@ void ft_kill(Server* server, Client* client) {
 		server->getClientByNick(client->getMessage()->getParams()[0])->getMessage()->getParams().clear();
 		server->getClientByNick(client->getMessage()->getParams()[0])->getMessage()->getParams().push_back(str_to_all);
 		
-
 		//send the KILL message to user killed
 		server->getClientByNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user, server->getClientByNick(client->getMessage()->getParams()[0]));
         //send the QUIT msg to everyone in the channel - in cmd quit->broadcast

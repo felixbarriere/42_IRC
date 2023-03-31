@@ -5,7 +5,7 @@ void	mode(Server* server, Client* client) {
 	std::string	paramUn = client->getMessage()->getParams()[1];
 	// user Mode
 	if (paramZero.size() == 0)
-		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " MODE : Not enough parameters", client);
+		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);
 	else if (paramZero[0] == '#') {
 		// std::cout << "DEBUG ===>  ChannelName: " << paramZero  << std::endl << std::endl;
 		std::map<std::string, Channel>::iterator ret = server->getChannels().find(paramZero);
@@ -24,7 +24,7 @@ void	mode(Server* server, Client* client) {
 		if (paramUn[0] == '+' || paramUn[0] == '-') {
 			for (size_t i = 1; i < paramUn.size(); i++) {
 				if (paramUn[i] == 'o') {
-					client->sendMsg(client->getNick() + " " + paramUn[i] + " : please use OPER command", client);
+					client->sendMsg(client->getNick() + " " + paramUn[i] + " :please use OPER command", client);
 					return ;
 				}
 				else if (client->getModes().find(paramUn[i]) == client->getModes().end())

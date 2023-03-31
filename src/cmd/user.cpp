@@ -5,10 +5,10 @@ void	user(Server* server, Client* client) {
 	// std::cout << "DEBUG ===> USER function called"  << std::endl << std::endl;
 	if (client->getUser().size()) { // || client->getWelcome() == true
 		// std::cout << "DEBUG ===> test"  << std::endl << std::endl;
-		client->sendMsg(ERR_ALREADYREGISTERED + client->getNick() + " USER : already registered", client);
+		client->sendMsg(ERR_ALREADYREGISTERED + client->getNick() + " :You may not reregister", client);
 	}
 	else if (client->getMessage()->getParams().size() < 4)
-		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " USER :Not enough parameters", client);
+		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);
 	else if (client->getMessage()->getParams().size() >= 4) {
 		client->setUser(client->getMessage()->getParams()[0]);
 		std::vector<std::string>::const_iterator it = client->getMessage()->getParams().begin();

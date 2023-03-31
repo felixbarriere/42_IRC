@@ -26,14 +26,10 @@ RPL_YOUREOPER (381)*/
 void oper(Server* server, Client* client) {
     if (!server)
         return ;
-    // std::cout << "DEBUG ===> OPER called from client #" << client->getC_socket()  << std::endl << std::endl;
-    // std::cout << "DEBUG ===> PARAMS " << std::endl;
-    // std::cout << "nick is : " << client->getMessage()->getParams()[0] << std::endl;
-    // std::cout << "password is : " << client->getMessage()->getParams()[1]  << std::endl << std::endl;
     if (client->getMessage()->getParams().size() < 2)
        client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);
     else if (client->getMessage()->getParams()[1] != OPER_PASSWORD)
-      client->sendMsg(ERR_PASSWDMISMATCH + client->getNick() +  " :Password is incorrect", client);
+      client->sendMsg(ERR_PASSWDMISMATCH + client->getNick() +  " :Password incorrect", client);
     else if (client->getMessage()->getParams()[0] != OPER_USER)
       client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " :Erroneus nickname", client);
     else {
