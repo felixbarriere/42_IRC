@@ -40,14 +40,7 @@ void    kick(Server* server, Client* client) {
     if (client->getMessage()->getParams().size() < 3) {
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);}
 
-	std::cout << "All the parameters: " << std::endl;
-	std::cout << "param 0 " << client->getMessage()->getParams()[0] << std::endl;
-	std::cout << "param 1 " << client->getMessage()->getParams()[1] << std::endl;
-	std::cout << "param 2 " << client->getMessage()->getParams()[2] << std::endl;
-
 	std::string chan = client->getMessage()->getParams()[0];
-	// std::cout << " Channel to kick from : " << client->getMessage()->getParams()[0] << std::endl;
-	// std::cout << " Users to kick : " << chan << std::endl;
 	std::vector<std::string> users = ft_split(client->getMessage()->getParams()[1], ",");
 
     std::cout << " users vector: " << users << std::endl;
