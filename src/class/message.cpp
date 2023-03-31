@@ -75,9 +75,13 @@ void Message::createMessage() {
 				_client->getServer()->getCommandList()[_cmd](_client->getServer(), _client);
 		}
 		std::cout << "DEBUG ===>  cleaning param : " << std::endl << std::endl;
-		std::cout << "DEBUG ===>  param[0] : " << _params[0] << std::endl << std::endl;
+		std::cout << "DEBUG ===>  param size before: " << _params.size() << std::endl << std::endl;
+		for (std::vector<std::string>::iterator it = _params.begin(); it < _params.end(); it++)
+			std::cout << "DEBUG ===>  param[i] before: " << *it << std::endl << std::endl;
 		_params.clear();
-		std::cout << "DEBUG ===>  param[0] : " << _params[0] << std::endl << std::endl;
+		std::cout << "DEBUG ===>  param size after: " << _params.size() << std::endl << std::endl;
+		for (std::vector<std::string>::iterator it = _params.begin(); it < _params.end(); it++)
+			std::cout << "DEBUG ===>  param[i] after : " << *it << std::endl << std::endl;
 
 		// else
 		// 	std::cout << "CMD " << _cmd << " doesn't EXISTS :(" << std::endl;
