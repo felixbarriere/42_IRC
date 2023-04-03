@@ -40,14 +40,7 @@ void    kick(Server* server, Client* client) {
     if (client->getMessage()->getParams().size() < 3) {
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);}
 
-	std::cout << "All the parameters: " << std::endl;
-	std::cout << "param 0 " << client->getMessage()->getParams()[0] << std::endl;
-	std::cout << "param 1 " << client->getMessage()->getParams()[1] << std::endl;
-	std::cout << "param 2 " << client->getMessage()->getParams()[2] << std::endl;
-
 	std::string chan = client->getMessage()->getParams()[0];
-	// std::cout << " Channel to kick from : " << client->getMessage()->getParams()[0] << std::endl;
-	// std::cout << " Users to kick : " << chan << std::endl;
 	std::vector<std::string> users = ft_split(client->getMessage()->getParams()[1], ",");
 
     std::cout << " users vector: " << users << std::endl;
@@ -71,14 +64,18 @@ void    kick(Server* server, Client* client) {
                     std::cout << "COMMENT is : " << msg << std::endl;
                     std::string str =  "KICK " + chan + " " + *it + " :" + msg;
                     std::cout<< "SHOW str to send : " << str << std::endl;
-                    //a message to the concerned user
-                    server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
+                    
                     //send message to all users of the channel - broadcast
-                    channel->removeMember(server->getClientByNick(*it));
                     channel->broadcast(client, str);
+
+					//a message to the concerned user
+                    server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
+					
+					channel->removeMember(server->getClientByNick(*it));
+
                     server->getClientByNick(*it)->getMessage()->getParams().clear();
                     server->getClientByNick(*it)->getMessage()->getParams().push_back(chan);
-                    part(server, server->getClientByNick(*it));
+                    //part(server, server->getClientByNick(*it));
                 }
             }
       }
