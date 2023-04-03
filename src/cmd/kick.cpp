@@ -64,14 +64,18 @@ void    kick(Server* server, Client* client) {
                     std::cout << "COMMENT is : " << msg << std::endl;
                     std::string str =  "KICK " + chan + " " + *it + " :" + msg;
                     std::cout<< "SHOW str to send : " << str << std::endl;
-                    //a message to the concerned user
-                    server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
+                    
                     //send message to all users of the channel - broadcast
-                    channel->removeMember(server->getClientByNick(*it));
                     channel->broadcast(client, str);
+
+					//a message to the concerned user
+                    server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
+					
+					channel->removeMember(server->getClientByNick(*it));
+
                     server->getClientByNick(*it)->getMessage()->getParams().clear();
                     server->getClientByNick(*it)->getMessage()->getParams().push_back(chan);
-                    part(server, server->getClientByNick(*it));
+                    //part(server, server->getClientByNick(*it));
                 }
             }
       }
