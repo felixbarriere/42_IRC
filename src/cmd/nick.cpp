@@ -6,11 +6,15 @@ void	nick(Server* server, Client* client) {
 	std::cout << "DEBUG ===> NICK fct called"   << std::endl;
 	if (!server)
 		return ;
+	
+	// && checkCommand(client->getMessage()->getParams()[0]) == true
 	if (!client->getWelcome()) {
-		if (!checkCommand(client->getMessage()->getParams()[0]))
+		if (!checkCommand(client->getMessage()->getParams()[0]) || client->getMessage()->getParams()[0].size() > 9)
 			client->sendMsg(ERR_ERRONEUSNICKNAME " :Erroneous nickname", client);
-		else if (server->nickIsUsed(client->getMessage()->getParams()[0]))
-			client->sendMsg(ERR_NICKNAMEINUSE + client->getMessage()->getParams()[0] + " " + client->getMessage()->getParams()[0] + " :Nickname is already use.", client);
+		else if (server->nickIsUsed(client->getMessage()->getParams()[0])) {
+			// std::cout << "DEBUG ===> nickname already used"   << std::endl;
+			client->sendMsg(ERR_NICKNAMEINUSE + client->getMessage()->getParams()[0] + " " + client->getMessage()->getParams()[0] + " :Nickname is already in use", client);
+		}
 		else
 			client->setNick(client->getMessage()->getParams()[0]);
 		return ;
@@ -20,7 +24,7 @@ void	nick(Server* server, Client* client) {
 	else if (!checkCommand(client->getMessage()->getParams()[0]) || client->getMessage()->getParams()[0].size() > 9)
 		client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " :Erroneous nickname", client);
 	else if (server->nickIsUsed(client->getMessage()->getParams()[0]))
-		client->sendMsg(ERR_NICKNAMEINUSE + client->getMessage()->getParams()[0] + " " + client->getMessage()->getParams()[0] + " :Nickname is already use.", client);
+		client->sendMsg(ERR_NICKNAMEINUSE + client->getMessage()->getParams()[0] + " " + client->getMessage()->getParams()[0] + " :Nickname is already in use", client);
 	else if (client->getAuthorized()) {
 		client->sendMsg("NICK " + client->getMessage()->getParams()[0], client);
 		client->setNick(client->getMessage()->getParams()[0]);
