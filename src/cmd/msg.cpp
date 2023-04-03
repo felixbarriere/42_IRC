@@ -17,7 +17,7 @@ void	msg(Server* server, Client* client) {
 			it->second.broadcast(client, "MSG " + params);
 		}
 		else
-			client->sendMsg(ERR_NOSUCHCHANNEL + (std::string)" Error: no such channel.", client);
+			client->sendMsg(ERR_NOSUCHCHANNEL + (std::string)" :No such channel.", client);
 	}
 	else {
 		Client*	receiver = server->getClientByNick(client->getMessage()->getParams()[0]);
