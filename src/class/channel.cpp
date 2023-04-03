@@ -11,15 +11,12 @@ Channel::Channel(Client* client, const std::string channelName):
 	_modes.insert(std::pair<char, bool>('p', false));
 	_modes.insert(std::pair<char, bool>('s', false));
 	addMember(client);
-	// client->setChannel(this);
-	// client->setChannelName(channelName); //plus de sens
 	client->getChannelsNames().push_back(channelName);
 
 }
 
 Channel::~Channel() {}
 
-// std::string				Channel::getName() const { return (_name); }
 Client*					Channel::getCreator() const { return (_creator); }
 std::vector<Client*>&	Channel::getMembers() { return (_members); }
 std::map<char, bool>&	Channel::getModes() { return (_modes); }

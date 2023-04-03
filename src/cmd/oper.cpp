@@ -37,10 +37,3 @@ void oper(Server* server, Client* client) {
       client->sendMsg(RPL_YOUREOPER + client->getNick() + " :You are now an IRC operator", client);
     }
 }
-
-// bool authenticateUser(std::string username, std::string password) {
-//     if (username == "admin" && password == "password") 
-//         return true;
-//     else 
-//         return false;
-// }

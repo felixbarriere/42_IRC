@@ -58,11 +58,6 @@ void	Server::removeClients() {
 }
 
 void	Server::removeClient(Client* client, int client_socket) {
-
-
-	// std::cout << std::endl << "deleting client #" << client_socket << std::endl << std::endl;
-	// std::cout << "/////////// DEBUG NB OF CLIENTS before : " << this->getClients().size() << std::endl;
-
 	std::map<int, Client*>::iterator	itt = this->getClients().begin();	
 	std::map<int, Client*>::iterator	ite = this->getClients().end();
 	for (; itt != ite; itt++) {
@@ -72,7 +67,6 @@ void	Server::removeClient(Client* client, int client_socket) {
 			break ;
 		}
 	}
-	// std::cout << "/////////// DEBUG NB OF CLIENTS after : " << this->getClients().size() << std::endl;
 }
 
 void	Server::acceptClient() {
@@ -90,7 +84,6 @@ void	Server::acceptClient() {
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 		SERVER_ERR("Rendering the socket non blocking");
 	_clients[client_socket] = new Client(client_socket, client_address, this);
-
 	if (this->getClients().size() > MAX_USERS) {
 		_clients[client_socket]->setConnected(false);
 		fds.push_back(pollfd());
@@ -99,10 +92,8 @@ void	Server::acceptClient() {
 		fds.back().revents = 0;
 		std::cout << std::endl << "Sorry, too many users are already connected" << std::endl << std::endl;
 		removeClient(getUser(client_socket), client_socket);
-
 		return ;
 	}
-
 	// Ajouter le socket client à notre tableau de fds
 	fds.push_back(pollfd());
 	fds.back().fd = client_socket;
@@ -111,10 +102,8 @@ void	Server::acceptClient() {
 }
 
 void	Server::receiveRequest(int client_socket) {
-
 	if (getUser(client_socket) == NULL)
 		return ;
-
 	char 	buffer[BUFFER_SIZE + 1];
 	int		res;
 	memset(buffer, 0, BUFFER_SIZE + 1);
@@ -166,10 +155,8 @@ void	Server::usePoll() {
 					if (!i)
 						acceptClient();
 					else
-					{
 						// on envoie le socket du dernier client ajouté: fds[i].fd (qu'on a défini dans acceptClient : this->fds.back().fd = client_socket;)
 						receiveRequest(fds[i].fd);
-					}
 				}
 				else if (fds[i].revents & POLLRDHUP || fds[i].revents & POLLERR)
 	        		SERVER_ERR("Poll()");

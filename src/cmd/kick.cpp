@@ -34,18 +34,13 @@ std::ostream& operator<<(std::ostream& out, const std::vector<std::string>& vec)
 void    kick(Server* server, Client* client) {
     if (!server)
         return ;
-
-    std::cout << "DEBUG ===> KICK called"  << std::endl << std::endl;
     std::string msg;
     if (client->getMessage()->getParams().size() < 3) {
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);}
-
 	std::string chan = client->getMessage()->getParams()[0];
 	std::vector<std::string> users = ft_split(client->getMessage()->getParams()[1], ",");
-
     std::cout << " users vector: " << users << std::endl;
     std::cout << "count = " << server->getChannels().count(chan) << std::endl;
-
         if (server->getChannels().count(chan) == 0)
                 client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " " + chan + " :No such channel", client);
         else if (!client->getModes().find('o')->second)
@@ -64,18 +59,14 @@ void    kick(Server* server, Client* client) {
                     std::cout << "COMMENT is : " << msg << std::endl;
                     std::string str =  "KICK " + chan + " " + *it + " :" + msg;
                     std::cout<< "SHOW str to send : " << str << std::endl;
-                    
                     //send message to all users of the channel - broadcast
                     channel->broadcast(client, str);
-
 					//a message to the concerned user
                     server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
-
 					channel->removeMember(server->getClientByNick(*it));
-
                     server->getClientByNick(*it)->getMessage()->getParams().clear();
                     server->getClientByNick(*it)->getMessage()->getParams().push_back(chan);
                 }
             }
-      }
+        }
     }

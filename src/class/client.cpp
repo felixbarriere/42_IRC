@@ -23,7 +23,7 @@ Client::Client(int client_socket, struct sockaddr_in client_address, Server *ser
 	if (getnameinfo((const struct sockaddr *)&client_address, sizeof(client_address), host, NI_MAXHOST, NULL, 0, 0) != 0)
 		SERVER_ERR("getnameinfo()");
 	_hostname = host;
-	_message = new Message(this);	//envoyer un pointeur de this
+	_message = new Message(this);
 	_modes.insert(std::pair<char, bool>('d', false));
 	_modes.insert(std::pair<char, bool>('e', false));
 	_modes.insert(std::pair<char, bool>('i', false));
@@ -49,7 +49,6 @@ Client::~Client() {
 	std::cout << "DEBUG ===> Destructor CLIENT #" << this->getC_socket() << std::endl << std::endl;
 	close(_c_socket);
 	delete (_message);
-	// delete (_channel);
 }
 
 /**********************************************************************************************************/
@@ -85,30 +84,13 @@ void	Client::welcome_msg() {
 	str = RPL_MYINFO + _nick + " " + NAME + " " + VERSION;
 	sendMsg(str, this);
 	std::ifstream	ifs;
-	if (getModes().find('o')->second)
-		ifs.open("src/motd/omotd.txt");
-	else
-		ifs.open("src/motd/motd.txt");
+	ifs.open("src/motd/motd.txt");
 	std::stringstream	s;
 	s << ifs.rdbuf();
 	sendMsg(s.str(), this);
 }
 
-// changer nom function
 void	Client::initMsg() {
-	// std::map<std::string, Channel>::iterator	it = getServer()->getChannels().begin();	
-	// std::map<std::string, Channel>::iterator	ite = getServer()->getChannels().end();
-	// for (; it != ite; it++)
-    // 	std::cout << "DEBUG ===>channels existants:" << it->first  << std::endl << std::endl;
-
-	// if (getServer()->getClients().size() > MAX_USERS) {
-	// 	SERVER_ERR("Sorry, you've reached max users");
-	// 	// this->setConnected(false);
-	// 	this->sendMsg("Sorry, too many users are already connected", this);  //possible d'envoyer un msg sans etre co? quel commmande?
-	// 	quit(getServer(), this);
-	// 	return ;
-	// }
-
 	_message->createMessage();	
 	if (!_welcomeMsg && _nick.size() && _user.size())
 		welcome_msg();
@@ -178,8 +160,6 @@ bool						Client::getConnected() const { return (_connected); }
 /************ Setters ************/
 
 void	Client::setBuffer(const std::string str) { _buffer = str; }
-// void	Client::setChannel(Channel* channel) { _channel = channel; }
-// void	Client::setChannelName(const std::string str) {	_channelName = str; } //plus de sens
 void	Client::setNick(const std::string nick) { _nick = nick; }
 void	Client::setUser(const std::string user) { _user = user; }
 void	Client::setRealName(const std::string realName) { _realName = realName; }

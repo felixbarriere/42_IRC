@@ -16,17 +16,13 @@ ERR_NOPRIVS (723) */
 #include "../../inc/utils.hpp"
 
 void ft_kill(Server* server, Client* client) {
-    if (!server){
+    if (!server)
         return ;
-	}
-
-	std::string str_to_all;
-    std::cout << "DEBUG ===> KILL called"  << std::endl << std::endl;
+    std::string str_to_all;
     if (client->getMessage()->getParams().size() < 2)
         client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);
     else if (!server->getClientByNick(client->getMessage()->getParams()[0]))
         client->sendMsg(ERR_ERRONEUSNICKNAME + client->getNick() + " " + client->getMessage()->getParams()[0] + " :No such nickname", client);
-    //else if(checkMode(client) == false)
     else if (!client->getModes().find('o')->second)
             client->sendMsg(ERR_NOPRIVILEGES + client->getNick() +  " :Permission Denied- You're not an IRC operator", client);
     else{
@@ -34,14 +30,11 @@ void ft_kill(Server* server, Client* client) {
         std::string     comment = "";
         if (i != std::string::npos)
             comment = client->getMessage()->getParams()[1].substr(i + 1);
-        std::cout << "CHECK===> comment =  " << comment << std::endl;
         std::string str_to_all = " KILL :" + comment;
         std::string str_to_user = " :Killed by " + client->getNick() + " because " + comment;
-
-		/* on delete les parametres du client qui se fait kill, puis on lui passe str_to_user */
+		// on delete les parametres du client qui se fait kill, puis on lui passe str_to_user
 		server->getClientByNick(client->getMessage()->getParams()[0])->getMessage()->getParams().clear();
 		server->getClientByNick(client->getMessage()->getParams()[0])->getMessage()->getParams().push_back(str_to_all);
-		
 		//send the KILL message to user killed
 		server->getClientByNick(client->getMessage()->getParams()[0])->sendMsg(str_to_user, server->getClientByNick(client->getMessage()->getParams()[0]));
         //send the QUIT msg to everyone in the channel - in cmd quit->broadcast

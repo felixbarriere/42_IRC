@@ -6,7 +6,7 @@
 /*   By: baubigna <baubigna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:58:59 by masamoil          #+#    #+#             */
-/*   Updated: 2023/03/06 11:59:15 by baubigna         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:11:32 by baubigna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	Message::tokenizer(std::string line) {
 		_params.push_back(temp[1]);
 	}
 	else {	
-		// la value est constituée de plusieurs strings (ex: USER)
 		_cmd = temp[0];
 		std::vector<std::string>::iterator	it = temp.begin() + 1;
 		for (; it != temp.end(); it++)

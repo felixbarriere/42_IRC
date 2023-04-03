@@ -3,17 +3,15 @@
 void	mode(Server* server, Client* client) {
 	std::string	paramZero = client->getMessage()->getParams()[0];
 	std::string	paramUn = client->getMessage()->getParams()[1];
-	// user Mode
 	if (paramZero.size() == 0)
 		client->sendMsg(ERR_NEEDMOREPARAMS + client->getNick() + " :Not enough parameters", client);
 	else if (paramZero[0] == '#') {
-		// std::cout << "DEBUG ===>  ChannelName: " << paramZero  << std::endl << std::endl;
 		std::map<std::string, Channel>::iterator ret = server->getChannels().find(paramZero);
 		if (ret == server->getChannels().end())
 			client->sendMsg("No such channel", client);
 		else
 			client->sendMsg("Sorry, MODE command is not implemented for channels.", client);
-	}	// channel Mode
+	}
 	else if (paramZero != client->getNick() && server->nickIsUsed(paramZero))
 		client->sendMsg(ERR_USERSDONTMATCH + client->getNick() + " Can't change mode for other users", client);
 	else if (!server->nickIsUsed(paramZero))
@@ -43,6 +41,3 @@ void	mode(Server* server, Client* client) {
 			client->sendMsg(ERR_UMODEUNKNOWNFLAG + client->getNick() + " modestring should start with '-' or '+'", client);
 	}
 }
-
-/* Command: MODE
-  Parameters: <target> [<modestring> [<mode arguments>...]] */
