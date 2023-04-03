@@ -70,12 +70,11 @@ void    kick(Server* server, Client* client) {
 
 					//a message to the concerned user
                     server->getClientByNick(*it)->sendMsg(str, server->getClientByNick(*it));
-					
+
 					channel->removeMember(server->getClientByNick(*it));
 
                     server->getClientByNick(*it)->getMessage()->getParams().clear();
                     server->getClientByNick(*it)->getMessage()->getParams().push_back(chan);
-                    //part(server, server->getClientByNick(*it));
                 }
             }
       }
