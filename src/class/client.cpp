@@ -46,7 +46,6 @@ Client&	Client::operator=(const Client &rhs) {
 }
 
 Client::~Client() {	
-	std::cout << "DEBUG ===> Destructor CLIENT #" << this->getC_socket() << std::endl << std::endl;
 	close(_c_socket);
 	delete (_message);
 }

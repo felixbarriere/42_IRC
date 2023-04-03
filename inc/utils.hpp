@@ -108,11 +108,6 @@ bool                        checkMode(Client*);
 int							checkPort(char*);
 
 class Server;
-void	addmotd(Server*, Client*);
-void	addomotd(Server*, Client*);
-void	chghost(Server*, Client*);
-void	chgname(Server*, Client*);
-void	globops(Server*, Client*);
 void	join(Server*, Client*);
 void	kick(Server*, Client*);
 void	ft_kill(Server*, Client*);
@@ -131,7 +126,6 @@ void	privmsg(Server*, Client*);
 void	quit(Server*, Client*);
 void	user(Server*, Client*);
 void	wallops(Server*, Client*);
-void	whoIs(Server*, Client*);
 void	who(Server*, Client*);
 
 #endif

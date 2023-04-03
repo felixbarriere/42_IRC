@@ -223,11 +223,6 @@ Channel*	Server::getChannelByName(const std::string name) {
 void	Server::setPortNumber(char* number) { portNumber = number; }
 
 void Server::setCommandList() {
-	_commandList.insert(std::make_pair("ADDMOTD", addmotd));
-	_commandList.insert(std::make_pair("ADDOMOTD", addomotd));
-	_commandList.insert(std::make_pair("CHGHOST", chgname));
-	_commandList.insert(std::make_pair("CHGNAME", chgname));
-	_commandList.insert(std::make_pair("GLOBOPS", globops));
 	_commandList.insert(std::make_pair("JOIN", join));
 	_commandList.insert(std::make_pair("KICK", kick));
 	_commandList.insert(std::make_pair("kill", ft_kill));
@@ -246,6 +241,5 @@ void Server::setCommandList() {
 	_commandList.insert(std::make_pair("QUIT", quit));
 	_commandList.insert(std::make_pair("USER", user));
 	_commandList.insert(std::make_pair("wallops", wallops));
-	_commandList.insert(std::make_pair("WHOIS", whoIs));
 	_commandList.insert(std::make_pair("WHO", who));
 }

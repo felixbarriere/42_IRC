@@ -17,11 +17,6 @@ SRCS = 	main.cpp \
 		show_config.cpp \
 		ft_split.cpp \
 		utils.cpp \
-		cmd/addmotd.cpp \
-		cmd/addomotd.cpp \
-		cmd/chghost.cpp \
-		cmd/chgname.cpp \
-		cmd/globops.cpp \
 		cmd/join.cpp \
 		cmd/kick.cpp \
 		cmd/kill.cpp \
@@ -40,7 +35,6 @@ SRCS = 	main.cpp \
 		cmd/quit.cpp \
 		cmd/user.cpp \
 		cmd/wallops.cpp \
-		cmd/whois.cpp \
 		cmd/who.cpp \
 
 OBJS = ${SRCS:.cpp=.o}
