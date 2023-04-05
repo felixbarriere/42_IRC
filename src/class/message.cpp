@@ -47,6 +47,8 @@ Message::~Message() {}
 void	Message::tokenizer(std::string line) {
 	if (line.size() == 0)
 		return ;
+	if (line.size() == 1)
+		return ;
 	_cmd.clear();
 	_params.clear();
 	std::vector<std::string>	temp = ft_split(line, " ");
