@@ -32,7 +32,6 @@ void	who(Server* server, Client* client) {
 	else if (client->getMessage()->getParams()[0][0] != '#' && client->getMessage()->getParams()[0][0] != '!'
 	&& client->getMessage()->getParams()[0][0] != '&' && client->getMessage()->getParams()[0][0] != '+') 
 	{
-		std::cout << " H-E-R-E " << std::endl;
 		std::map<int, Client*>::iterator	it = server->getClients().begin();
 		std::map<int, Client*>::iterator	ite = server->getClients().end();
 		for (; it != ite; it++) {
