@@ -5,7 +5,9 @@ void	privmsg(Server* server, Client* client) {
 		client->sendMsg(ERR_NORECIPIENT + client->getNick() + " :No recipient given", client);
 	else if (client->getMessage()->getParams().size() == 1)
 		client->sendMsg(ERR_NOTEXTTOSEND + client->getNick() + " :No text to send", client);
-	else if (client->getMessage()->getParams()[0][0] == '#') {
+	else if (client->getMessage()->getParams()[0][0] == '#')// || client->getMessage()->getParams()[0][0] == '!'
+	//|| client->getMessage()->getParams()[0][0] == '&' || client->getMessage()->getParams()[0][0] == '+') 
+	{
 		std::map<std::string, Channel>::iterator	it = server->getChannels().find(client->getMessage()->getParams()[0]);
 		if (it != server->getChannels().end()) {
 			std::string	params = "";
