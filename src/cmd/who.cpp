@@ -29,9 +29,10 @@ void	who(Server* server, Client* client) {
 		}
 		client->sendMsg(RPL_ENDOFWHO " :End of WHO list", client);
 	}
-	else if (client->getMessage()->getParams()[0][0] != '#')// || client->getMessage()->getParams()[0][0] != '!'
-	//|| client->getMessage()->getParams()[0][0] != '&' || client->getMessage()->getParams()[0][0] != '+') 
+	else if (client->getMessage()->getParams()[0][0] != '#' && client->getMessage()->getParams()[0][0] != '!'
+	&& client->getMessage()->getParams()[0][0] != '&' && client->getMessage()->getParams()[0][0] != '+') 
 	{
+		std::cout << " H-E-R-E " << std::endl;
 		std::map<int, Client*>::iterator	it = server->getClients().begin();
 		std::map<int, Client*>::iterator	ite = server->getClients().end();
 		for (; it != ite; it++) {

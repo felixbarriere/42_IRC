@@ -13,7 +13,7 @@ void	join(Server* server, Client* client) {
 			ptr = strtok(NULL, ",");
 		}
 		for (unsigned int i = 0; i < channel_names.size(); i++) {
-			if (channel_names[i][0] != '#')// && channel_names[i][0] != '&' && channel_names[i][0] != '+' && channel_names[i][0] != '!')
+			if (channel_names[i][0] != '#' && channel_names[i][0] != '&' && channel_names[i][0] != '+' && channel_names[i][0] != '!')
 				channel_names[i] = "#" + channel_names[i];
 			std::map<std::string, Channel>::iterator	it = server->getChannels().find(channel_names[i]);
 			if (it == server->getChannels().end())
