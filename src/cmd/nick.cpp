@@ -3,10 +3,8 @@
 // https://modern.ircdocs.horse/#nick-message
 
 void	nick(Server* server, Client* client) {
-	std::cout << "DEBUG ===> NICK fct called"   << std::endl;
 	if (!server)
 		return ;
-	
 	// && checkCommand(client->getMessage()->getParams()[0]) == true
 	if (!client->getWelcome()) {
 		if (!checkCommand(client->getMessage()->getParams()[0]) || client->getMessage()->getParams()[0].size() > 9)
