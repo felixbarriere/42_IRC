@@ -84,7 +84,12 @@ void	Server::acceptClient() {
 	if(fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 		SERVER_ERR("Rendering the socket non blocking");
 	_clients[client_socket] = new Client(client_socket, client_address, this);
-	if (this->getClients().size() > MAX_USERS) {
+	int	connected_users = 0;
+	for (std::map<int, Client*>::iterator it = _clients.begin(); it !=  _clients.end(); it++) {
+		if (it->second->getConnected())
+			connected_users++;
+	}
+	if (connected_users > MAX_USERS) {
 		_clients[client_socket]->setConnected(false);
 		fds.push_back(pollfd());
 		fds.back().fd = client_socket;

@@ -2,8 +2,10 @@
 
 void	quit(Server* server, Client* client) {
 	std::string	str;
-	for (size_t i = 0; i < client->getMessage()->getParams().size(); i++)
-		str += client->getMessage()->getParams()[i] + " ";
+	for (size_t i = 0; i < client->getMessage()->getParams().size(); i++) {
+		if (client->getMessage()->getParams()[i].size() != 1)
+			str += client->getMessage()->getParams()[i] + " ";
+	}
 	std::map<std::string, Channel>::iterator	it = server->getChannels().begin();
 	while (it != server->getChannels().end()) {
 		if (client->checkChannelName(it->first)) {
@@ -21,6 +23,6 @@ void	quit(Server* server, Client* client) {
 		else
 			it++;
 	}
-	client->sendMsg("QUIT " + str, client);
+	client->sendMsg("QUIT " + str + " :Client quit", client);
 	client->setConnected(false);
 }
