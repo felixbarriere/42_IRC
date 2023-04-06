@@ -28,7 +28,7 @@ void	part(Server* server, Client* client) {
 				}
 			}
 			if (!found)
-				client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " :No such channel" + channel_names[i], client);
+				client->sendMsg(ERR_NOSUCHCHANNEL + client->getNick() + " :No such channel " + channel_names[i], client);
 		}
 	}
 }
