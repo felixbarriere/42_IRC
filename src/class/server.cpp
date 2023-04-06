@@ -116,9 +116,10 @@ void	Server::receiveRequest(int client_socket) {
 	std::string buffer_str(buffer);
 	if (buffer_str.size() != 0)
 		std::cout << "#" << client_socket << " << " << buffer_str << std::endl;
-	if (res == -1)
-        SERVER_ERR("recv");
-	else if (res == 0) {
+	// if (res == -1)
+        // SERVER_ERR("recv");
+	// else if (res == 0) {
+	if (res == 0) {
 		if (getUser(client_socket)->getConnected() == false)
 			removeClient(getUser(client_socket), client_socket);
 	}
