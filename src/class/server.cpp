@@ -129,7 +129,9 @@ void	Server::receiveRequest(int client_socket) {
 	}
 	else if (getUser(client_socket) != NULL && res > 0 && buffer_str[buffer_str.size() - 1] == '\n' && buffer_str.size() != 1) {
 		// std::cout << std::endl << "Receiving Entrée" << std::endl << std::endl;
-		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(" " + buffer_str));
+		// getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(" " + buffer_str));
+		getUser(client_socket)->setBuffer(getUser(client_socket)->getBuffer().append(buffer_str));
+
 		getUser(client_socket)->initMsg();	// à deplacer dans le dernier else. On appelle la methode de creation de commande de la classe Client. Le buffer complet est deja stocké dans l'attribut _buffer de l'instance Client. 
 		getUser(client_socket)->setBuffer("");
 	}
